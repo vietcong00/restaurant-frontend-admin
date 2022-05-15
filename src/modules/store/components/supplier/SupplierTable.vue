@@ -1,9 +1,9 @@
 <template>
-    <BaseTableLayout :data="foodList">
+    <BaseTableLayout :data="supplierList">
         <template #table-columns>
             <el-table-column
                 align="center"
-                :label="$t('menu.listFood.foodTable.header.id')"
+                :label="$t('store.listSupplier.supplierTable.header.id')"
                 type="index"
                 :index="indexMethod"
                 width="75"
@@ -11,7 +11,7 @@
             </el-table-column>
             <el-table-column
                 prop="name"
-                :label="$t('menu.listFood.foodTable.header.name')"
+                :label="$t('store.listSupplier.supplierTable.header.name')"
                 sortable="custom"
             >
                 <template #default="scope">
@@ -19,53 +19,35 @@
                 </template>
             </el-table-column>
             <el-table-column
-                prop="price"
-                :label="$t('menu.listFood.foodTable.header.price')"
+                prop="name"
+                :label="$t('store.listSupplier.supplierTable.header.phone')"
                 sortable="custom"
             >
                 <template #default="scope">
-                    {{ scope.row.price }}
+                    {{ scope.row.phone }}
                 </template>
             </el-table-column>
             <el-table-column
-                prop="category"
-                :label="$t('menu.listFood.foodTable.header.category')"
+                prop="idCategory"
+                :label="$t('store.listSupplier.supplierTable.header.address')"
             >
                 <template #default="scope">
-                    {{ scope.row.category }}
+                    {{ scope.row.address }}
                 </template>
             </el-table-column>
             <el-table-column
-                prop="mainMaterial"
-                :label="$t('menu.listFood.foodTable.header.mainMaterial')"
+                prop="arrivalTime"
+                :label="$t('store.listSupplier.supplierTable.header.updateAt')"
                 sortable="custom"
             >
                 <template #default="scope">
-                    {{ parseDateTimeTime(scope.row.mainMaterial) }}
-                </template>
-            </el-table-column>
-            <el-table-column
-                prop="amount"
-                :label="$t('menu.listFood.foodTable.header.amount')"
-                sortable="custom"
-            >
-                <template #default="scope">
-                    {{ parseDateTimeTime(scope.row.amount) }}
-                </template>
-            </el-table-column>
-            <el-table-column
-                prop="image"
-                :label="$t('menu.listFood.foodTable.header.image')"
-                sortable="custom"
-            >
-                <template #default="scope">
-                    {{ parseDateTimeTime(scope.row.image) }}
+                    {{ parseDateTimeTime(scope.row.updateAt) }}
                 </template>
             </el-table-column>
             <el-table-column
                 align="center"
                 prop="id"
-                :label="$t('menu.listFood.foodTable.header.actions')"
+                :label="$t('store.listSupplier.supplierTable.header.actions')"
                 fixed="right"
                 width="150"
             >
@@ -109,30 +91,38 @@
 <script lang="ts">
 import { mixins, Options } from 'vue-property-decorator';
 
+import { ISupplier } from '../../types';
 import CompIcon from '../../../../components/CompIcon.vue';
-import { menuModule } from '../../store';
-import { MenuMixins } from '../../mixins';
+import { storeModule } from '../../store';
+import { StoreMixins } from '../../mixins';
 import { Delete as DeleteIcon, Edit as EditIcon } from '@element-plus/icons-vue';
 import { eventModule } from '@/modules/event/store';
 import { PermissionResources, PermissionActions } from '@/modules/role/constants';
 import { checkUserHasPermission } from '@/utils/helper';
-import { IFood } from '../../types';
 
 @Options({
-    name: 'material-table-component',
+    name: 'supplier-table-component',
     components: {
         CompIcon,
         DeleteIcon,
         EditIcon,
     },
 })
-export default class MaterialTable extends mixins(MenuMixins) {
-    get foodList(): IFood[] {
-        return menuModule.foodList;
+export default class SupplierTable extends mixins(StoreMixins) {
+    get supplierList(): ISupplier[] {
+        return [
+            {
+                id: 1,
+                name: 'Vinmart',
+                phone: '123456789',
+                address: '99 Đại La',
+                updateAt: '2022-04-20T17:00:00.000Z',
+            },
+        ];
     }
 
     created(): void {
-        menuModule.getFoods();
+        storeModule.getBookings();
     }
 
     isCanDelete(): boolean {

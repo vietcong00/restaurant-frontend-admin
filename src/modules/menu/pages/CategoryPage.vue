@@ -1,11 +1,11 @@
 <template>
-    <div class="booking-list">
+    <div class="category-list">
         <BaseListPageHeader
             @toggle-filter-form="toggleFilterForm"
-            :pageTitle="$t('booking.list.pageName')"
+            :pageTitle="'Quản lý danh mục'"
             :hasSortBox="true"
             v-model:page="selectedPage"
-            :totalItems="totalBookings"
+            :totalItems="totalCategories"
             :isShowCreateButton="isCanCreate"
             @create="onClickButtonCreate"
             @onPaginate="handlePaginate"
@@ -15,8 +15,8 @@
             </template>
         </BaseListPageHeader>
         <FilterForm :isToggleFilterForm="isToggleFilterForm" />
-        <booking-table />
-        <booking-form-popup />
+        <category-table />
+        <category-form-popup />
     </div>
 </template>
 
@@ -26,56 +26,56 @@ import { PermissionResources, PermissionActions } from '@/modules/role/constants
 import { checkUserHasPermission } from '@/utils/helper';
 import { ElLoading } from 'element-plus';
 import { Options, Vue } from 'vue-class-component';
-import BookingTable from '../components/BookingTable.vue';
-import { bookingModule } from '../store';
-import FilterForm from '../components/FilterForm.vue';
-import BookingFormPopup from '../components/BookingFormPopup.vue';
+import CategoryTable from '../components/category/CategoryTable.vue';
+import { menuModule } from '../store';
+import CategoryFormPopup from '../components/category/CategoryFormPopup.vue';
+import FilterForm from '../components/category/FilterForm.vue';
 
 @Options({
     components: {
-        BookingTable,
+        CategoryTable,
         FilterForm,
-        BookingFormPopup,
+        CategoryFormPopup,
     },
 })
 export default class CategoryPage extends Vue {
     isToggleFilterForm = true;
 
-    get totalBookings(): number {
-        return bookingModule.totalBookings;
+    get totalCategories(): number {
+        return menuModule.totalCategories;
     }
 
     // check permission
     get isCanCreate(): boolean {
-        return checkUserHasPermission(bookingModule.userPermissions, [
+        return checkUserHasPermission(menuModule.userPermissions, [
             `${PermissionResources.EVENT}_${PermissionActions.CREATE}`,
         ]);
     }
 
     get selectedPage(): number {
-        return bookingModule.bookingQueryString?.page || DEFAULT_FIRST_PAGE;
+        return menuModule.categoryQueryString?.page || DEFAULT_FIRST_PAGE;
     }
 
     set selectedPage(value: number) {
-        bookingModule.bookingQueryString.page = value;
+        menuModule.categoryQueryString.page = value;
     }
 
     created(): void {
-        bookingModule.clearQueryString();
-        this.getBookingList();
+        menuModule.clearCategoryQueryString();
+        this.getCategoryList();
     }
 
-    async getBookingList(): Promise<void> {
+    async getCategoryList(): Promise<void> {
         const loading = ElLoading.service({
             target: '.content',
         });
-        await bookingModule.getBookings();
+        await menuModule.getCategories();
         loading.close();
     }
 
     async handlePaginate(): Promise<void> {
-        bookingModule.setBookingQueryString({ page: this.selectedPage });
-        this.getBookingList();
+        menuModule.setCategoryQueryString({ page: this.selectedPage });
+        this.getCategoryList();
     }
 
     toggleFilterForm(): void {
@@ -83,7 +83,7 @@ export default class CategoryPage extends Vue {
     }
 
     onClickButtonCreate(): void {
-        bookingModule.setIsShowBookingFormPopUp(true);
+        menuModule.setIsShowCategoryFormPopUp(true);
     }
 }
 </script>

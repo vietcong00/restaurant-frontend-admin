@@ -5,25 +5,25 @@
         destroy-on-close
         @closed="closePopup"
         @open="form.openPopup"
-        custom-class="booking-form-popup"
+        custom-class="supplier-form-popup"
     >
         <template #title>
             <h3 class="text-left">
                 {{
                     form.isCreate
-                        ? $t('booking.form.bookingDialog.titleCreate')
-                        : $t('booking.form.bookingDialog.titleUpdate')
+                        ? $t('store.formSupplier.supplierDialog.titleCreate')
+                        : $t('store.formSupplier.supplierDialog.titleUpdate')
                 }}
             </h3>
         </template>
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <BaseInputText
-                    v-model:value="form.nameCustomer"
+                    v-model:value="form.name"
                     :is-required="true"
-                    :placeholder="$t('booking.list.placeholder.nameCustomer')"
-                    :label="$t('booking.form.nameCustomer')"
-                    :error="translateYupError(form.errors.nameCustomer)"
+                    :placeholder="$t('store.listSupplier.placeholder.name')"
+                    :label="$t('store.formSupplier.name')"
+                    :error="translateYupError(form.errors.name)"
                 />
             </div>
             <div class="col-md-6">
@@ -31,29 +31,17 @@
                     v-model:value="form.phone"
                     :error="translateYupError(form.errors.phone)"
                     :is-required="true"
-                    :label="$t('booking.form.phone')"
-                    :placeholder="$t('booking.list.placeholder.phone')"
+                    :label="$t('store.formSupplier.phone')"
+                    :placeholder="$t('store.listSupplier.placeholder.phone')"
                 />
             </div>
             <div class="col-md-6">
-                <BaseInputNumber
-                    v-model:value="form.numberPeople"
-                    :placeholder="$t('booking.list.placeholder.numberPeople')"
-                    :label="$t('booking.form.numberPeople')"
-                    :error="translateYupError(form.errors.numberPeople)"
-                />
-            </div>
-            <div class="col-md-6">
-                <BaseDatePicker
-                    v-model:value="form.arrivalTime"
-                    :placeholder="$t('booking.list.placeholder.arrivalTime')"
-                    :label="$t('booking.form.arrivalTime')"
-                    :error="translateYupError(form.errors.arrivalTime)"
+                <BaseInputText
+                    v-model:value="form.address"
+                    :error="translateYupError(form.errors.address)"
                     :is-required="true"
-                    :min-date="new Date()"
-                    :default-value="minEndDate"
-                    :date-format="YYYY_MM_DD_HYPHEN_HH_MM_COLON"
-                    :value-format="YYYY_MM_DD_HYPHEN_HH_MM_COLON"
+                    :label="$t('store.formSupplier.address')"
+                    :placeholder="$t('store.listSupplier.placeholder.address')"
                 />
             </div>
         </div>
@@ -65,7 +53,7 @@
                         class="col-md-4 col-sm-6 d-flex justify-content-md-end justify-content-center"
                     >
                         <el-button @click="closePopup">
-                            {{ $t('booking.form.button.cancel') }}
+                            {{ $t('store.formSupplier.button.cancel') }}
                         </el-button>
                     </div>
                     <div
@@ -76,7 +64,7 @@
                             @click="onClickSaveButton"
                             :disabled="isDisabledSaveButton"
                         >
-                            {{ $t('booking.form.button.submit') }}
+                            {{ $t('store.formSupplier.button.submit') }}
                         </el-button>
                     </div>
                 </div>
@@ -87,18 +75,14 @@
 
 <script lang="ts">
 import { setup } from 'vue-class-component';
-import { initData } from '../composition/createForm';
-import { storeModule } from '../store';
+import { initData } from '../../composition/createForm';
+import { storeModule } from '../../store';
 import { UtilMixins } from '@/mixins/utilMixins';
 import { mixins, Options } from 'vue-property-decorator';
-import TableDiagram from '../../table-diagram/components/TableDiagram.vue';
 @Options({
-    name: 'booking-form-popup',
-    components: {
-        TableDiagram,
-    },
+    name: 'supplier-form-popup',
 })
-export default class BookingFormPopUp extends mixins(UtilMixins) {
+export default class SupplierFormPopUp extends mixins(UtilMixins) {
     get isDisabledSaveButton(): boolean {
         return storeModule.isDisabledSaveButton;
     }

@@ -17,29 +17,6 @@
                         :label="$t('booking.list.filterForm.keyword')"
                     />
                 </div>
-                <div class="col-xl-4 col-md-4 col-12">
-                    <label class="text-start w-100 fw-bold" style="margin-bottom: 8px">{{
-                        $t('booking.list.filterForm.arrivalTimeRange')
-                    }}</label>
-                    <BaseDatePickerRange
-                        v-model:value="arrivalTimeRange"
-                        type="datetimerange"
-                        :date-format="YYYY_MM_DD_HYPHEN_HH_MM_COLON"
-                        :value-format="YYYY_MM_DD_HYPHEN_HH_MM_COLON"
-                        size="medium"
-                        :range-separator="$t('booking.list.filterForm.to')"
-                        :start-placeholder="$t('booking.list.filterForm.startDate')"
-                        :end-placeholder="$t('booking.list.filterForm.endDate')"
-                    />
-                </div>
-                <div class="col-md-4 col-sm-6">
-                    <BaseMultipleSelect
-                        v-model:value="filterForm.status"
-                        :placeholder="$t('booking.list.placeholder.status')"
-                        :label="$t('booking.list.filterForm.status')"
-                        :options="bookingStatusOptions"
-                    />
-                </div>
             </div>
         </slot>
     </BaseFilterFormLayout>
@@ -54,14 +31,10 @@ import {
     DEFAULT_SIZE_PER_PAGE,
     LIMIT_PER_PAGE,
 } from '@/common/constants';
-import { bookingStatusOptions } from '../constants';
-import { storeModule } from '../store';
-import { IQueryStringBooking } from '../types';
+import { storeModule } from '../../store';
+import { IQueryStringBooking } from '../../types';
 import { Prop, mixins } from 'vue-property-decorator';
-import { parseLanguageSelectOptions } from '@/utils/helper';
-import { ISelectOptions } from '@/common/types';
-import moment from 'moment';
-import { StoreMixins } from '../mixins';
+import { StoreMixins } from '../../mixins';
 
 export default class FilterForm extends mixins(StoreMixins) {
     @Prop({ default: false }) readonly isToggleFilterForm!: boolean;
@@ -75,12 +48,6 @@ export default class FilterForm extends mixins(StoreMixins) {
         status: [],
     } as IQueryStringBooking;
 
-    arrivalTimeRange = [];
-
-    get bookingStatusOptions(): ISelectOptions[] {
-        return parseLanguageSelectOptions(bookingStatusOptions);
-    }
-
     async resetFilter(): Promise<void> {
         this.filterForm = {
             page: DEFAULT_FIRST_PAGE,
@@ -90,7 +57,6 @@ export default class FilterForm extends mixins(StoreMixins) {
             keyword: '',
             status: [],
         };
-        this.arrivalTimeRange = [];
         storeModule.clearQueryString();
         await this.handleFilter();
     }
@@ -100,12 +66,6 @@ export default class FilterForm extends mixins(StoreMixins) {
             page: DEFAULT_FIRST_PAGE,
             limit: DEFAULT_SIZE_PER_PAGE,
             keyword: this.filterForm.keyword?.trim(),
-            arrivalTimeRange: this.arrivalTimeRange
-                ? (this.arrivalTimeRange as Date[]).map((date: Date) =>
-                      moment(date).utc().fmFullTimeWithoutSecond(),
-                  )
-                : null,
-            status: this.filterForm.status,
         });
         const loading = ElLoading.service({
             target: '.content',

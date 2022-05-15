@@ -1,7 +1,13 @@
-import { bookingService } from '../table-diagram/services/api.service';
 import { getModule, VuexModule, Mutation, Action, Module } from 'vuex-module-decorators';
 import store from '@/store';
-import { IBooking, IQueryStringBooking, IBookingUpdate } from './types';
+import {
+    ICategory,
+    IFoodUpdate,
+    IFood,
+    ICategoryUpdate,
+    IQueryStringCategory,
+    IQueryStringFood,
+} from './types';
 import {
     DEFAULT_FIRST_PAGE,
     LIMIT_PER_PAGE,
@@ -11,8 +17,9 @@ import { IBodyResponse, IGetListResponse } from '@/common/types';
 import { DEFAULT_ORDER_BY } from '../user/constants';
 import { appService } from '@/utils/app';
 import { PermissionResources } from '../role/constants';
+import { categoryService, foodService } from './services/api.service';
 
-const initQueryString = {
+const initCategoryQueryString = {
     page: DEFAULT_FIRST_PAGE,
     limit: LIMIT_PER_PAGE,
     orderBy: DEFAULT_ORDER_BY,
@@ -20,15 +27,26 @@ const initQueryString = {
     keyword: null,
 };
 
-@Module({ dynamic: true, namespaced: true, store, name: 'booking' })
-class BookingModule extends VuexModule {
-    bookingList: Array<IBooking> = [];
-    totalBookings = 0;
+const initFoodQueryString = {
+    page: DEFAULT_FIRST_PAGE,
+    limit: LIMIT_PER_PAGE,
+    orderBy: DEFAULT_ORDER_BY,
+    orderDirection: DEFAULT_ORDER_DIRECTION,
+    keyword: null,
+    mainMaterial: null,
+    categories: [],
+};
 
-    selectedBooking: IBookingUpdate | null = null;
+@Module({ dynamic: true, namespaced: true, store, name: 'category' })
+class MenuModule extends VuexModule {
+    categoryList: Array<ICategory> = [];
+    foodList: Array<IFood> = [];
 
-    tableSelected = -1;
-    numberPeople = -1;
+    totalCategories = 0;
+    totalFoods = 0;
+
+    selectedFood: IFoodUpdate | null = null;
+    selectedCategory: ICategoryUpdate | null = null;
 
     isShowModalChosenTable = false;
     isShowModalTableDetail = false;
@@ -37,38 +55,13 @@ class BookingModule extends VuexModule {
     numberSeatSelected = 0;
     canChosenTable = false;
 
-    bookingQueryString: IQueryStringBooking = initQueryString;
+    categoryQueryString: IQueryStringCategory = initCategoryQueryString;
+    foodQueryString: IQueryStringFood = initFoodQueryString;
 
-    isShowBookingFormPopUp = false;
+    isShowCategoryFormPopUp = false;
+    isShowFoodFormPopUp = false;
+
     isDisabledSaveButton = false;
-
-    get checkCanChosenTable() {
-        return this.canChosenTable;
-    }
-
-    get getNumberSeatSelected() {
-        return this.numberSeatSelected;
-    }
-
-    get getTableSelected() {
-        return this.tableSelected;
-    }
-
-    get getNumberPeople() {
-        return this.numberPeople;
-    }
-
-    get checkShowModalChosenTable() {
-        return this.isShowModalChosenTable;
-    }
-
-    get checkShowModalTableDetail() {
-        return this.isShowModalTableDetail;
-    }
-
-    get getArrivalTimeSelected() {
-        return this.arrivalTimeSelected;
-    }
 
     // GETTERS
     get userPermissions(): string[] {
@@ -76,66 +69,59 @@ class BookingModule extends VuexModule {
     }
 
     @Mutation
-    MUTATE_BOOKING_LIST(data: Array<IBooking>) {
-        this.bookingList = data;
+    MUTATE_CATEGORY_LIST(data: Array<ICategory>) {
+        this.categoryList = data;
     }
 
     @Mutation
-    MUTATE_TOTAL_BOOKINGS(totalBookings: number) {
-        this.totalBookings = totalBookings;
+    MUTATE_TOTAL_CATEGORY(totalCategories: number) {
+        this.totalCategories = totalCategories;
     }
 
     @Mutation
-    SET_CAN_CHOSEN_TABLE(data: boolean) {
-        this.canChosenTable = data;
+    MUTATE_SELECTED_CATEGORY(data: ICategoryUpdate | null) {
+        this.selectedCategory = data;
     }
 
     @Mutation
-    SET_NUMBER_SEAT_SELECTED(data: number) {
-        this.numberSeatSelected = data;
+    MUTATE_FOOD_LIST(data: Array<IFood>) {
+        this.foodList = data;
     }
 
     @Mutation
-    SET_ARRIVAL_TIME_SELECTED(data: number) {
-        this.arrivalTimeSelected = data;
+    MUTATE_TOTAL_FOOD(data: number) {
+        this.totalFoods = data;
     }
 
     @Mutation
-    SET_SELECTED_TABLE(data: number) {
-        this.tableSelected = data;
+    MUTATE_SELECTED_FOOD(data: IFoodUpdate | null) {
+        this.selectedFood = data;
     }
 
     @Mutation
-    SET_NUMBER_PEOPLE(data: number) {
-        this.numberPeople = data;
-    }
-
-    @Mutation
-    UPDATE_CHECK_SHOW_MODAL_CHOSEN_TABLE(data: boolean) {
-        this.isShowModalChosenTable = data;
-    }
-
-    @Mutation
-    UPDATE_CHECK_SHOW_MODAL_TABLE_DETAIL(data: boolean) {
-        this.isShowModalTableDetail = data;
-    }
-
-    @Mutation
-    MUTATE_EVENT_QUERY_STRING(query: IQueryStringBooking) {
-        this.bookingQueryString = {
-            ...this.bookingQueryString,
+    MUTATE_FOOD_QUERY_STRING(query: IQueryStringFood) {
+        this.foodQueryString = {
+            ...this.foodQueryString,
             ...query,
         };
     }
 
     @Mutation
-    MUTATE_IS_SHOW_BOOKING_FORM_POP_UP(value: boolean) {
-        this.isShowBookingFormPopUp = value;
+    MUTATE_CATEGORY_QUERY_STRING(query: IQueryStringCategory) {
+        this.categoryQueryString = {
+            ...this.categoryQueryString,
+            ...query,
+        };
     }
 
     @Mutation
-    MUTATE_SELECTED_BOOKING(booking: IBookingUpdate | null) {
-        this.selectedBooking = booking;
+    MUTATE_IS_SHOW_FOOD_FORM_POP_UP(value: boolean) {
+        this.isShowFoodFormPopUp = value;
+    }
+
+    @Mutation
+    MUTATE_IS_SHOW_CATEGORY_FORM_POP_UP(value: boolean) {
+        this.isShowFoodFormPopUp = value;
     }
 
     @Mutation
@@ -146,59 +132,43 @@ class BookingModule extends VuexModule {
     // ACTION
 
     @Action
-    setTableSelected(data: number) {
-        this.SET_SELECTED_TABLE(data);
+    setCategorySelected(data: ICategoryUpdate | null) {
+        this.MUTATE_SELECTED_CATEGORY(data);
     }
 
     @Action
-    setNumberPeople(data: number) {
-        this.SET_NUMBER_PEOPLE(data);
+    setFoodSelected(data: IFood | null) {
+        this.MUTATE_SELECTED_FOOD(data);
     }
 
     @Action
-    updateCheckShowModalChosenTable(data: boolean) {
-        this.SET_SELECTED_TABLE(-1);
-        this.UPDATE_CHECK_SHOW_MODAL_CHOSEN_TABLE(data);
+    clearCategoryQueryString() {
+        this.MUTATE_CATEGORY_QUERY_STRING(initCategoryQueryString);
     }
 
     @Action
-    updateCheckShowModalTableDetail(data: boolean) {
-        this.UPDATE_CHECK_SHOW_MODAL_TABLE_DETAIL(data);
+    clearFoodQueryString() {
+        this.MUTATE_FOOD_QUERY_STRING(initFoodQueryString);
     }
 
     @Action
-    setArrivalTimeSelected(data: number) {
-        this.SET_ARRIVAL_TIME_SELECTED(data);
+    setCategoryQueryString(query: IQueryStringCategory) {
+        this.MUTATE_CATEGORY_QUERY_STRING(query);
     }
 
     @Action
-    setNumberSeatSelected(data: number) {
-        this.SET_NUMBER_SEAT_SELECTED(data);
+    setFoodQueryString(query: IQueryStringFood) {
+        this.MUTATE_FOOD_QUERY_STRING(query);
     }
 
     @Action
-    setCanChosenTable(data: boolean) {
-        this.SET_CAN_CHOSEN_TABLE(data);
+    setIsShowCategoryFormPopUp(value: boolean) {
+        this.MUTATE_IS_SHOW_CATEGORY_FORM_POP_UP(value);
     }
 
     @Action
-    clearQueryString() {
-        this.MUTATE_EVENT_QUERY_STRING(initQueryString);
-    }
-
-    @Action
-    setBookingQueryString(query: IQueryStringBooking) {
-        this.MUTATE_EVENT_QUERY_STRING(query);
-    }
-
-    @Action
-    setIsShowBookingFormPopUp(value: boolean) {
-        this.MUTATE_IS_SHOW_BOOKING_FORM_POP_UP(value);
-    }
-
-    @Action
-    setSelectedBooking(booking: IBookingUpdate | null) {
-        this.MUTATE_SELECTED_BOOKING(booking);
+    setIsShowFoodFormPopUp(value: boolean) {
+        this.MUTATE_IS_SHOW_FOOD_FORM_POP_UP(value);
     }
 
     @Action
@@ -208,19 +178,34 @@ class BookingModule extends VuexModule {
 
     // API Table
     @Action
-    async getBookings() {
-        const response = (await bookingService.getList({
-            ...this.bookingQueryString,
-        })) as IBodyResponse<IGetListResponse<IBooking>>;
+    async getFoods() {
+        const response = (await foodService.getList({
+            ...this.foodQueryString,
+        })) as IBodyResponse<IGetListResponse<IFood>>;
         if (response.success) {
-            this.MUTATE_BOOKING_LIST(response?.data?.items || []);
-            this.MUTATE_TOTAL_BOOKINGS(response?.data?.totalItems || 0);
+            this.MUTATE_FOOD_LIST(response?.data?.items || []);
+            this.MUTATE_TOTAL_FOOD(response?.data?.totalItems || 0);
         } else {
-            this.MUTATE_BOOKING_LIST([]);
-            this.MUTATE_TOTAL_BOOKINGS(0);
+            this.MUTATE_FOOD_LIST([]);
+            this.MUTATE_TOTAL_FOOD(0);
+        }
+        return response;
+    }
+
+    @Action
+    async getCategories() {
+        const response = (await categoryService.getList({
+            ...this.categoryQueryString,
+        })) as IBodyResponse<IGetListResponse<ICategory>>;
+        if (response.success) {
+            this.MUTATE_CATEGORY_LIST(response?.data?.items || []);
+            this.MUTATE_TOTAL_CATEGORY(response?.data?.totalItems || 0);
+        } else {
+            this.MUTATE_CATEGORY_LIST([]);
+            this.MUTATE_TOTAL_CATEGORY(0);
         }
         return response;
     }
 }
 
-export const bookingModule = getModule(BookingModule);
+export const menuModule = getModule(MenuModule);

@@ -1,11 +1,11 @@
 <template>
-    <div class="booking-list">
+    <div class="food-list">
         <BaseListPageHeader
             @toggle-filter-form="toggleFilterForm"
-            :pageTitle="$t('booking.list.pageName')"
+            :pageTitle="'Quản lý món ăn'"
             :hasSortBox="true"
             v-model:page="selectedPage"
-            :totalItems="totalBookings"
+            :totalItems="totalFoods"
             :isShowCreateButton="isCanCreate"
             @create="onClickButtonCreate"
             @onPaginate="handlePaginate"
@@ -15,8 +15,8 @@
             </template>
         </BaseListPageHeader>
         <FilterForm :isToggleFilterForm="isToggleFilterForm" />
-        <booking-table />
-        <booking-form-popup />
+        <food-table />
+        <food-form-popup />
     </div>
 </template>
 
@@ -26,56 +26,56 @@ import { PermissionResources, PermissionActions } from '@/modules/role/constants
 import { checkUserHasPermission } from '@/utils/helper';
 import { ElLoading } from 'element-plus';
 import { Options, Vue } from 'vue-class-component';
-import BookingTable from '../components/BookingTable.vue';
-import { bookingModule } from '../store';
-import FilterForm from '../components/FilterForm.vue';
-import BookingFormPopup from '../components/BookingFormPopup.vue';
+import FoodTable from '../components/food/FoodTable.vue';
+import { menuModule } from '../store';
+import FoodFormPopup from '../components/food/FoodFormPopup.vue';
+import FilterForm from '../components/food/FilterForm.vue';
 
 @Options({
     components: {
-        BookingTable,
+        FoodTable,
         FilterForm,
-        BookingFormPopup,
+        FoodFormPopup,
     },
 })
 export default class FoodPage extends Vue {
     isToggleFilterForm = true;
 
-    get totalBookings(): number {
-        return bookingModule.totalBookings;
+    get totalFoods(): number {
+        return menuModule.totalFoods;
     }
 
     // check permission
     get isCanCreate(): boolean {
-        return checkUserHasPermission(bookingModule.userPermissions, [
+        return checkUserHasPermission(menuModule.userPermissions, [
             `${PermissionResources.EVENT}_${PermissionActions.CREATE}`,
         ]);
     }
 
     get selectedPage(): number {
-        return bookingModule.bookingQueryString?.page || DEFAULT_FIRST_PAGE;
+        return menuModule.foodQueryString?.page || DEFAULT_FIRST_PAGE;
     }
 
     set selectedPage(value: number) {
-        bookingModule.bookingQueryString.page = value;
+        menuModule.foodQueryString.page = value;
     }
 
     created(): void {
-        bookingModule.clearQueryString();
-        this.getBookingList();
+        menuModule.clearFoodQueryString();
+        this.getFoodList();
     }
 
-    async getBookingList(): Promise<void> {
+    async getFoodList(): Promise<void> {
         const loading = ElLoading.service({
             target: '.content',
         });
-        await bookingModule.getBookings();
+        await menuModule.getFoods();
         loading.close();
     }
 
     async handlePaginate(): Promise<void> {
-        bookingModule.setBookingQueryString({ page: this.selectedPage });
-        this.getBookingList();
+        menuModule.setFoodQueryString({ page: this.selectedPage });
+        this.getFoodList();
     }
 
     toggleFilterForm(): void {
@@ -83,7 +83,7 @@ export default class FoodPage extends Vue {
     }
 
     onClickButtonCreate(): void {
-        bookingModule.setIsShowBookingFormPopUp(true);
+        menuModule.setIsShowFoodFormPopUp(true);
     }
 }
 </script>

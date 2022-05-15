@@ -27,7 +27,7 @@ import { checkUserHasPermission } from '@/utils/helper';
 import { ElLoading } from 'element-plus';
 import { Options, Vue } from 'vue-class-component';
 import BookingTable from '../components/BookingTable.vue';
-import { bookingModule } from '../store';
+import { storeModule } from '../store';
 import FilterForm from '../components/FilterForm.vue';
 import BookingFormPopup from '../components/BookingFormPopup.vue';
 
@@ -42,26 +42,26 @@ export default class ExportPage extends Vue {
     isToggleFilterForm = true;
 
     get totalBookings(): number {
-        return bookingModule.totalBookings;
+        return storeModule.totalBookings;
     }
 
     // check permission
     get isCanCreate(): boolean {
-        return checkUserHasPermission(bookingModule.userPermissions, [
+        return checkUserHasPermission(storeModule.userPermissions, [
             `${PermissionResources.EVENT}_${PermissionActions.CREATE}`,
         ]);
     }
 
     get selectedPage(): number {
-        return bookingModule.bookingQueryString?.page || DEFAULT_FIRST_PAGE;
+        return storeModule.bookingQueryString?.page || DEFAULT_FIRST_PAGE;
     }
 
     set selectedPage(value: number) {
-        bookingModule.bookingQueryString.page = value;
+        storeModule.bookingQueryString.page = value;
     }
 
     created(): void {
-        bookingModule.clearQueryString();
+        storeModule.clearQueryString();
         this.getBookingList();
     }
 
@@ -69,12 +69,12 @@ export default class ExportPage extends Vue {
         const loading = ElLoading.service({
             target: '.content',
         });
-        await bookingModule.getBookings();
+        await storeModule.getBookings();
         loading.close();
     }
 
     async handlePaginate(): Promise<void> {
-        bookingModule.setBookingQueryString({ page: this.selectedPage });
+        storeModule.setBookingQueryString({ page: this.selectedPage });
         this.getBookingList();
     }
 
@@ -83,7 +83,7 @@ export default class ExportPage extends Vue {
     }
 
     onClickButtonCreate(): void {
-        bookingModule.setIsShowBookingFormPopUp(true);
+        storeModule.setIsShowBookingFormPopUp(true);
     }
 }
 </script>

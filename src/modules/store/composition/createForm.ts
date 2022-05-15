@@ -14,7 +14,7 @@ import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import { BookingSchema } from '../constants';
-import { bookingModule } from '../store';
+import { storeModule } from '../store';
 
 export const validateBookingSchema = BookingSchema;
 
@@ -26,7 +26,7 @@ export function initData() {
         numberPeople: undefined,
         arrivalTime: undefined,
     };
-    const isCreate = computed(() => !bookingModule.selectedBooking?.id);
+    const isCreate = computed(() => !storeModule.selectedBooking?.id);
     const { handleSubmit, errors, resetForm, validate } = useForm({
         initialValues: initValues,
         validationSchema: validateBookingSchema,
@@ -41,7 +41,7 @@ export function initData() {
             arrivalTime: moment(values.arrivalTime).utc().fmFullTimeWithoutSecond(),
         } as IBookingCreate;
         let response;
-        const bookingId = bookingModule.selectedBooking?.id;
+        const bookingId = storeModule.selectedBooking?.id;
         const loading = ElLoading.service({
             target: '.booking-form-popup',
         });
@@ -57,23 +57,23 @@ export function initData() {
                     ? t('booking.list.message.update.success')
                     : (t('booking.list.message.create.success') as string),
             );
-            bookingModule.setBookingQueryString({
+            storeModule.setBookingQueryString({
                 page: DEFAULT_FIRST_PAGE,
             });
             const loading = ElLoading.service({
                 target: '.content',
             });
-            await bookingModule.getBookings();
+            await storeModule.getBookings();
             loading.close();
-            await bookingModule.setIsShowBookingFormPopUp(false);
+            await storeModule.setIsShowBookingFormPopUp(false);
         } else {
             showErrorNotificationFunction(response.message as string);
             if (response.code === HttpStatus.ITEM_NOT_FOUND) {
-                bookingModule.setIsShowBookingFormPopUp(false);
+                storeModule.setIsShowBookingFormPopUp(false);
                 const loading = ElLoading.service({
                     target: '.content',
                 });
-                await bookingModule.getBookings();
+                await storeModule.getBookings();
                 loading.close();
             }
         }
@@ -89,7 +89,7 @@ export function initData() {
                 target: '.booking-form-popup',
             });
             const bookingDetail = (await bookingService.getDetail(
-                bookingModule.selectedBooking?.id || 0,
+                storeModule.selectedBooking?.id || 0,
             )) as IBodyResponse<IBooking>;
             loading.close();
             resetForm({

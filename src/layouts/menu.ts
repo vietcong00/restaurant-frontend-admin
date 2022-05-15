@@ -47,32 +47,32 @@ const userMenu: ISidebar = {
                 `${PermissionResources.USER}_${PermissionActions.DELETE}`,
             ],
         },
-        {
-            name: 'common.app.menu.user.contractManagement',
-            to: '/contract',
-            class: '',
-            active: false,
-            pageName: PageName.CONTRACT_LIST_PAGE,
-            requiredPermissions: [
-                `${PermissionResources.CONTRACT}_${PermissionActions.READ}`,
-                `${PermissionResources.CONTRACT}_${PermissionActions.CREATE}`,
-                `${PermissionResources.CONTRACT}_${PermissionActions.UPDATE}`,
-                `${PermissionResources.CONTRACT}_${PermissionActions.DELETE}`,
-            ],
-        },
-        {
-            name: 'common.app.menu.user.teamManagement',
-            to: '/team',
-            class: '',
-            active: false,
-            pageName: PageName.TEAM_PAGE,
-            requiredPermissions: [
-                `${PermissionResources.TEAM}_${PermissionActions.READ}`,
-                `${PermissionResources.TEAM}_${PermissionActions.CREATE}`,
-                `${PermissionResources.TEAM}_${PermissionActions.UPDATE}`,
-                `${PermissionResources.TEAM}_${PermissionActions.DELETE}`,
-            ],
-        },
+        // {
+        //     name: 'common.app.menu.user.contractManagement',
+        //     to: '/contract',
+        //     class: '',
+        //     active: false,
+        //     pageName: PageName.CONTRACT_LIST_PAGE,
+        //     requiredPermissions: [
+        //         `${PermissionResources.CONTRACT}_${PermissionActions.READ}`,
+        //         `${PermissionResources.CONTRACT}_${PermissionActions.CREATE}`,
+        //         `${PermissionResources.CONTRACT}_${PermissionActions.UPDATE}`,
+        //         `${PermissionResources.CONTRACT}_${PermissionActions.DELETE}`,
+        //     ],
+        // },
+        // {
+        //     name: 'common.app.menu.user.teamManagement',
+        //     to: '/team',
+        //     class: '',
+        //     active: false,
+        //     pageName: PageName.TEAM_PAGE,
+        //     requiredPermissions: [
+        //         `${PermissionResources.TEAM}_${PermissionActions.READ}`,
+        //         `${PermissionResources.TEAM}_${PermissionActions.CREATE}`,
+        //         `${PermissionResources.TEAM}_${PermissionActions.UPDATE}`,
+        //         `${PermissionResources.TEAM}_${PermissionActions.DELETE}`,
+        //     ],
+        // },
     ],
 };
 const timekeepingMenu: ISidebar = {
@@ -330,7 +330,7 @@ const booking: ISidebar = {
 };
 
 const menuMenu: ISidebar = {
-    iconComponent: UserIcon,
+    iconComponent: QuestionIcon,
     name: 'common.app.menu.menu.title',
     class: '',
     active: false,
@@ -366,7 +366,7 @@ const menuMenu: ISidebar = {
     ],
 };
 const storeMenu: ISidebar = {
-    iconComponent: UserIcon,
+    iconComponent: QuestionIcon,
     name: 'common.app.menu.store.title',
     class: '',
     active: false,
@@ -442,7 +442,7 @@ const storeMenu: ISidebar = {
 };
 
 const paymentMenu: ISidebar = {
-    iconComponent: UserIcon,
+    iconComponent: QuestionIcon,
     name: 'common.app.menu.payment.title',
     class: '',
     active: false,
@@ -479,7 +479,7 @@ const paymentMenu: ISidebar = {
 };
 
 const reportMenu: ISidebar = {
-    iconComponent: UserIcon,
+    iconComponent: QuestionIcon,
     name: 'common.app.menu.report.title',
     class: '',
     active: false,
@@ -540,14 +540,14 @@ const promotion: ISidebar = {
 export const sidebars = [
     dashboard,
     userMenu,
-    timekeepingMenu,
-    assetMenu,
-    eventMenu,
-    recruitmentMenu,
-    billingMenu,
-    roleMenu,
-    settings,
-    about,
+    // timekeepingMenu,
+    // assetMenu,
+    // eventMenu,
+    // recruitmentMenu,
+    // billingMenu,
+    // roleMenu,
+    // settings,
+    // about,
     tableDiagram,
     booking,
     menuMenu,

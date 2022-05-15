@@ -1,5 +1,5 @@
 <template>
-    <BaseTableLayout :data="foodList">
+    <BaseTableLayout :data="materialList">
         <template #table-columns>
             <el-table-column
                 align="center"
@@ -24,7 +24,7 @@
                 sortable="custom"
             >
                 <template #default="scope">
-                    {{ scope.row.price }}
+                    {{ scope.row.quantity }}
                 </template>
             </el-table-column>
             <el-table-column
@@ -41,7 +41,7 @@
                 sortable="custom"
             >
                 <template #default="scope">
-                    {{ parseDateTimeTime(scope.row.mainMaterial) }}
+                    {{ scope.row.mainMaterial }}
                 </template>
             </el-table-column>
             <el-table-column
@@ -50,16 +50,7 @@
                 sortable="custom"
             >
                 <template #default="scope">
-                    {{ parseDateTimeTime(scope.row.amount) }}
-                </template>
-            </el-table-column>
-            <el-table-column
-                prop="image"
-                :label="$t('menu.listFood.foodTable.header.image')"
-                sortable="custom"
-            >
-                <template #default="scope">
-                    {{ parseDateTimeTime(scope.row.image) }}
+                    {{ scope.row.amount }}
                 </template>
             </el-table-column>
             <el-table-column
@@ -109,14 +100,14 @@
 <script lang="ts">
 import { mixins, Options } from 'vue-property-decorator';
 
+import { IMaterial } from '../../types';
 import CompIcon from '../../../../components/CompIcon.vue';
-import { menuModule } from '../../store';
-import { MenuMixins } from '../../mixins';
+import { storeModule } from '../../store';
+import { StoreMixins } from '../../mixins';
 import { Delete as DeleteIcon, Edit as EditIcon } from '@element-plus/icons-vue';
 import { eventModule } from '@/modules/event/store';
 import { PermissionResources, PermissionActions } from '@/modules/role/constants';
 import { checkUserHasPermission } from '@/utils/helper';
-import { IFood } from '../../types';
 
 @Options({
     name: 'material-table-component',
@@ -126,13 +117,28 @@ import { IFood } from '../../types';
         EditIcon,
     },
 })
-export default class MaterialTable extends mixins(MenuMixins) {
-    get foodList(): IFood[] {
-        return menuModule.foodList;
+export default class MaterialTable extends mixins(StoreMixins) {
+    get materialList(): IMaterial[] {
+        return [
+            {
+                id: 1,
+                material: 'thịt bò',
+                quantity: 2,
+                unit: 'kg',
+                updateAt: '2022-04-20T17:00:00.000Z',
+            },
+            {
+                id: 2,
+                material: 'sữa',
+                quantity: 400,
+                unit: 'Lit',
+                updateAt: '2022-04-20T17:00:00.000Z',
+            },
+        ];
     }
 
     created(): void {
-        menuModule.getFoods();
+        storeModule.getBookings();
     }
 
     isCanDelete(): boolean {

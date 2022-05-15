@@ -141,8 +141,8 @@ import { mixins, Options } from 'vue-property-decorator';
 
 import { IBooking } from '../types';
 import CompIcon from '../../../components/CompIcon.vue';
-import { bookingModule } from '../store';
-import { BookingMixins } from '../mixins';
+import { storeModule } from '../store';
+import { StoreMixins } from '../mixins';
 
 @Options({
     name: 'booking-table-component',
@@ -150,13 +150,13 @@ import { BookingMixins } from '../mixins';
         CompIcon,
     },
 })
-export default class BookingTable extends mixins(BookingMixins) {
+export default class BookingTable extends mixins(StoreMixins) {
     get bookingList(): IBooking[] {
-        return bookingModule.bookingList;
+        return storeModule.bookingList;
     }
 
     created(): void {
-        bookingModule.getBookings();
+        storeModule.getBookings();
     }
 }
 </script>

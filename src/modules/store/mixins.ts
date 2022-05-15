@@ -3,7 +3,7 @@ import { mixins } from 'vue-property-decorator';
 import i18n from '@/plugins/vue-i18n';
 import moment from 'moment';
 
-export class BookingMixins extends mixins(UtilMixins) {
+export class StoreMixins extends mixins(UtilMixins) {
     YYYY_MM_DD_HYPHEN_HH_MM_COLON = this.DATE_TIME_FORMAT.YYYY_MM_DD_HYPHEN_HH_MM_COLON;
 
     parseDateTimeTime = (date: string): string => {

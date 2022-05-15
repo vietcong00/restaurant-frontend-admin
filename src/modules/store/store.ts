@@ -21,7 +21,7 @@ const initQueryString = {
 };
 
 @Module({ dynamic: true, namespaced: true, store, name: 'booking' })
-class BookingModule extends VuexModule {
+class StoreModule extends VuexModule {
     bookingList: Array<IBooking> = [];
     totalBookings = 0;
 
@@ -223,4 +223,4 @@ class BookingModule extends VuexModule {
     }
 }
 
-export const bookingModule = getModule(BookingModule);
+export const storeModule = getModule(StoreModule);

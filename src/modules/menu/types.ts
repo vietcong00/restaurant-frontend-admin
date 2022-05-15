@@ -1,4 +1,3 @@
-import { BookingStatus } from './constants';
 import { IQueryString } from '@/common/types';
 
 export interface ITable {
@@ -7,11 +6,6 @@ export interface ITable {
     status: string;
     numberSeat: number;
     idRestaurant: number;
-}
-
-export interface IGetTables {
-    tables: Array<ITable>;
-    totalProduct: number;
 }
 
 export interface IPatchQueryTable {
@@ -42,37 +36,49 @@ export interface IBookingUpdate extends IBookingCreate {
     id: number | undefined;
 }
 
-export interface IGetBookings {
-    bookings: Array<IBooking>;
-    totalProduct: number;
-}
-
 export interface IPatchBooking {
     status?: string;
     idTable?: number;
 }
 
 export interface ICategory {
-    id: number | string;
+    id: number;
     name: string;
+    priority: string;
+    note: string;
 }
 
-export interface IGetCategories {
-    categories: Array<ICategory>;
+export interface ICategoryCreate {
+    name: string | undefined;
+    priority: string | undefined;
+    note: string | undefined;
+}
+
+export interface ICategoryUpdate extends ICategoryCreate {
+    id: number | undefined;
 }
 
 export interface IFood {
     id: number;
     name: string;
     price: string;
-    descriptions: string;
+    mainMaterial: string;
+    amount: number;
     imgLink: string;
     category: ICategory;
 }
 
-export interface IGetFoods {
-    foods: Array<IFood>;
-    totalProduct: number;
+export interface IFoodCreate {
+    name: string | undefined;
+    price: string | undefined;
+    mainMaterial: string | undefined;
+    amount: number | undefined;
+    imgLink: string | undefined;
+    category: ICategory | undefined;
+}
+
+export interface IFoodUpdate extends IFoodCreate {
+    id: number | undefined;
 }
 
 export interface IRestaurant {
@@ -82,15 +88,14 @@ export interface IRestaurant {
     phone: string;
 }
 
-export interface IGetRestaurant {
-    tables: Array<IRestaurant>;
-    totalProduct: number;
+export interface IQueryStringFood extends IQueryString {
+    keyword?: string | null;
+    mainMaterial?: string | null;
+    categories?: number[] | null;
 }
 
-export interface IQueryStringBooking extends IQueryString {
+export interface IQueryStringCategory extends IQueryString {
     keyword?: string | null;
-    status?: BookingStatus[] | null;
-    arrivalTimeRange?: string[] | null;
 }
 
 export type TModalType = 'Create' | 'Edit' | 'Close';

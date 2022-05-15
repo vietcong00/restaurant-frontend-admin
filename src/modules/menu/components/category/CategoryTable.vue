@@ -1,9 +1,9 @@
 <template>
-    <BaseTableLayout :data="foodList">
+    <BaseTableLayout :data="materialList">
         <template #table-columns>
             <el-table-column
                 align="center"
-                :label="$t('menu.listFood.foodTable.header.id')"
+                :label="$t('menu.listCategory.categoryTable.header.id')"
                 type="index"
                 :index="indexMethod"
                 width="75"
@@ -11,7 +11,7 @@
             </el-table-column>
             <el-table-column
                 prop="name"
-                :label="$t('menu.listFood.foodTable.header.name')"
+                :label="$t('menu.listCategory.categoryTable.header.name')"
                 sortable="custom"
             >
                 <template #default="scope">
@@ -19,53 +19,26 @@
                 </template>
             </el-table-column>
             <el-table-column
-                prop="price"
-                :label="$t('menu.listFood.foodTable.header.price')"
+                prop="priority"
+                :label="$t('menu.listCategory.categoryTable.header.priority')"
                 sortable="custom"
             >
                 <template #default="scope">
-                    {{ scope.row.price }}
+                    {{ scope.row.priority }}
                 </template>
             </el-table-column>
             <el-table-column
-                prop="category"
-                :label="$t('menu.listFood.foodTable.header.category')"
+                prop="note"
+                :label="$t('menu.listCategory.categoryTable.header.note')"
             >
                 <template #default="scope">
-                    {{ scope.row.category }}
-                </template>
-            </el-table-column>
-            <el-table-column
-                prop="mainMaterial"
-                :label="$t('menu.listFood.foodTable.header.mainMaterial')"
-                sortable="custom"
-            >
-                <template #default="scope">
-                    {{ parseDateTimeTime(scope.row.mainMaterial) }}
-                </template>
-            </el-table-column>
-            <el-table-column
-                prop="amount"
-                :label="$t('menu.listFood.foodTable.header.amount')"
-                sortable="custom"
-            >
-                <template #default="scope">
-                    {{ parseDateTimeTime(scope.row.amount) }}
-                </template>
-            </el-table-column>
-            <el-table-column
-                prop="image"
-                :label="$t('menu.listFood.foodTable.header.image')"
-                sortable="custom"
-            >
-                <template #default="scope">
-                    {{ parseDateTimeTime(scope.row.image) }}
+                    {{ scope.row.note }}
                 </template>
             </el-table-column>
             <el-table-column
                 align="center"
                 prop="id"
-                :label="$t('menu.listFood.foodTable.header.actions')"
+                :label="$t('menu.listCategory.categoryTable.header.actions')"
                 fixed="right"
                 width="150"
             >
@@ -116,23 +89,19 @@ import { Delete as DeleteIcon, Edit as EditIcon } from '@element-plus/icons-vue'
 import { eventModule } from '@/modules/event/store';
 import { PermissionResources, PermissionActions } from '@/modules/role/constants';
 import { checkUserHasPermission } from '@/utils/helper';
-import { IFood } from '../../types';
+import { ICategory } from '../../types';
 
 @Options({
-    name: 'material-table-component',
+    name: 'category-table-component',
     components: {
         CompIcon,
         DeleteIcon,
         EditIcon,
     },
 })
-export default class MaterialTable extends mixins(MenuMixins) {
-    get foodList(): IFood[] {
-        return menuModule.foodList;
-    }
-
-    created(): void {
-        menuModule.getFoods();
+export default class CategoryTable extends mixins(MenuMixins) {
+    get materialList(): ICategory[] {
+        return menuModule.categoryList;
     }
 
     isCanDelete(): boolean {

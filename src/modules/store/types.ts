@@ -1,16 +1,24 @@
 import { BookingStatus } from './constants';
 import { IQueryString } from '@/common/types';
 
-export interface ITable {
+export interface IMaterial {
+    id: number;
+    material: string;
+    unit: string;
+    quantity: number;
+    updateAt: Date | string;
+}
+
+export interface ISupplier {
     id: number;
     name: string;
-    status: string;
-    numberSeat: number;
-    idRestaurant: number;
+    phone: string;
+    address: string;
+    updateAt: Date | string;
 }
 
 export interface IGetTables {
-    tables: Array<ITable>;
+    tables: Array<IMaterial>;
     totalProduct: number;
 }
 
@@ -19,16 +27,6 @@ export interface IPatchQueryTable {
     nameCustomer?: string;
     phone?: string;
     arrivalTime?: string;
-}
-
-export interface IBooking {
-    id: number;
-    nameCustomer: string;
-    phone: string;
-    arrivalTime: Date;
-    status: string;
-    table: ITable;
-    numberPeople: number;
 }
 
 export interface IBookingCreate {
@@ -40,11 +38,6 @@ export interface IBookingCreate {
 
 export interface IBookingUpdate extends IBookingCreate {
     id: number | undefined;
-}
-
-export interface IGetBookings {
-    bookings: Array<IBooking>;
-    totalProduct: number;
 }
 
 export interface IPatchBooking {
@@ -98,4 +91,22 @@ export type TModalType = 'Create' | 'Edit' | 'Close';
 export interface ITextItem {
     name: string;
     number: number;
+}
+
+export interface ITable {
+    id: number;
+    name: string;
+    status: string;
+    numberSeat: number;
+    idRestaurant: number;
+}
+
+export interface IBooking {
+    id: number;
+    nameCustomer: string;
+    phone: string;
+    arrivalTime: Date;
+    status: string;
+    table: ITable;
+    numberPeople: number;
 }

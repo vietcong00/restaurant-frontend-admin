@@ -5,55 +5,42 @@
         destroy-on-close
         @closed="closePopup"
         @open="form.openPopup"
-        custom-class="booking-form-popup"
+        custom-class="material-form-popup"
     >
         <template #title>
             <h3 class="text-left">
                 {{
                     form.isCreate
-                        ? $t('booking.form.bookingDialog.titleCreate')
-                        : $t('booking.form.bookingDialog.titleUpdate')
+                        ? $t('store.formMaterial.materialDialog.titleCreate')
+                        : $t('store.formMaterial.materialDialog.titleUpdate')
                 }}
             </h3>
         </template>
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <BaseInputText
-                    v-model:value="form.nameCustomer"
+                    v-model:value="form.material"
                     :is-required="true"
-                    :placeholder="$t('booking.list.placeholder.nameCustomer')"
-                    :label="$t('booking.form.nameCustomer')"
-                    :error="translateYupError(form.errors.nameCustomer)"
-                />
-            </div>
-            <div class="col-md-6">
-                <BaseInputText
-                    v-model:value="form.phone"
-                    :error="translateYupError(form.errors.phone)"
-                    :is-required="true"
-                    :label="$t('booking.form.phone')"
-                    :placeholder="$t('booking.list.placeholder.phone')"
+                    :placeholder="$t('store.listMaterial.placeholder.material')"
+                    :label="$t('store.formMaterial.material')"
+                    :error="translateYupError(form.errors.material)"
                 />
             </div>
             <div class="col-md-6">
                 <BaseInputNumber
-                    v-model:value="form.numberPeople"
-                    :placeholder="$t('booking.list.placeholder.numberPeople')"
-                    :label="$t('booking.form.numberPeople')"
-                    :error="translateYupError(form.errors.numberPeople)"
+                    v-model:value="form.quantity"
+                    :placeholder="$t('store.listMaterial.placeholder.quantity')"
+                    :label="$t('store.formMaterial.quantity')"
+                    :error="translateYupError(form.errors.quantity)"
                 />
             </div>
             <div class="col-md-6">
-                <BaseDatePicker
-                    v-model:value="form.arrivalTime"
-                    :placeholder="$t('booking.list.placeholder.arrivalTime')"
-                    :label="$t('booking.form.arrivalTime')"
-                    :error="translateYupError(form.errors.arrivalTime)"
+                <BaseInputText
+                    v-model:value="form.unit"
+                    :error="translateYupError(form.errors.unit)"
                     :is-required="true"
-                    :min-date="new Date()"
-                    :default-value="minEndDate"
-                    :date-format="YYYY_MM_DD_HYPHEN_HH_MM_COLON"
-                    :value-format="YYYY_MM_DD_HYPHEN_HH_MM_COLON"
+                    :label="$t('store.formMaterial.unit')"
+                    :placeholder="$t('store.listMaterial.placeholder.unit')"
                 />
             </div>
         </div>
@@ -65,7 +52,7 @@
                         class="col-md-4 col-sm-6 d-flex justify-content-md-end justify-content-center"
                     >
                         <el-button @click="closePopup">
-                            {{ $t('booking.form.button.cancel') }}
+                            {{ $t('store.formMaterial.button.cancel') }}
                         </el-button>
                     </div>
                     <div
@@ -76,7 +63,7 @@
                             @click="onClickSaveButton"
                             :disabled="isDisabledSaveButton"
                         >
-                            {{ $t('booking.form.button.submit') }}
+                            {{ $t('store.formMaterial.button.submit') }}
                         </el-button>
                     </div>
                 </div>
@@ -87,18 +74,14 @@
 
 <script lang="ts">
 import { setup } from 'vue-class-component';
-import { initData } from '../composition/createForm';
-import { storeModule } from '../store';
+import { initData } from '../../composition/createForm';
+import { storeModule } from '../../store';
 import { UtilMixins } from '@/mixins/utilMixins';
 import { mixins, Options } from 'vue-property-decorator';
-import TableDiagram from '../../table-diagram/components/TableDiagram.vue';
 @Options({
-    name: 'booking-form-popup',
-    components: {
-        TableDiagram,
-    },
+    name: 'material-form-popup',
 })
-export default class BookingFormPopUp extends mixins(UtilMixins) {
+export default class MaterialFormPopUp extends mixins(UtilMixins) {
     get isDisabledSaveButton(): boolean {
         return storeModule.isDisabledSaveButton;
     }

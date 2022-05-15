@@ -1,6 +1,6 @@
 import { DEFAULT_FIRST_PAGE, HttpStatus } from '@/common/constants';
 import i18n from '@/plugins/vue-i18n';
-import { bookingModule } from '../store';
+import { storeModule } from '../store';
 import {
     showConfirmPopUpFunction,
     showErrorNotificationFunction,
@@ -26,13 +26,13 @@ export const setupDelete = () => {
                 showSuccessNotificationFunction(
                     i18n.global.t('event.list.message.delete.success') as string,
                 );
-                bookingModule.setBookingQueryString({
+                storeModule.setBookingQueryString({
                     page: DEFAULT_FIRST_PAGE,
                 });
                 const loading = ElLoading.service({
                     target: '.content',
                 });
-                await bookingModule.getBookings();
+                await storeModule.getBookings();
                 loading.close();
             } else {
                 showErrorNotificationFunction(response.message);
@@ -40,7 +40,7 @@ export const setupDelete = () => {
                     const loading = ElLoading.service({
                         target: '.content',
                     });
-                    await bookingModule.getBookings();
+                    await storeModule.getBookings();
                     loading.close();
                 }
             }
