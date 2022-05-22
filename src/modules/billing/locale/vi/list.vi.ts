@@ -29,4 +29,8 @@ export default {
             endDate: 'Ngày kết thúc',
         },
     },
+    statusBillingOptions: {
+        waitForPay: 'Chờ thanh toán',
+        paid: 'Đã thanh toán',
+    },
 };

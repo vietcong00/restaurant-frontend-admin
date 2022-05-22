@@ -1,6 +1,6 @@
 import { Module, VuexModule, Action, Mutation, getModule } from 'vuex-module-decorators';
 import store from '@/store';
-import { IBilling, IBillingUpdate, IQueryStringBilling } from './types';
+import { IBilling, IBillingUpdate, IFoodBilling, IQueryStringBilling } from './types';
 import { billingService } from './services/api.services';
 import {
     IBodyResponse,
@@ -32,7 +32,10 @@ const initQueryString = {
 @Module({ dynamic: true, stateFactory: true, namespaced: true, store, name: 'billing' })
 class BillingModule extends VuexModule {
     billingList: IBilling[] = [];
+    foodBillingList: IFoodBilling[] = [];
+    totalFoodPrice = 0;
     totalBillings = 0;
+    promotionBilling = 0;
     payerOptions: ISelectOptions[] = [];
     billingQueryString: IQueryStringBilling = initQueryString;
 
@@ -66,17 +69,6 @@ class BillingModule extends VuexModule {
             ...this.billingQueryString,
         })) as IBodyResponse<IGetListResponse<IBilling>>;
         if (response.success) {
-            response.data.items.forEach((billing) => {
-                if (!billing.user) {
-                    const billingPayer = this.payerOptions.find(
-                        (payer) => billing.payerId === payer.value,
-                    );
-                    billing.user = {
-                        fullName: billingPayer?.label || '',
-                        id: billing.payerId || 0,
-                    };
-                }
-            });
             this.MUTATE_BILLING_LIST(response?.data?.items || []);
             this.MUTATE_TOTAL_BILLING(response?.data?.totalItems || 0);
         } else {
@@ -84,6 +76,29 @@ class BillingModule extends VuexModule {
             this.MUTATE_TOTAL_BILLING(0);
         }
         return response;
+    }
+
+    @Action
+    async getFoodBillingList(): Promise<void> {
+        const foodBillings: IFoodBilling[] = [
+            {
+                id: 1,
+                food: {
+                    id: 1,
+                    name: 'Chu Sở Lâm',
+                    price: 123321,
+                },
+                quantity: 12,
+            },
+        ];
+        let totalFoodPrice = 0;
+        foodBillings.forEach((foodBilling) => {
+            foodBilling.total = foodBilling.food.price * foodBilling.quantity;
+            totalFoodPrice += foodBilling.total;
+        });
+        this.MUTATE_PROMOTION_BILLING(0);
+        this.MUTATE_TOTAL_FOOD_PRICE(totalFoodPrice);
+        this.MUTATE_FOOD_BILLING_LIST(foodBillings);
     }
 
     @Action
@@ -129,8 +144,23 @@ class BillingModule extends VuexModule {
     }
 
     @Mutation
+    MUTATE_FOOD_BILLING_LIST(foodBillings: IFoodBilling[]) {
+        this.foodBillingList = foodBillings;
+    }
+
+    @Mutation
     MUTATE_TOTAL_BILLING(totalBillings: number) {
         this.totalBillings = totalBillings;
+    }
+
+    @Mutation
+    MUTATE_PROMOTION_BILLING(promotionBilling: number) {
+        this.promotionBilling = promotionBilling;
+    }
+
+    @Mutation
+    MUTATE_TOTAL_FOOD_PRICE(totalFoodPrice: number) {
+        this.totalFoodPrice = totalFoodPrice;
     }
 
     @Mutation

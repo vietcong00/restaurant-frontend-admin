@@ -28,7 +28,7 @@ export class UtilMixins extends Vue {
 
     INPUT_URL_MAX_LENGTH = INPUT_URL_MAX_LENGTH;
     INPUT_TEXT_MAX_LENGTH = INPUT_TEXT_MAX_LENGTH;
-
+    YYYY_MM_DD_HYPHEN_HH_MM_COLON = DATE_TIME_FORMAT.YYYY_MM_DD_HYPHEN_HH_MM_COLON;
     // Common function
     async showConfirmPopup(
         message: string,

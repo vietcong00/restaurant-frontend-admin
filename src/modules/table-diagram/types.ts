@@ -1,6 +1,5 @@
 import { EventStatus } from './constants';
 import { IQueryString } from '@/common/types';
-import { DateFormatter } from '@fullcalendar/core';
 
 export interface IEvent {
     id: number;
@@ -89,10 +88,10 @@ export interface IGetCategories {
 export interface IFood {
     id: number;
     name: string;
-    price: string;
-    descriptions: string;
-    imgLink: string;
-    category: ICategory;
+    price: number;
+    descriptions?: string;
+    imgLink?: string;
+    category?: ICategory;
 }
 
 export interface IGetFoods {

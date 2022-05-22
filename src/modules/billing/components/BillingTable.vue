@@ -1,45 +1,60 @@
 <template>
     <BaseTableLayout :data="billingList">
         <template #table-columns>
-            <el-table-column prop="name" :label="$t('billing.form.name')" />
-            <el-table-column prop="description" :label="$t('billing.form.description')">
+            <el-table-column
+                prop="nameCustomer"
+                :label="$t('billing.form.billingTable.nameCustomer')"
+            />
+            <el-table-column
+                prop="totalBillingPrice"
+                :label="$t('billing.form.billingTable.totalBillingPrice')"
+            >
                 <template #default="scope">
-                    <span class="description">
-                        {{ scope.row.description }}
+                    <span class="totalBillingPrice">
+                        {{ parseMoney(scope.row.totalBillingPrice) }}
                     </span>
                 </template>
             </el-table-column>
             <el-table-column
-                prop="user.fullName"
-                width="170"
-                :label="$t('billing.form.payerId')"
-            />
-            <el-table-column
                 prop="payDate"
-                :label="$t('billing.form.payDate')"
+                :label="$t('billing.form.billingTable.payDate')"
                 align="center"
                 min-width="120"
             >
                 <template #default="scope">
-                    {{ parseDateTime(scope.row.payDate) }}
+                    {{
+                        scope.row.payDate
+                            ? parseDateTime(
+                                  scope.row.payDate,
+                                  YYYY_MM_DD_HYPHEN_HH_MM_COLON,
+                              )
+                            : ''
+                    }}
                 </template>
             </el-table-column>
-            <el-table-column :label="$t('billing.form.url')" min-width="120">
+            <el-table-column
+                width="200"
+                :label="$t('billing.form.billingTable.statusBilling')"
+            >
                 <template #default="scope">
-                    <a
-                        class="billing-image"
-                        :href="scope.row.url"
-                        target="_blank"
-                        v-if="scope.row.url"
-                        >{{ $t('billing.form.button.clickHere') }}</a
+                    <div
+                        :class="`badge status-field badge-md bg-${statusBadge(
+                            scope.row.statusBilling,
+                        )}`"
                     >
+                        {{
+                            $t(
+                                `billing.list.statusBillingOptions.${scope.row.statusBilling}`,
+                            )
+                        }}
+                    </div>
                 </template>
             </el-table-column>
             <el-table-column
                 fixed="right"
                 width="150"
                 align="center"
-                :label="$t('billing.form.action')"
+                :label="$t('billing.form.billingTable.action')"
             >
                 <template #default="scope">
                     <div
@@ -86,7 +101,7 @@ import { Options, setup } from 'vue-class-component';
 import { mixins } from 'vue-property-decorator';
 import { billingModule } from '@billing/store';
 import { setupDelete } from '../composition/billingList';
-import { IBilling, IBillingUpdate } from '../types';
+import { IBilling, IBillingUpdate, STATUS_BILLING } from '../types';
 import { Delete as DeleteIcon, Edit as EditIcon } from '@element-plus/icons-vue';
 import { PermissionActions, PermissionResources } from '@/modules/role/constants';
 import { checkUserHasPermission } from '@/utils/helper';
@@ -102,7 +117,24 @@ export default class BillingTable extends mixins(UtilMixins) {
     deleteAction = setup(() => setupDelete());
 
     get billingList(): IBilling[] {
-        return billingModule.billingList;
+        // return billingModule.billingList;
+        return [
+            {
+                id: 1,
+                nameCustomer: 'Chu Sở Lâm',
+                phone: '1231231231',
+                totalBillingPrice: 12,
+                statusBilling: STATUS_BILLING.WAIT_FOR_PAY,
+            },
+            {
+                id: 2,
+                nameCustomer: 'Trương Tam Phong',
+                phone: '1231231231',
+                totalBillingPrice: 12,
+                payDate: '2022-04-04 12:12',
+                statusBilling: STATUS_BILLING.PAID,
+            },
+        ];
     }
 
     get isCanDelete(): boolean {
@@ -135,6 +167,15 @@ export default class BillingTable extends mixins(UtilMixins) {
                 `${PermissionResources.BILLING}_${PermissionActions.UPDATE}`,
             ])
         );
+    }
+
+    statusBadge(status: STATUS_BILLING): string {
+        switch (status) {
+            case STATUS_BILLING.WAIT_FOR_PAY:
+                return 'info';
+            case STATUS_BILLING.PAID:
+                return 'success';
+        }
     }
 }
 </script>

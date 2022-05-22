@@ -17,11 +17,11 @@ import { IBodyResponse } from '@/common/types';
 export function initData() {
     const { t } = useI18n();
     const initValues = {
-        name: '',
-        description: '',
-        url: '',
-        payerId: undefined,
+        nameCustomer: '',
+        phone: '',
         payDate: undefined,
+        totalBillingPrice: undefined,
+        statusBilling: undefined,
     };
     const isCreate = computed(() => !billingModule.selectedBilling?.id);
     const { handleSubmit, errors, resetForm, validate } = useForm({
@@ -32,11 +32,11 @@ export function initData() {
     const onSubmit = handleSubmit(async (values) => {
         const createBody = {
             ...values,
-            name: values.name?.trim(),
-            description: values.description?.trim(),
-            url: values.url?.trim(),
-            payerId: values.payerId,
+            nameCustomer: values.nameCustomer?.trim(),
+            phone: values.phone?.trim(),
+            totalBillingPrice: values.totalBillingPrice,
             payDate: moment(values.payDate).utc().fmFullTimeString(),
+            statusBilling: values.statusBilling,
         } as IBillingCreate;
         let response;
         const billingId = billingModule.selectedBilling?.id;
@@ -74,11 +74,11 @@ export function initData() {
             }
         }
     });
-    const { value: name } = useField('name');
-    const { value: description } = useField('description');
-    const { value: url } = useField('url');
-    const { value: payerId } = useField('payerId');
+    const { value: nameCustomer } = useField('nameCustomer');
+    const { value: phone } = useField('phone');
+    const { value: totalBillingPrice } = useField('totalBillingPrice');
     const { value: payDate } = useField('payDate');
+    const { value: statusBilling } = useField('statusBilling');
 
     const openPopup = async () => {
         if (!isCreate.value) {
@@ -90,11 +90,13 @@ export function initData() {
 
             resetForm({
                 values: {
-                    description: billingDetail.data?.description,
-                    url: billingDetail.data?.url,
-                    name: billingDetail.data?.name,
-                    payerId: billingDetail.data?.payerId,
-                    payDate: moment(billingDetail.data?.payDate).fmDayString(),
+                    nameCustomer: billingDetail.data?.nameCustomer,
+                    phone: billingDetail.data?.phone,
+                    totalBillingPrice: billingDetail.data?.totalBillingPrice,
+                    payDate: moment(
+                        billingDetail.data?.payDate,
+                    ).fmFullTimeWithoutSecond(),
+                    statusBilling: billingDetail.data?.statusBilling,
                 },
             });
         } else {
@@ -106,10 +108,11 @@ export function initData() {
     return {
         errors,
         name,
-        description,
-        url,
-        payerId,
+        nameCustomer,
+        phone,
+        totalBillingPrice,
         payDate,
+        statusBilling,
         isCreate,
         validate,
         openPopup,

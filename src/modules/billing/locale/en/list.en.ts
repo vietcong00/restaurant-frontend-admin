@@ -29,4 +29,9 @@ export default {
             endDate: 'End date',
         },
     },
+
+    statusBillingOptions: {
+        waitForPay: 'Wait For Pay',
+        paid: 'Paid',
+    },
 };

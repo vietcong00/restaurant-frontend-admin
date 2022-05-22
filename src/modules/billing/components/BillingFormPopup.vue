@@ -16,57 +16,84 @@
             </h3>
         </template>
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <BaseInputText
-                    v-model:value="form.name"
-                    :error="translateYupError(form.errors.name)"
-                    :options="userOptions"
+                    v-model:value="form.nameCustomer"
+                    :error="translateYupError(form.errors.nameCustomer)"
                     :is-required="true"
-                    :label="$t('billing.form.name')"
-                    :placeholder="$t('billing.form.placeholder.name')"
+                    :label="$t('billing.form.billingForm.nameCustomer')"
+                    :placeholder="$t('billing.form.placeholder.nameCustomer')"
                 />
             </div>
-            <div class="col-md-6">
-                <BaseInputText
-                    v-model:value="form.url"
-                    :error="translateYupError(form.errors.url)"
-                    :autosize="{ minRows: 2, maxRows: 4 }"
-                    :is-required="true"
-                    :label="$t('billing.form.url')"
-                    :placeholder="$t('billing.form.placeholder.url')"
-                    :maxLength="INPUT_URL_MAX_LENGTH"
+            <div class="col-md-4">
+                <BaseInputNumber
+                    name="phone"
+                    is-required="true"
+                    v-model:value="form.phone"
+                    :label="$t('billing.form.billingForm.phone')"
+                    :placeholder="$t('billing.form.placeholder.phone')"
+                    :error="translateYupError(form.errors.phone)"
                 />
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <BaseSingleSelect
+                    v-model:value="form.statusBilling"
                     :filterable="true"
-                    v-model:value="form.payerId"
-                    :error="translateYupError(form.errors.payerId)"
-                    :options="payerOptions"
+                    :options="statusBillingOptions"
                     :is-required="true"
-                    :label="$t('billing.form.payerId')"
-                    :placeholder="$t('billing.form.placeholder.userId')"
+                    :label="$t('billing.form.billingForm.statusBilling')"
+                    :error="translateYupError(form.errors.statusBilling)"
                 />
             </div>
-            <div class="col-md-6">
-                <BaseDatePicker
+            <div class="col-md-4">
+                <BaseInputText
+                    class="readonly-input-text"
                     v-model:value="form.payDate"
                     :error="translateYupError(form.errors.payDate)"
-                    :is-required="true"
-                    :label="$t('billing.form.payDate')"
-                    :placeholder="$t('billing.form.placeholder.payDate')"
-                    :value-format="valueFormat"
-                    :min-date="DEFAULT_MIN_DATE"
-                    :max-date="new Date()"
+                    :isReadonly="true"
+                    :label="$t('billing.form.billingForm.payDate')"
                 />
             </div>
-            <div class="col-md-12">
-                <BaseInputTextarea
-                    v-model:value="form.description"
-                    :error="translateYupError(form.errors.description)"
-                    :label="$t('billing.form.description')"
-                    :placeholder="$t('billing.form.placeholder.description')"
+            <div class="col-md-4">
+                <BaseInputText
+                    class="readonly-input-text"
+                    v-model:value="form.paymentMethod"
+                    :error="translateYupError(form.errors.paymentMethod)"
+                    :isReadonly="true"
+                    :label="$t('billing.form.billingForm.paymentMethod')"
                 />
+            </div>
+            <div class="col-md-4">
+                <BaseInputText
+                    class="readonly-input-text"
+                    v-model:value="form.cashier"
+                    :error="translateYupError(form.errors.cashier)"
+                    :isReadonly="true"
+                    :label="$t('billing.form.billingForm.cashier')"
+                />
+            </div>
+            <div class="col-md-12 mb-3">
+                <FoodBillingTable />
+            </div>
+            <div class="col-md-10 text-end font-weight-bold">
+                {{ $t('billing.form.billingForm.total') }}
+            </div>
+            <div class="col-md-2 text-end">
+                {{ parseMoney(totalFoodPrice) }}
+            </div>
+            <div class="col-md-10 text-end font-weight-bold">
+                {{ $t('billing.form.billingForm.vat') }}
+            </div>
+            <div class="col-md-2 text-end">+&nbsp;{{ parseMoney(vat) }}</div>
+            <div class="col-md-10 text-end font-weight-bold">
+                {{ $t('billing.form.billingForm.promotion') }}
+            </div>
+            <div class="col-md-2 text-end">-&nbsp;{{ parseMoney(promotionBilling) }}</div>
+            <div class="col-md-10 text-end mt-2 pt-2 font-weight-bold">
+                {{ $t('billing.form.billingForm.totalBillingPrice') }}
+            </div>
+            <div class="col-md-2 d-flex mt-2 justify-content-end">
+                <div class="price-text pt-2">{{ parseMoney(totalBillingPrice) }}</div>
             </div>
         </div>
         <template #footer>
@@ -98,13 +125,40 @@
 
 <script lang="ts">
 import { initData } from '../composition/billingForm';
-import { setup } from 'vue-class-component';
+import { Options, setup } from 'vue-class-component';
 import { billingModule } from '../store';
 import { ISelectOptions } from '@/common/types';
 import { UtilMixins } from '@/mixins/utilMixins';
+import FoodBillingTable from '../components/FoodBillingTable.vue';
+import { STATUS_BILLING_OPTIONS } from '../constants';
+import { parseLanguageSelectOptions } from '@/utils/helper';
 
+@Options({
+    components: { FoodBillingTable },
+})
 export default class BillingFormPopup extends UtilMixins {
+    STATUS_BILLING_OPTIONS = STATUS_BILLING_OPTIONS;
+    get statusBillingOptions(): ISelectOptions[] {
+        return parseLanguageSelectOptions(STATUS_BILLING_OPTIONS);
+    }
+
     form = setup(() => initData());
+
+    get totalFoodPrice(): number {
+        return billingModule.totalFoodPrice;
+    }
+
+    get vat(): number {
+        return Math.round(this.totalFoodPrice * 0.08);
+    }
+
+    get promotionBilling(): number {
+        return billingModule.promotionBilling;
+    }
+
+    get totalBillingPrice(): number {
+        return this.totalFoodPrice + this.vat;
+    }
 
     get isDisabledSaveButton(): boolean {
         return billingModule.isDisabledSaveButton;
@@ -137,9 +191,13 @@ export default class BillingFormPopup extends UtilMixins {
         await this.form.onSubmit();
         billingModule.setIsDisabledSaveButton(false);
     }
+
+    created(): void {
+        billingModule.getFoodBillingList();
+    }
 }
 </script>
-<style scoped>
+<style lang="scss" scoped>
 @media (max-width: 1199.98px) {
     :deep(.el-dialog) {
         width: 80%;
@@ -147,5 +205,17 @@ export default class BillingFormPopup extends UtilMixins {
 }
 .text-left {
     text-align: left;
+}
+.font-weight-bold {
+    font-weight: 700;
+}
+.price-text {
+    width: fit-content;
+    border-top: 1px solid rgb(126, 126, 126);
+}
+.readonly-input-text {
+    :deep(.el-input__inner) {
+        box-shadow: none;
+    }
 }
 </style>

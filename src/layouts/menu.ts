@@ -189,7 +189,7 @@ const recruitmentMenu: ISidebar = {
     ],
 };
 
-const billingMenu: ISidebar = {
+const billing: ISidebar = {
     iconComponent: PrinterIcon,
     name: 'common.app.menu.billing.title',
     class: '',
@@ -515,17 +515,6 @@ const reportMenu: ISidebar = {
     ],
 };
 
-const receipt: ISidebar = {
-    iconComponent: QuestionIcon,
-    name: 'common.app.menu.receipt.title',
-    class: '',
-    active: false,
-    subdrop: false,
-    hasNotify: false,
-    to: '/receipt',
-    pageName: PageName.RECEIPT_PAGE,
-};
-
 const promotion: ISidebar = {
     iconComponent: QuestionIcon,
     name: 'common.app.menu.promotion.title',
@@ -553,7 +542,7 @@ export const sidebars = [
     menuMenu,
     storeMenu,
     paymentMenu,
-    receipt,
+    billing,
     promotion,
     reportMenu,
 ];
