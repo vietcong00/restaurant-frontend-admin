@@ -1,0 +1,56 @@
+export default {
+    pageName: 'Closing Revenue',
+    createTitle: 'Create new Closing Revenue',
+    updateTitle: 'Update Closing Revenue',
+    closingRevenueTable: {
+        date: 'Date',
+        shiftWork: 'Shift',
+        cashier: 'Cashier',
+        cashAtBeginningOfShift: 'Cash at the Beginning of Shift',
+        billingRevenue: 'Billing Revenue',
+        importMoney: 'Import Money',
+        cashAtEndOfShift: 'Cash at the End of Shift',
+        bankingRevenue: 'Banking Revenue',
+        differenceRevenue: 'Difference Revenue',
+        note: 'Note',
+        action: 'Actions',
+    },
+    closingRevenueForm: {
+        date: 'Date',
+        shiftWork: 'Shift',
+        cashier: 'Cashier',
+        cashAtBeginningOfShift: 'Cash at the Beginning of Shift',
+        billingRevenue: 'Billing Revenue',
+        importMoney: 'Import Money',
+        cashAtEndOfShift: 'Cash at the End of Shift',
+        bankingRevenue: 'Banking Revenue',
+        differenceRevenue: 'Difference Revenue',
+        note: 'Note',
+        input: 'Input',
+        output: 'Output',
+        totalInput: 'Total Input',
+        totalOutput: 'Total Output',
+        action: 'Actions',
+    },
+    placeholder: {
+        cashAtBeginningOfShift: 'Enter Cash at the Beginning of Shift',
+        cashAtEndOfShift: 'Enter Cash at the End of Shift',
+        bankingRevenue: 'Banking Revenue',
+    },
+    button: {
+        clickHere: 'Click here',
+        create: 'Create',
+        cancel: 'Cancel',
+        submit: 'Submit',
+    },
+
+    tooltip: {
+        edit: 'Edit',
+        delete: 'Delete',
+    },
+
+    shiftWork: {
+        morningShift: 'Morning Shift',
+        afternoonShift: 'Afternoon Shift',
+    },
+};

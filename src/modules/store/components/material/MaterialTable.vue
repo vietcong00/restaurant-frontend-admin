@@ -3,24 +3,24 @@
         <template #table-columns>
             <el-table-column
                 align="center"
-                :label="$t('menu.listFood.foodTable.header.id')"
+                :label="$t('store.listMaterial.materialTable.header.id')"
                 type="index"
                 :index="indexMethod"
                 width="75"
             >
             </el-table-column>
             <el-table-column
-                prop="name"
-                :label="$t('menu.listFood.foodTable.header.name')"
+                prop="material"
+                :label="$t('store.listMaterial.materialTable.header.material')"
                 sortable="custom"
             >
                 <template #default="scope">
-                    {{ scope.row.name }}
+                    {{ scope.row.material }}
                 </template>
             </el-table-column>
             <el-table-column
-                prop="price"
-                :label="$t('menu.listFood.foodTable.header.price')"
+                prop="quantity"
+                :label="$t('store.listMaterial.materialTable.header.quantity')"
                 sortable="custom"
             >
                 <template #default="scope">
@@ -28,35 +28,26 @@
                 </template>
             </el-table-column>
             <el-table-column
-                prop="category"
-                :label="$t('menu.listFood.foodTable.header.category')"
+                prop="unit"
+                :label="$t('store.listMaterial.materialTable.header.unit')"
             >
                 <template #default="scope">
-                    {{ scope.row.category }}
+                    {{ scope.row.unit }}
                 </template>
             </el-table-column>
             <el-table-column
-                prop="mainMaterial"
-                :label="$t('menu.listFood.foodTable.header.mainMaterial')"
+                prop="updateAt"
+                :label="$t('store.listMaterial.materialTable.header.updateAt')"
                 sortable="custom"
             >
                 <template #default="scope">
-                    {{ scope.row.mainMaterial }}
-                </template>
-            </el-table-column>
-            <el-table-column
-                prop="amount"
-                :label="$t('menu.listFood.foodTable.header.amount')"
-                sortable="custom"
-            >
-                <template #default="scope">
-                    {{ scope.row.amount }}
+                    {{ scope.row.updateAt }}
                 </template>
             </el-table-column>
             <el-table-column
                 align="center"
                 prop="id"
-                :label="$t('menu.listFood.foodTable.header.actions')"
+                :label="$t('store.listMaterial.materialTable.header.actions')"
                 fixed="right"
                 width="150"
             >
