@@ -70,6 +70,7 @@ export default {
             supplier: 'Supplier',
             import: 'Import',
             export: 'Export',
+            checkInventory: 'Check inventory',
         },
         payment: {
             title: 'Payment',
@@ -85,7 +86,6 @@ export default {
         report: {
             title: 'Report',
             closingRevenue: 'Closing revenue',
-            checkInventory: 'Check inventory',
         },
     },
     menuAccount: {

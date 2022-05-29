@@ -11,8 +11,8 @@
             <h3 class="text-left">
                 {{
                     form.isCreate
-                        ? $t('store.formMaterial.materialDialog.titleCreate')
-                        : $t('store.formMaterial.materialDialog.titleUpdate')
+                        ? $t('store.material.materialDialog.titleCreate')
+                        : $t('store.material.materialDialog.titleUpdate')
                 }}
             </h3>
         </template>
@@ -21,16 +21,16 @@
                 <BaseInputText
                     v-model:value="form.material"
                     :is-required="true"
-                    :placeholder="$t('store.listMaterial.placeholder.material')"
-                    :label="$t('store.formMaterial.material')"
+                    :placeholder="$t('store.material.placeholder.material')"
+                    :label="$t('store.material.material')"
                     :error="translateYupError(form.errors.material)"
                 />
             </div>
             <div class="col-md-6">
                 <BaseInputNumber
                     v-model:value="form.quantity"
-                    :placeholder="$t('store.listMaterial.placeholder.quantity')"
-                    :label="$t('store.formMaterial.quantity')"
+                    :placeholder="$t('store.material.placeholder.quantity')"
+                    :label="$t('store.material.quantity')"
                     :error="translateYupError(form.errors.quantity)"
                 />
             </div>
@@ -39,8 +39,8 @@
                     v-model:value="form.unit"
                     :error="translateYupError(form.errors.unit)"
                     :is-required="true"
-                    :label="$t('store.formMaterial.unit')"
-                    :placeholder="$t('store.listMaterial.placeholder.unit')"
+                    :label="$t('store.material.unit')"
+                    :placeholder="$t('store.material.placeholder.unit')"
                 />
             </div>
         </div>
@@ -52,7 +52,7 @@
                         class="col-md-4 col-sm-6 d-flex justify-content-md-end justify-content-center"
                     >
                         <el-button @click="closePopup">
-                            {{ $t('store.formMaterial.button.cancel') }}
+                            {{ $t('store.material.button.cancel') }}
                         </el-button>
                     </div>
                     <div
@@ -63,7 +63,7 @@
                             @click="onClickSaveButton"
                             :disabled="isDisabledSaveButton"
                         >
-                            {{ $t('store.formMaterial.button.submit') }}
+                            {{ $t('store.material.button.submit') }}
                         </el-button>
                     </div>
                 </div>

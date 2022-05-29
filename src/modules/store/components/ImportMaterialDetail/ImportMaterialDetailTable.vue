@@ -3,51 +3,80 @@
         <template #table-columns>
             <el-table-column
                 align="center"
-                :label="$t('store.supplier.supplierTable.header.id')"
+                :label="
+                    $t('store.importMaterialDetail.importMaterialDetailTable.header.id')
+                "
                 type="index"
                 :index="indexMethod"
                 width="75"
             >
             </el-table-column>
             <el-table-column
-                prop="name"
-                :label="$t('store.supplier.supplierTable.header.name')"
+                prop="nameMaterial"
+                :label="
+                    $t(
+                        'store.importMaterialDetail.importMaterialDetailTable.header.nameMaterial',
+                    )
+                "
                 sortable="custom"
             >
                 <template #default="scope">
-                    {{ scope.row.name }}
+                    {{ scope.row.nameMaterial }}
                 </template>
             </el-table-column>
             <el-table-column
-                prop="name"
-                :label="$t('store.supplier.supplierTable.header.phone')"
+                prop="importPrice"
+                :label="
+                    $t(
+                        'store.importMaterialDetail.importMaterialDetailTable.header.importPrice',
+                    )
+                "
                 sortable="custom"
             >
                 <template #default="scope">
-                    {{ scope.row.phone }}
+                    {{ parseMoney(scope.row.importPrice) }}
                 </template>
             </el-table-column>
             <el-table-column
-                prop="idCategory"
-                :label="$t('store.supplier.supplierTable.header.address')"
+                prop="quantity"
+                :label="
+                    $t(
+                        'store.importMaterialDetail.importMaterialDetailTable.header.quantity',
+                    )
+                "
             >
                 <template #default="scope">
-                    {{ scope.row.address }}
+                    {{ scope.row.quantity }}
                 </template>
             </el-table-column>
             <el-table-column
-                prop="arrivalTime"
-                :label="$t('store.supplier.supplierTable.header.updateAt')"
-                sortable="custom"
+                prop="unit"
+                :label="
+                    $t('store.importMaterialDetail.importMaterialDetailTable.header.unit')
+                "
             >
                 <template #default="scope">
-                    {{ parseDateTimeTime(scope.row.updateAt) }}
+                    {{ scope.row.unit }}
+                </template>
+            </el-table-column>
+            <el-table-column
+                prop="note"
+                :label="
+                    $t('store.importMaterialDetail.importMaterialDetailTable.header.note')
+                "
+            >
+                <template #default="scope">
+                    {{ scope.row.note }}
                 </template>
             </el-table-column>
             <el-table-column
                 align="center"
                 prop="id"
-                :label="$t('store.supplier.supplierTable.header.actions')"
+                :label="
+                    $t(
+                        'store.importMaterialDetail.importMaterialDetailTable.header.actions',
+                    )
+                "
                 fixed="right"
                 width="150"
             >
@@ -55,7 +84,7 @@
                     <div class="button-group">
                         <el-tooltip
                             effect="dark"
-                            :content="$t('event.list.tooltip.edit')"
+                            :content="$t('store.importMaterialDetail.tooltip.edit')"
                             placement="top"
                             v-if="isCanUpdate(scope.row?.status)"
                         >
@@ -69,7 +98,7 @@
                         </el-tooltip>
                         <el-tooltip
                             effect="dark"
-                            :content="$t('event.list.tooltip.delete')"
+                            :content="$t('store.importMaterialDetail.tooltip.delete')"
                             placement="top"
                             v-if="isCanDelete(scope.row?.status)"
                         >
@@ -91,7 +120,7 @@
 <script lang="ts">
 import { mixins, Options } from 'vue-property-decorator';
 
-import { ISupplier } from '../../types';
+import { IImportMaterialDetail } from '../../types';
 import CompIcon from '../../../../components/CompIcon.vue';
 import { storeModule } from '../../store';
 import { StoreMixins } from '../../mixins';
@@ -101,22 +130,23 @@ import { PermissionResources, PermissionActions } from '@/modules/role/constants
 import { checkUserHasPermission } from '@/utils/helper';
 
 @Options({
-    name: 'supplier-table-component',
+    name: 'import-material-detail-table-component',
     components: {
         CompIcon,
         DeleteIcon,
         EditIcon,
     },
 })
-export default class SupplierTable extends mixins(StoreMixins) {
-    get supplierList(): ISupplier[] {
+export default class ImportMaterialDetailTable extends mixins(StoreMixins) {
+    get supplierList(): IImportMaterialDetail[] {
         return [
             {
                 id: 1,
-                name: 'Vinmart',
-                phone: '123456789',
-                address: '99 Đại La',
-                updateAt: '2022-04-20T17:00:00.000Z',
+                nameMaterial: 'coca',
+                importPrice: 200000,
+                quantity: 2,
+                unit: 'kg',
+                note: 'check',
             },
         ];
     }

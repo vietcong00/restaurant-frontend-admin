@@ -1,10 +1,22 @@
 export default {
-    supplierTable: {
+    materialDialog: {
+        titleCreate: 'Tạo mới nguyên liệu',
+        titleUpdate: 'Cập nhật nguyên liệu',
+    },
+    button: {
+        cancel: 'Hủy',
+        submit: 'Xác nhận',
+    },
+    material: 'Nguyên liệu',
+    quantity: 'Số lượng',
+    unit: 'Đơn vị đo',
+
+    materialTable: {
         header: {
             id: 'ID',
-            name: 'Tên',
-            phone: 'Điện thoại',
-            address: 'Địa chỉ',
+            material: 'Nguyên liệu',
+            quantity: 'Số lượng',
+            unit: 'Đơn vị đo',
             updateAt: 'Thời gian cập nhật',
             actions: 'Thao tác',
         },
@@ -16,9 +28,9 @@ export default {
 
     placeholder: {
         keyword: 'Nhập từ khóa',
-        name: 'Nhập tên',
-        phone: 'Nhập số điện thoại',
-        address: 'Nhập địa chỉ',
+        material: 'Nhập nguyên liệu',
+        quantity: 'Nhập số lượng',
+        unit: 'Nhập đơn vị',
     },
 
     tooltip: {
@@ -44,5 +56,5 @@ export default {
         },
     },
 
-    pageName: ' Quản lý Nhà cung cấp',
+    pageName: ' Quản lý nguyên liệu',
 };

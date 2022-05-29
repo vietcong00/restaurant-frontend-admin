@@ -110,3 +110,45 @@ export interface IBooking {
     table: ITable;
     numberPeople: number;
 }
+
+export interface IInventoryOfficer {
+    id: number;
+    name: string;
+}
+
+export interface ICheckInventory {
+    id: number;
+    checkTime: string;
+    inventoryOfficer: IInventoryOfficer;
+    status: string;
+    note: string;
+}
+export interface IInventoryDetail {
+    id: number;
+    nameMaterial: string;
+    inventoryQuantity: number;
+    inventoryUnit: string;
+    damagedQuantity: number;
+    damagedUnit: string;
+    note: string;
+}
+
+export interface IWarehouseStaff {
+    id: number;
+    name: string;
+}
+export interface IImportMaterial {
+    id: number;
+    importTime: string;
+    supplier: string;
+    warehouseStaff: IWarehouseStaff;
+    note: string;
+}
+export interface IImportMaterialDetail {
+    id: number;
+    nameMaterial: string;
+    importPrice: number;
+    quantity: number;
+    unit: string;
+    note: string;
+}

@@ -6,8 +6,6 @@
             :hasSortBox="true"
             v-model:page="selectedPage"
             :totalItems="totalSuppliers"
-            :isShowCreateButton="isCanCreate"
-            @create="onClickButtonCreate"
             @onPaginate="handlePaginate"
         >
             <template #sort-box-content>
@@ -15,30 +13,25 @@
             </template>
         </BaseListPageHeader>
         <FilterForm :isToggleFilterForm="isToggleFilterForm" />
-        <supplier-table />
-        <supplier-form-popup />
+        <InventoryDetailTable />
     </div>
 </template>
 
 <script lang="ts">
 import { DEFAULT_FIRST_PAGE } from '@/common/constants';
-import { PermissionResources, PermissionActions } from '@/modules/role/constants';
-import { checkUserHasPermission } from '@/utils/helper';
 import { ElLoading } from 'element-plus';
 import { Options, Vue } from 'vue-class-component';
-import SupplierTable from '../components/supplier/SupplierTable.vue';
+import InventoryDetailTable from '../components/inventoryDetail/InventoryDetailTable.vue';
 import { storeModule } from '../store';
-import FilterForm from '../components/supplier/FilterForm.vue';
-import SupplierFormPopup from '../components/supplier/SupplierFormPopup.vue';
+import FilterForm from '../components/inventoryDetail/FilterForm.vue';
 
 @Options({
     components: {
-        SupplierTable,
+        InventoryDetailTable,
         FilterForm,
-        SupplierFormPopup,
     },
 })
-export default class SupplierPage extends Vue {
+export default class InventoryDetailPage extends Vue {
     isToggleFilterForm = true;
 
     get totalSuppliers(): number {
@@ -46,11 +39,6 @@ export default class SupplierPage extends Vue {
     }
 
     // check permission
-    get isCanCreate(): boolean {
-        return checkUserHasPermission(storeModule.userPermissions, [
-            `${PermissionResources.EVENT}_${PermissionActions.CREATE}`,
-        ]);
-    }
 
     get selectedPage(): number {
         return storeModule.bookingQueryString?.page || DEFAULT_FIRST_PAGE;
@@ -80,10 +68,6 @@ export default class SupplierPage extends Vue {
 
     toggleFilterForm(): void {
         this.isToggleFilterForm = !this.isToggleFilterForm;
-    }
-
-    onClickButtonCreate(): void {
-        storeModule.setIsShowBookingFormPopUp(true);
     }
 }
 </script>

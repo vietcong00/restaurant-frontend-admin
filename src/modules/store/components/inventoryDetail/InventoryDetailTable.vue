@@ -3,51 +3,80 @@
         <template #table-columns>
             <el-table-column
                 align="center"
-                :label="$t('store.supplier.supplierTable.header.id')"
+                :label="$t('store.inventoryDetail.inventoryDetailTable.header.id')"
                 type="index"
                 :index="indexMethod"
                 width="75"
             >
             </el-table-column>
             <el-table-column
-                prop="name"
-                :label="$t('store.supplier.supplierTable.header.name')"
+                prop="nameMaterial"
+                :label="
+                    $t('store.inventoryDetail.inventoryDetailTable.header.nameMaterial')
+                "
                 sortable="custom"
             >
                 <template #default="scope">
-                    {{ scope.row.name }}
+                    {{ scope.row.nameMaterial }}
                 </template>
             </el-table-column>
             <el-table-column
-                prop="name"
-                :label="$t('store.supplier.supplierTable.header.phone')"
+                prop="inventoryQuantity"
+                :label="
+                    $t(
+                        'store.inventoryDetail.inventoryDetailTable.header.inventoryQuantity',
+                    )
+                "
                 sortable="custom"
             >
                 <template #default="scope">
-                    {{ scope.row.phone }}
+                    {{ scope.row.inventoryQuantity }}
                 </template>
             </el-table-column>
             <el-table-column
-                prop="idCategory"
-                :label="$t('store.supplier.supplierTable.header.address')"
+                prop="inventoryUnit"
+                :label="
+                    $t('store.inventoryDetail.inventoryDetailTable.header.inventoryUnit')
+                "
             >
                 <template #default="scope">
-                    {{ scope.row.address }}
+                    {{ scope.row.inventoryUnit }}
                 </template>
             </el-table-column>
             <el-table-column
-                prop="arrivalTime"
-                :label="$t('store.supplier.supplierTable.header.updateAt')"
-                sortable="custom"
+                prop="damagedQuantity"
+                :label="
+                    $t(
+                        'store.inventoryDetail.inventoryDetailTable.header.damagedQuantity',
+                    )
+                "
             >
                 <template #default="scope">
-                    {{ parseDateTimeTime(scope.row.updateAt) }}
+                    {{ scope.row.damagedQuantity }}
+                </template>
+            </el-table-column>
+            <el-table-column
+                prop="damagedUnit"
+                :label="
+                    $t('store.inventoryDetail.inventoryDetailTable.header.damagedUnit')
+                "
+            >
+                <template #default="scope">
+                    {{ scope.row.damagedUnit }}
+                </template>
+            </el-table-column>
+            <el-table-column
+                prop="note"
+                :label="$t('store.inventoryDetail.inventoryDetailTable.header.note')"
+            >
+                <template #default="scope">
+                    {{ scope.row.note }}
                 </template>
             </el-table-column>
             <el-table-column
                 align="center"
                 prop="id"
-                :label="$t('store.supplier.supplierTable.header.actions')"
+                :label="$t('store.inventoryDetail.inventoryDetailTable.header.actions')"
                 fixed="right"
                 width="150"
             >
@@ -55,7 +84,7 @@
                     <div class="button-group">
                         <el-tooltip
                             effect="dark"
-                            :content="$t('event.list.tooltip.edit')"
+                            :content="$t('store.inventoryDetail.tooltip.edit')"
                             placement="top"
                             v-if="isCanUpdate(scope.row?.status)"
                         >
@@ -69,7 +98,7 @@
                         </el-tooltip>
                         <el-tooltip
                             effect="dark"
-                            :content="$t('event.list.tooltip.delete')"
+                            :content="$t('store.inventoryDetail.tooltip.delete')"
                             placement="top"
                             v-if="isCanDelete(scope.row?.status)"
                         >
@@ -91,7 +120,7 @@
 <script lang="ts">
 import { mixins, Options } from 'vue-property-decorator';
 
-import { ISupplier } from '../../types';
+import { IInventoryDetail } from '../../types';
 import CompIcon from '../../../../components/CompIcon.vue';
 import { storeModule } from '../../store';
 import { StoreMixins } from '../../mixins';
@@ -101,22 +130,24 @@ import { PermissionResources, PermissionActions } from '@/modules/role/constants
 import { checkUserHasPermission } from '@/utils/helper';
 
 @Options({
-    name: 'supplier-table-component',
+    name: 'check-inventory-table-component',
     components: {
         CompIcon,
         DeleteIcon,
         EditIcon,
     },
 })
-export default class SupplierTable extends mixins(StoreMixins) {
-    get supplierList(): ISupplier[] {
+export default class InventoryDetailTable extends mixins(StoreMixins) {
+    get supplierList(): IInventoryDetail[] {
         return [
             {
                 id: 1,
-                name: 'Vinmart',
-                phone: '123456789',
-                address: '99 Đại La',
-                updateAt: '2022-04-20T17:00:00.000Z',
+                nameMaterial: 'cofe',
+                inventoryQuantity: 2,
+                inventoryUnit: 'kg',
+                damagedQuantity: 1,
+                damagedUnit: 'kg',
+                note: 'check',
             },
         ];
     }

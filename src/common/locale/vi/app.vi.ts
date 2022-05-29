@@ -70,6 +70,7 @@ export default {
             supplier: 'Nhà cung cấp',
             import: 'Nhập kho',
             export: 'Xuất kho',
+            checkInventory: 'Kiểm kho',
         },
         payment: {
             title: 'Thanh toán',
@@ -85,7 +86,6 @@ export default {
         report: {
             title: 'Báo cáo',
             closingRevenue: 'Chốt doanh thu',
-            checkInventory: 'Kiểm kho',
         },
     },
     menuAccount: {

@@ -3,51 +3,51 @@
         <template #table-columns>
             <el-table-column
                 align="center"
-                :label="$t('store.supplier.supplierTable.header.id')"
+                :label="$t('store.checkInventory.checkInventoryTable.header.id')"
                 type="index"
                 :index="indexMethod"
                 width="75"
             >
             </el-table-column>
             <el-table-column
-                prop="name"
-                :label="$t('store.supplier.supplierTable.header.name')"
+                prop="checkTime"
+                :label="$t('store.checkInventory.checkInventoryTable.header.checkTime')"
                 sortable="custom"
             >
                 <template #default="scope">
-                    {{ scope.row.name }}
+                    {{ parseDateTimeTime(scope.row.checkTime) }}
                 </template>
             </el-table-column>
             <el-table-column
-                prop="name"
-                :label="$t('store.supplier.supplierTable.header.phone')"
-                sortable="custom"
+                prop="inventoryOfficer"
+                :label="
+                    $t('store.checkInventory.checkInventoryTable.header.inventoryOfficer')
+                "
             >
                 <template #default="scope">
-                    {{ scope.row.phone }}
+                    {{ scope.row.inventoryOfficer.name }}
                 </template>
             </el-table-column>
             <el-table-column
-                prop="idCategory"
-                :label="$t('store.supplier.supplierTable.header.address')"
+                prop="status"
+                :label="$t('store.checkInventory.checkInventoryTable.header.status')"
             >
                 <template #default="scope">
-                    {{ scope.row.address }}
+                    {{ scope.row.status }}
                 </template>
             </el-table-column>
             <el-table-column
-                prop="arrivalTime"
-                :label="$t('store.supplier.supplierTable.header.updateAt')"
-                sortable="custom"
+                prop="note"
+                :label="$t('store.checkInventory.checkInventoryTable.header.note')"
             >
                 <template #default="scope">
-                    {{ parseDateTimeTime(scope.row.updateAt) }}
+                    {{ scope.row.note }}
                 </template>
             </el-table-column>
             <el-table-column
                 align="center"
                 prop="id"
-                :label="$t('store.supplier.supplierTable.header.actions')"
+                :label="$t('store.checkInventory.checkInventoryTable.header.actions')"
                 fixed="right"
                 width="150"
             >
@@ -55,21 +55,21 @@
                     <div class="button-group">
                         <el-tooltip
                             effect="dark"
-                            :content="$t('event.list.tooltip.edit')"
+                            :content="$t('store.checkInventory.tooltip.edit')"
                             placement="top"
                             v-if="isCanUpdate(scope.row?.status)"
                         >
                             <el-button
                                 type="warning"
                                 size="mini"
-                                @click="onClickButtonEdit(scope.row)"
+                                @click="onClickUpdateInventory(scope.row.id)"
                             >
                                 <EditIcon class="action-icon" />
                             </el-button>
                         </el-tooltip>
                         <el-tooltip
                             effect="dark"
-                            :content="$t('event.list.tooltip.delete')"
+                            :content="$t('store.checkInventory.tooltip.delete')"
                             placement="top"
                             v-if="isCanDelete(scope.row?.status)"
                         >
@@ -91,7 +91,7 @@
 <script lang="ts">
 import { mixins, Options } from 'vue-property-decorator';
 
-import { ISupplier } from '../../types';
+import { ICheckInventory } from '../../types';
 import CompIcon from '../../../../components/CompIcon.vue';
 import { storeModule } from '../../store';
 import { StoreMixins } from '../../mixins';
@@ -101,22 +101,25 @@ import { PermissionResources, PermissionActions } from '@/modules/role/constants
 import { checkUserHasPermission } from '@/utils/helper';
 
 @Options({
-    name: 'supplier-table-component',
+    name: 'check-inventory-table-component',
     components: {
         CompIcon,
         DeleteIcon,
         EditIcon,
     },
 })
-export default class SupplierTable extends mixins(StoreMixins) {
-    get supplierList(): ISupplier[] {
+export default class CheckInventoryTable extends mixins(StoreMixins) {
+    get supplierList(): ICheckInventory[] {
         return [
             {
                 id: 1,
-                name: 'Vinmart',
-                phone: '123456789',
-                address: '99 Đại La',
-                updateAt: '2022-04-20T17:00:00.000Z',
+                checkTime: '2022-04-20T17:00:00.000Z',
+                inventoryOfficer: {
+                    id: 1,
+                    name: 'Raiden Shogun',
+                },
+                status: 'Create',
+                note: 'check',
             },
         ];
     }
@@ -135,6 +138,10 @@ export default class SupplierTable extends mixins(StoreMixins) {
         return checkUserHasPermission(eventModule.userPermissions, [
             `${PermissionResources.EVENT}_${PermissionActions.UPDATE}`,
         ]);
+    }
+
+    onClickUpdateInventory(id: number): void {
+        this.$router.push(`/check-inventory/${id}`);
     }
 }
 </script>

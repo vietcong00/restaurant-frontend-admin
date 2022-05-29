@@ -414,10 +414,10 @@ const storeMenu: ISidebar = {
         },
         {
             name: 'common.app.menu.store.import',
-            to: '/import',
+            to: '/import-material',
             class: '',
             active: false,
-            pageName: PageName.STORE_IMPORT_PAGE,
+            pageName: PageName.STORE_IMPORT_MATERIAL_PAGE,
             requiredPermissions: [
                 `${PermissionResources.CONTRACT}_${PermissionActions.READ}`,
                 `${PermissionResources.CONTRACT}_${PermissionActions.CREATE}`,
@@ -431,6 +431,19 @@ const storeMenu: ISidebar = {
             class: '',
             active: false,
             pageName: PageName.STORE_EXPORT_PAGE,
+            requiredPermissions: [
+                `${PermissionResources.CONTRACT}_${PermissionActions.READ}`,
+                `${PermissionResources.CONTRACT}_${PermissionActions.CREATE}`,
+                `${PermissionResources.CONTRACT}_${PermissionActions.UPDATE}`,
+                `${PermissionResources.CONTRACT}_${PermissionActions.DELETE}`,
+            ],
+        },
+        {
+            name: 'common.app.menu.store.checkInventory',
+            to: '/check-inventory',
+            class: '',
+            active: false,
+            pageName: PageName.STORE_CHECK_INVENTORY_PAGE,
             requiredPermissions: [
                 `${PermissionResources.CONTRACT}_${PermissionActions.READ}`,
                 `${PermissionResources.CONTRACT}_${PermissionActions.CREATE}`,
@@ -497,19 +510,6 @@ const reportMenu: ISidebar = {
                 `${PermissionResources.USER}_${PermissionActions.CREATE}`,
                 `${PermissionResources.USER}_${PermissionActions.UPDATE}`,
                 `${PermissionResources.USER}_${PermissionActions.DELETE}`,
-            ],
-        },
-        {
-            name: 'common.app.menu.report.checkInventory',
-            to: '/check-inventory',
-            class: '',
-            active: false,
-            pageName: PageName.REPORT_CHECK_INVENTORY_PAGE,
-            requiredPermissions: [
-                `${PermissionResources.CONTRACT}_${PermissionActions.READ}`,
-                `${PermissionResources.CONTRACT}_${PermissionActions.CREATE}`,
-                `${PermissionResources.CONTRACT}_${PermissionActions.UPDATE}`,
-                `${PermissionResources.CONTRACT}_${PermissionActions.DELETE}`,
             ],
         },
     ],

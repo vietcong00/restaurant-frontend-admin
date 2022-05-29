@@ -3,7 +3,7 @@
         <template #table-columns>
             <el-table-column
                 align="center"
-                :label="$t('store.listMaterial.materialTable.header.id')"
+                :label="$t('store.material.materialTable.header.id')"
                 type="index"
                 :index="indexMethod"
                 width="75"
@@ -11,7 +11,7 @@
             </el-table-column>
             <el-table-column
                 prop="material"
-                :label="$t('store.listMaterial.materialTable.header.material')"
+                :label="$t('store.material.materialTable.header.material')"
                 sortable="custom"
             >
                 <template #default="scope">
@@ -20,7 +20,7 @@
             </el-table-column>
             <el-table-column
                 prop="quantity"
-                :label="$t('store.listMaterial.materialTable.header.quantity')"
+                :label="$t('store.material.materialTable.header.quantity')"
                 sortable="custom"
             >
                 <template #default="scope">
@@ -29,7 +29,7 @@
             </el-table-column>
             <el-table-column
                 prop="unit"
-                :label="$t('store.listMaterial.materialTable.header.unit')"
+                :label="$t('store.material.materialTable.header.unit')"
             >
                 <template #default="scope">
                     {{ scope.row.unit }}
@@ -37,7 +37,7 @@
             </el-table-column>
             <el-table-column
                 prop="updateAt"
-                :label="$t('store.listMaterial.materialTable.header.updateAt')"
+                :label="$t('store.material.materialTable.header.updateAt')"
                 sortable="custom"
             >
                 <template #default="scope">
@@ -47,7 +47,7 @@
             <el-table-column
                 align="center"
                 prop="id"
-                :label="$t('store.listMaterial.materialTable.header.actions')"
+                :label="$t('store.material.materialTable.header.actions')"
                 fixed="right"
                 width="150"
             >

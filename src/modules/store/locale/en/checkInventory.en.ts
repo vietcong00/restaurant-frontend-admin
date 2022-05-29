@@ -1,11 +1,19 @@
 export default {
-    supplierTable: {
+    CheckInventoryDialog: {
+        titleCreate: 'Create new check inventory',
+        titleUpdate: 'Update check inventory',
+    },
+    button: {
+        cancel: 'Cancel',
+        submit: 'Submit',
+    },
+    checkInventoryTable: {
         header: {
             id: 'ID',
-            name: 'Name',
-            phone: 'Phone',
-            address: 'Address',
-            updateAt: 'Update At',
+            checkTime: 'Check Time',
+            inventoryOfficer: 'Inventory Officer',
+            status: 'Status',
+            note: 'Note',
             actions: 'Actions',
         },
     },
@@ -44,5 +52,5 @@ export default {
         },
     },
 
-    pageName: 'Supplier management',
+    pageName: 'Check Inventory management',
 };

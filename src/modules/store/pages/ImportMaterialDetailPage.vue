@@ -1,13 +1,11 @@
 <template>
-    <div class="booking-list">
+    <div class="import-material-detail-list">
         <BaseListPageHeader
             @toggle-filter-form="toggleFilterForm"
-            :pageTitle="$t('booking.list.pageName')"
+            :pageTitle="$t('store.importMaterialDetail.pageName')"
             :hasSortBox="true"
             v-model:page="selectedPage"
-            :totalItems="totalBookings"
-            :isShowCreateButton="isCanCreate"
-            @create="onClickButtonCreate"
+            :totalItems="totalSuppliers"
             @onPaginate="handlePaginate"
         >
             <template #sort-box-content>
@@ -15,42 +13,32 @@
             </template>
         </BaseListPageHeader>
         <FilterForm :isToggleFilterForm="isToggleFilterForm" />
-        <booking-table />
-        <booking-form-popup />
+        <ImportMaterialDetailTable />
     </div>
 </template>
 
 <script lang="ts">
 import { DEFAULT_FIRST_PAGE } from '@/common/constants';
-import { PermissionResources, PermissionActions } from '@/modules/role/constants';
-import { checkUserHasPermission } from '@/utils/helper';
 import { ElLoading } from 'element-plus';
 import { Options, Vue } from 'vue-class-component';
-import BookingTable from '../components/BookingTable.vue';
+import ImportMaterialDetailTable from '../components/ImportMaterialDetail/ImportMaterialDetailTable.vue';
 import { storeModule } from '../store';
-import FilterForm from '../components/FilterForm.vue';
-import BookingFormPopup from '../components/BookingFormPopup.vue';
+import FilterForm from '../components/ImportMaterialDetail/FilterForm.vue';
 
 @Options({
     components: {
-        BookingTable,
+        ImportMaterialDetailTable,
         FilterForm,
-        BookingFormPopup,
     },
 })
-export default class ImportPage extends Vue {
+export default class ImportMaterialDetailPage extends Vue {
     isToggleFilterForm = true;
 
-    get totalBookings(): number {
-        return storeModule.totalBookings;
+    get totalSuppliers(): number {
+        return 20;
     }
 
     // check permission
-    get isCanCreate(): boolean {
-        return checkUserHasPermission(storeModule.userPermissions, [
-            `${PermissionResources.EVENT}_${PermissionActions.CREATE}`,
-        ]);
-    }
 
     get selectedPage(): number {
         return storeModule.bookingQueryString?.page || DEFAULT_FIRST_PAGE;
@@ -80,10 +68,6 @@ export default class ImportPage extends Vue {
 
     toggleFilterForm(): void {
         this.isToggleFilterForm = !this.isToggleFilterForm;
-    }
-
-    onClickButtonCreate(): void {
-        storeModule.setIsShowBookingFormPopUp(true);
     }
 }
 </script>

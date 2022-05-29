@@ -2,7 +2,7 @@
     <div class="booking-list">
         <BaseListPageHeader
             @toggle-filter-form="toggleFilterForm"
-            :pageTitle="$t('store.listMaterial.pageName')"
+            :pageTitle="$t('store.material.pageName')"
             :hasSortBox="true"
             v-model:page="selectedPage"
             :totalItems="totalMaterials"

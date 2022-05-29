@@ -173,14 +173,16 @@ export enum PageName {
     STORE_MATERIAL_PAGE = 'StoreMaterialPage',
     STORE_CONVERT_PAGE = 'StoreConvertPage',
     STORE_SUPPLIER_PAGE = 'StoreSupplierPage',
-    STORE_IMPORT_PAGE = 'StoreImportPage',
+    STORE_IMPORT_MATERIAL_PAGE = 'StoreImportMaterialPage',
+    STORE_IMPORT_MATERIAL_DETAIL_PAGE = 'StoreImportMaterialDetailPage',
     STORE_EXPORT_PAGE = 'StoreExportPage',
+    STORE_CHECK_INVENTORY_PAGE = 'StoreCheckInventoryPage',
+    STORE_INVENTORY_DETAIL_PAGE = 'StoreInventoryDetailPage',
     PAYMENT_AT_RESTAURANT_PAGE = 'PaymentAtRestaurantPage',
     PAYMENT_TAKEOUT_PAGE = 'PaymentTakeoutPage',
     RECEIPT_PAGE = 'ReceiptPage',
     PROMOTION_PAGE = 'PromotionPage',
     REPORT_CLOSING_REVENUE_PAGE = 'ReportClosingRevenuePage',
-    REPORT_CHECK_INVENTORY_PAGE = 'ReportCheckInventoryPage',
 }
 
 export enum OrderDirection {

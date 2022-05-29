@@ -1,11 +1,21 @@
 export default {
-    materialTable: {
+    importMaterialDetailDialog: {
+        titleCreate: 'Tạo mới chi tiết nhập hàng',
+        titleUpdate: 'Cập nhật chi tiết nhập hàng',
+    },
+    button: {
+        cancel: 'Hủy',
+        submit: 'Xác nhận',
+    },
+
+    importMaterialDetailTable: {
         header: {
             id: 'ID',
-            material: 'Nguyên liệu',
+            nameMaterial: 'Tên sản phẩm',
+            importPrice: 'Giá nhập kho',
             quantity: 'Số lượng',
-            unit: 'Đơn vị đo',
-            updateAt: 'Thời gian cập nhật',
+            unit: 'Đơn vị',
+            note: 'Ghi chú',
             actions: 'Thao tác',
         },
     },
@@ -44,5 +54,5 @@ export default {
         },
     },
 
-    pageName: ' Quản lý nguyên liệu',
+    pageName: ' Quản lý Chi tiết nhập kho',
 };
