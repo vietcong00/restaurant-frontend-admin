@@ -2,7 +2,7 @@
     <div class="food-list">
         <BaseListPageHeader
             @toggle-filter-form="toggleFilterForm"
-            :pageTitle="'Quản lý món ăn'"
+            :pageTitle="$t('menu.food.pageName')"
             :hasSortBox="true"
             v-model:page="selectedPage"
             :totalItems="totalFoods"

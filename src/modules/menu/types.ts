@@ -62,8 +62,6 @@ export interface IFood {
     id: number;
     name: string;
     price: string;
-    mainMaterial: string;
-    amount: number;
     imgLink: string;
     category: ICategory;
 }
@@ -71,8 +69,6 @@ export interface IFood {
 export interface IFoodCreate {
     name: string | undefined;
     price: string | undefined;
-    mainMaterial: string | undefined;
-    amount: number | undefined;
     imgLink: string | undefined;
     category: ICategory | undefined;
 }
@@ -90,7 +86,6 @@ export interface IRestaurant {
 
 export interface IQueryStringFood extends IQueryString {
     keyword?: string | null;
-    mainMaterial?: string | null;
     categories?: number[] | null;
 }
 

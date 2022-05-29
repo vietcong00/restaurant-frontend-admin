@@ -1,46 +1,46 @@
 <template>
     <el-dialog
         width="50%"
-        v-model="isShowBookingFormPopUp"
+        v-model="isShowCategoryFormPopUp"
         destroy-on-close
         @closed="closePopup"
         @open="form.openPopup"
-        custom-class="material-form-popup"
+        custom-class="category-form-popup"
     >
         <template #title>
             <h3 class="text-left">
                 {{
                     form.isCreate
-                        ? $t('store.material.materialDialog.titleCreate')
-                        : $t('store.material.materialDialog.titleUpdate')
+                        ? $t('menu.category.categoryDialog.titleCreate')
+                        : $t('menu.category.categoryDialog.titleUpdate')
                 }}
             </h3>
         </template>
         <div class="row">
             <div class="col-md-12">
                 <BaseInputText
-                    v-model:value="form.material"
+                    v-model:value="form.categoryName"
                     :is-required="true"
-                    :placeholder="$t('store.material.placeholder.material')"
-                    :label="$t('store.material.material')"
-                    :error="translateYupError(form.errors.material)"
+                    :placeholder="$t('menu.category.placeholder.categoryName')"
+                    :label="$t('menu.category.categoryPopup.categoryName')"
+                    :error="translateYupError(form.errors.categoryName)"
                 />
             </div>
             <div class="col-md-6">
                 <BaseInputNumber
-                    v-model:value="form.quantity"
-                    :placeholder="$t('store.material.placeholder.quantity')"
-                    :label="$t('store.material.quantity')"
-                    :error="translateYupError(form.errors.quantity)"
+                    v-model:value="form.priority"
+                    :placeholder="$t('menu.category.placeholder.priority')"
+                    :label="$t('menu.category.categoryPopup.priority')"
+                    :error="translateYupError(form.errors.priority)"
                 />
             </div>
             <div class="col-md-6">
                 <BaseInputText
-                    v-model:value="form.unit"
-                    :error="translateYupError(form.errors.unit)"
+                    v-model:value="form.note"
+                    :error="translateYupError(form.errors.note)"
                     :is-required="true"
-                    :label="$t('store.material.unit')"
-                    :placeholder="$t('store.material.placeholder.unit')"
+                    :label="$t('menu.category.categoryPopup.note')"
+                    :placeholder="$t('menu.category.placeholder.note')"
                 />
             </div>
         </div>
@@ -52,7 +52,7 @@
                         class="col-md-4 col-sm-6 d-flex justify-content-md-end justify-content-center"
                     >
                         <el-button @click="closePopup">
-                            {{ $t('store.material.button.cancel') }}
+                            {{ $t('menu.category.button.cancel') }}
                         </el-button>
                     </div>
                     <div
@@ -63,7 +63,7 @@
                             @click="onClickSaveButton"
                             :disabled="isDisabledSaveButton"
                         >
-                            {{ $t('store.material.button.submit') }}
+                            {{ $t('menu.category.button.submit') }}
                         </el-button>
                     </div>
                 </div>
@@ -79,18 +79,18 @@ import { menuModule } from '../../store';
 import { UtilMixins } from '@/mixins/utilMixins';
 import { mixins, Options } from 'vue-property-decorator';
 @Options({
-    name: 'material-form-popup',
+    name: 'category-form-popup',
 })
 export default class MaterialFormPopUp extends mixins(UtilMixins) {
     get isDisabledSaveButton(): boolean {
         return menuModule.isDisabledSaveButton;
     }
 
-    get isShowBookingFormPopUp(): boolean {
+    get isShowCategoryFormPopUp(): boolean {
         return menuModule.isShowCategoryFormPopUp || false;
     }
 
-    set isShowBookingFormPopUp(val: boolean) {
+    set isShowCategoryFormPopUp(val: boolean) {
         menuModule.setIsShowCategoryFormPopUp(val);
     }
 

@@ -2,7 +2,7 @@
     <div class="category-list">
         <BaseListPageHeader
             @toggle-filter-form="toggleFilterForm"
-            :pageTitle="'Quản lý danh mục'"
+            :pageTitle="$t('menu.category.pageName')"
             :hasSortBox="true"
             v-model:page="selectedPage"
             :totalItems="totalCategories"
@@ -16,7 +16,7 @@
         </BaseListPageHeader>
         <FilterForm :isToggleFilterForm="isToggleFilterForm" />
         <category-table />
-        <category-form-popup />
+        <CategoryFormPopup />
     </div>
 </template>
 

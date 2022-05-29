@@ -5,42 +5,53 @@
         destroy-on-close
         @closed="closePopup"
         @open="form.openPopup"
-        custom-class="material-form-popup"
+        custom-class="food-form-popup"
     >
         <template #title>
             <h3 class="text-left">
                 {{
                     form.isCreate
-                        ? $t('store.material.materialDialog.titleCreate')
-                        : $t('store.material.materialDialog.titleUpdate')
+                        ? $t('menu.food.foodDialog.titleCreate')
+                        : $t('menu.food.foodDialog.titleUpdate')
                 }}
             </h3>
         </template>
         <div class="row">
             <div class="col-md-12">
+                <BaseUploadAvatar
+                    isHorizontal="true"
+                    name="avatar"
+                    path="avatar"
+                    :reset="isShowBookingFormPopUp"
+                    :currentImageURL="avatarUrl"
+                    @set-avatar-id="setAvatarId"
+                    @set-avatar-url="setUploadingAvatarUrl"
+                />
+            </div>
+            <div class="col-md-12">
                 <BaseInputText
-                    v-model:value="form.material"
+                    v-model:value="form.foodName"
                     :is-required="true"
-                    :placeholder="$t('store.material.placeholder.material')"
-                    :label="$t('store.material.material')"
-                    :error="translateYupError(form.errors.material)"
+                    :placeholder="$t('menu.food.placeholder.foodName')"
+                    :label="$t('menu.food.foodPopup.foodName')"
+                    :error="translateYupError(form.errors.foodName)"
                 />
             </div>
             <div class="col-md-6">
                 <BaseInputNumber
-                    v-model:value="form.quantity"
-                    :placeholder="$t('store.material.placeholder.quantity')"
-                    :label="$t('store.material.quantity')"
-                    :error="translateYupError(form.errors.quantity)"
+                    v-model:value="form.price"
+                    :placeholder="$t('menu.food.placeholder.price')"
+                    :label="$t('menu.food.foodPopup.price')"
+                    :error="translateYupError(form.errors.price)"
                 />
             </div>
             <div class="col-md-6">
                 <BaseInputText
-                    v-model:value="form.unit"
-                    :error="translateYupError(form.errors.unit)"
+                    v-model:value="form.category"
+                    :error="translateYupError(form.errors.category)"
                     :is-required="true"
-                    :label="$t('store.material.unit')"
-                    :placeholder="$t('store.material.placeholder.unit')"
+                    :label="$t('menu.food.foodPopup.category')"
+                    :placeholder="$t('menu.food.placeholder.category')"
                 />
             </div>
         </div>
@@ -52,7 +63,7 @@
                         class="col-md-4 col-sm-6 d-flex justify-content-md-end justify-content-center"
                     >
                         <el-button @click="closePopup">
-                            {{ $t('store.material.button.cancel') }}
+                            {{ $t('menu.food.button.cancel') }}
                         </el-button>
                     </div>
                     <div
@@ -63,7 +74,7 @@
                             @click="onClickSaveButton"
                             :disabled="isDisabledSaveButton"
                         >
-                            {{ $t('store.material.button.submit') }}
+                            {{ $t('menu.food.button.submit') }}
                         </el-button>
                     </div>
                 </div>
@@ -79,7 +90,7 @@ import { menuModule } from '../../store';
 import { UtilMixins } from '@/mixins/utilMixins';
 import { mixins, Options } from 'vue-property-decorator';
 @Options({
-    name: 'material-form-popup',
+    name: 'food-form-popup',
 })
 export default class MaterialFormPopUp extends mixins(UtilMixins) {
     get isDisabledSaveButton(): boolean {

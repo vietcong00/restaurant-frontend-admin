@@ -3,7 +3,7 @@
         <template #table-columns>
             <el-table-column
                 align="center"
-                :label="$t('menu.listFood.foodTable.header.id')"
+                :label="$t('menu.food.foodTable.header.id')"
                 type="index"
                 :index="indexMethod"
                 width="75"
@@ -11,7 +11,7 @@
             </el-table-column>
             <el-table-column
                 prop="name"
-                :label="$t('menu.listFood.foodTable.header.name')"
+                :label="$t('menu.food.foodTable.header.name')"
                 sortable="custom"
             >
                 <template #default="scope">
@@ -20,7 +20,7 @@
             </el-table-column>
             <el-table-column
                 prop="price"
-                :label="$t('menu.listFood.foodTable.header.price')"
+                :label="$t('menu.food.foodTable.header.price')"
                 sortable="custom"
             >
                 <template #default="scope">
@@ -29,33 +29,15 @@
             </el-table-column>
             <el-table-column
                 prop="category"
-                :label="$t('menu.listFood.foodTable.header.category')"
+                :label="$t('menu.food.foodTable.header.category')"
             >
                 <template #default="scope">
                     {{ scope.row.category }}
                 </template>
             </el-table-column>
             <el-table-column
-                prop="mainMaterial"
-                :label="$t('menu.listFood.foodTable.header.mainMaterial')"
-                sortable="custom"
-            >
-                <template #default="scope">
-                    {{ parseDateTimeTime(scope.row.mainMaterial) }}
-                </template>
-            </el-table-column>
-            <el-table-column
-                prop="amount"
-                :label="$t('menu.listFood.foodTable.header.amount')"
-                sortable="custom"
-            >
-                <template #default="scope">
-                    {{ parseDateTimeTime(scope.row.amount) }}
-                </template>
-            </el-table-column>
-            <el-table-column
                 prop="image"
-                :label="$t('menu.listFood.foodTable.header.image')"
+                :label="$t('menu.food.foodTable.header.image')"
                 sortable="custom"
             >
                 <template #default="scope">
@@ -65,7 +47,7 @@
             <el-table-column
                 align="center"
                 prop="id"
-                :label="$t('menu.listFood.foodTable.header.actions')"
+                :label="$t('menu.food.foodTable.header.actions')"
                 fixed="right"
                 width="150"
             >

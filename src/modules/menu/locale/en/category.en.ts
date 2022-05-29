@@ -1,27 +1,38 @@
 export default {
-    foodTable: {
+    categoryDialog: {
+        titleCreate: 'Create new category',
+        titleUpdate: 'Update category',
+    },
+    button: {
+        cancel: 'Cancel',
+        submit: 'Submit',
+    },
+
+    categoryPopup: {
+        categoryName: 'Category Name',
+        priority: 'Priority',
+        note: 'Note',
+    },
+
+    categoryTable: {
         header: {
             id: 'ID',
             name: 'Name',
-            price: 'Price',
-            category: 'Category',
-            mainMaterial: 'Main material',
-            amount: 'Amount',
-            image: 'Image',
+            priority: 'Priority',
+            note: 'Note',
             actions: 'Actions',
         },
     },
 
     filterForm: {
         keyword: 'Keyword',
-        mainMaterial: 'Main material',
-        category: 'Category,',
     },
 
     placeholder: {
         keyword: 'Enter keyword',
-        mainMaterial: 'Select main material',
-        category: 'Select category',
+        categoryName: 'Enter Name Category',
+        priority: 'Enter Priority',
+        note: 'Enter Note',
     },
 
     tooltip: {
@@ -47,5 +58,5 @@ export default {
         },
     },
 
-    pageName: 'Food management',
+    pageName: 'Category management',
 };

@@ -3,7 +3,7 @@
         <template #table-columns>
             <el-table-column
                 align="center"
-                :label="$t('menu.listCategory.categoryTable.header.id')"
+                :label="$t('menu.category.categoryTable.header.id')"
                 type="index"
                 :index="indexMethod"
                 width="75"
@@ -11,7 +11,7 @@
             </el-table-column>
             <el-table-column
                 prop="name"
-                :label="$t('menu.listCategory.categoryTable.header.name')"
+                :label="$t('menu.category.categoryTable.header.name')"
                 sortable="custom"
             >
                 <template #default="scope">
@@ -20,7 +20,7 @@
             </el-table-column>
             <el-table-column
                 prop="priority"
-                :label="$t('menu.listCategory.categoryTable.header.priority')"
+                :label="$t('menu.category.categoryTable.header.priority')"
                 sortable="custom"
             >
                 <template #default="scope">
@@ -29,7 +29,7 @@
             </el-table-column>
             <el-table-column
                 prop="note"
-                :label="$t('menu.listCategory.categoryTable.header.note')"
+                :label="$t('menu.category.categoryTable.header.note')"
             >
                 <template #default="scope">
                     {{ scope.row.note }}
@@ -38,7 +38,7 @@
             <el-table-column
                 align="center"
                 prop="id"
-                :label="$t('menu.listCategory.categoryTable.header.actions')"
+                :label="$t('menu.category.categoryTable.header.actions')"
                 fixed="right"
                 width="150"
             >

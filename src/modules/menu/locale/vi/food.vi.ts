@@ -1,10 +1,25 @@
 export default {
-    categoryTable: {
+    foodDialog: {
+        titleCreate: 'Tạo mới món ăn',
+        titleUpdate: 'Cập nhật món ăn',
+    },
+    button: {
+        cancel: 'Hủy',
+        submit: 'Xác nhận',
+    },
+    foodPopup: {
+        foodName: 'Tên Món ăn',
+        price: 'Giá',
+        category: 'Danh mục',
+    },
+
+    foodTable: {
         header: {
             id: 'ID',
             name: 'Tên',
-            priority: 'Độ ưu tiên',
-            note: 'Ghi chú',
+            price: 'Giá',
+            category: 'Danh mục',
+            image: 'Hình ảnh',
             actions: 'Thao tác',
         },
     },
@@ -15,9 +30,9 @@ export default {
 
     placeholder: {
         keyword: 'Nhập từ khóa',
-        name: 'Nhập tên danh mục',
-        priority: 'Nhập độ ưu tiên',
-        note: 'Nhập ghi chú',
+        foodName: 'Nhập tên món ăn',
+        price: 'Nhập giá',
+        category: 'Chọn danh mục',
     },
 
     tooltip: {
@@ -43,5 +58,5 @@ export default {
         },
     },
 
-    pageName: ' Quản lý danh mục',
+    pageName: ' Quản lý món ăn',
 };

@@ -33,7 +33,6 @@ const initFoodQueryString = {
     orderBy: DEFAULT_ORDER_BY,
     orderDirection: DEFAULT_ORDER_DIRECTION,
     keyword: null,
-    mainMaterial: null,
     categories: [],
 };
 
@@ -121,7 +120,7 @@ class MenuModule extends VuexModule {
 
     @Mutation
     MUTATE_IS_SHOW_CATEGORY_FORM_POP_UP(value: boolean) {
-        this.isShowFoodFormPopUp = value;
+        this.isShowCategoryFormPopUp = value;
     }
 
     @Mutation
