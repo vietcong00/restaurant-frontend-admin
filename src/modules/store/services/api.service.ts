@@ -1,30 +1,50 @@
 import service from '@/plugins/axios';
 import { BaseService } from '@/utils/api';
-import { IBodyResponse } from '@common/types';
-import { AxiosPromise } from 'axios';
 
-class EventApiService extends BaseService {
-    updateStatus<P, R extends IBodyResponse>(id: number, data: P): AxiosPromise {
-        data = this.beforeUpdate<P>(data);
-        return this.client.patch<R>(`${this.detailUrl}/${id}/status`, data);
-    }
-}
-export const eventService = new EventApiService({ baseUrl: '/event' }, service);
+class MaterialService extends BaseService {}
+export const materialService = new MaterialService({ baseUrl: 'material' }, service);
 
-class CategoryService extends BaseService {}
-export const categoryService = new CategoryService({ baseUrl: 'category' }, service);
+class SupplierService extends BaseService {}
+export const supplierService = new SupplierService({ baseUrl: 'supplier' }, service);
 
-class FoodService extends BaseService {}
-export const foodService = new FoodService({ baseUrl: 'food' }, service);
-
-class TableService extends BaseService {}
-export const tableService = new TableService({ baseUrl: '/table' }, service);
-
-class RestaurantService extends BaseService {}
-export const restaurantService = new RestaurantService(
-    { baseUrl: 'restaurant' },
+class CheckInventoryService extends BaseService {}
+export const checkInventoryService = new CheckInventoryService(
+    { baseUrl: 'check-inventory' },
     service,
 );
 
-class BookingService extends BaseService {}
-export const bookingService = new BookingService({ baseUrl: 'booking' }, service);
+class InventoryDetailService extends BaseService {}
+export const inventoryDetailService = new InventoryDetailService(
+    { baseUrl: 'inventory-detail' },
+    service,
+);
+
+class ImportMaterialService extends BaseService {}
+export const importMaterialService = new ImportMaterialService(
+    { baseUrl: 'import-material' },
+    service,
+);
+
+class ImportMaterialDetailService extends BaseService {}
+export const importMaterialDetailService = new ImportMaterialDetailService(
+    { baseUrl: 'import-material-detail' },
+    service,
+);
+
+class ExportMaterialService extends BaseService {}
+export const exportMaterialService = new ExportMaterialService(
+    { baseUrl: 'emport-material' },
+    service,
+);
+
+class ExportMaterialDetailService extends BaseService {}
+export const exportMaterialDetailService = new ExportMaterialDetailService(
+    { baseUrl: 'export-material-detail' },
+    service,
+);
+
+class ConvertHistoryService extends BaseService {}
+export const convertHistoryService = new ConvertHistoryService(
+    { baseUrl: 'convert-history' },
+    service,
+);

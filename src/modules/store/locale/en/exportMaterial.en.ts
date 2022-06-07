@@ -1,23 +1,19 @@
 export default {
-    materialDialog: {
-        titleCreate: 'Create new material',
-        titleUpdate: 'Update material',
+    exportMaterialDialog: {
+        titleCreate: 'Create new Export Material',
+        titleUpdate: 'Update check Export Material',
     },
     button: {
         cancel: 'Cancel',
         submit: 'Submit',
     },
-    material: 'Material',
-    quantity: 'Quantity',
-    unit: 'Unit',
-
-    materialTable: {
+    exportMaterialTable: {
         header: {
             id: 'ID',
-            material: 'Material',
-            quantity: 'Quantity',
-            unit: 'Unit',
-            updateAt: 'Update At',
+            exportTime: 'Export time',
+            transporters: 'Transporters',
+            warehouseStaff: 'Warehouse Staff',
+            note: 'Note',
             actions: 'Actions',
         },
     },
@@ -28,16 +24,15 @@ export default {
 
     placeholder: {
         keyword: 'Enter keyword',
-        material: 'Enter material',
-        quantity: 'Enter quantity',
-        unit: 'Enter Unit',
+        name: 'Enter name',
+        phone: 'Enter phone',
+        address: 'Enter Address',
     },
 
     tooltip: {
         editStatus: 'Edit status',
         edit: 'Edit',
         delete: 'Delete',
-        convert: 'Convert',
     },
 
     message: {
@@ -57,5 +52,5 @@ export default {
         },
     },
 
-    pageName: 'Material management',
+    pageName: 'Export Material management',
 };

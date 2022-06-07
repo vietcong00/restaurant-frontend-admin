@@ -5,7 +5,7 @@
             :pageTitle="$t('store.importMaterialDetail.pageName')"
             :hasSortBox="true"
             v-model:page="selectedPage"
-            :totalItems="totalSuppliers"
+            :totalItems="totalImportMaterialDetails"
             @onPaginate="handlePaginate"
         >
             <template #sort-box-content>
@@ -21,9 +21,9 @@
 import { DEFAULT_FIRST_PAGE } from '@/common/constants';
 import { ElLoading } from 'element-plus';
 import { Options, Vue } from 'vue-class-component';
-import ImportMaterialDetailTable from '../components/ImportMaterialDetail/ImportMaterialDetailTable.vue';
+import ImportMaterialDetailTable from '../components/importMaterialDetail/ImportMaterialDetailTable.vue';
 import { storeModule } from '../store';
-import FilterForm from '../components/ImportMaterialDetail/FilterForm.vue';
+import FilterForm from '../components/importMaterialDetail/FilterForm.vue';
 
 @Options({
     components: {
@@ -34,36 +34,36 @@ import FilterForm from '../components/ImportMaterialDetail/FilterForm.vue';
 export default class ImportMaterialDetailPage extends Vue {
     isToggleFilterForm = true;
 
-    get totalSuppliers(): number {
-        return 20;
+    get totalImportMaterialDetails(): number {
+        return storeModule.totalImportMaterialDetails;
     }
 
     // check permission
 
     get selectedPage(): number {
-        return storeModule.bookingQueryString?.page || DEFAULT_FIRST_PAGE;
+        return storeModule.queryStringImportMaterialDetail?.page || DEFAULT_FIRST_PAGE;
     }
 
     set selectedPage(value: number) {
-        storeModule.bookingQueryString.page = value;
+        storeModule.queryStringImportMaterialDetail.page = value;
     }
 
     created(): void {
-        storeModule.clearQueryString();
-        this.getBookingList();
+        storeModule.clearQueryStringImportMaterialDetail();
+        this.getImportMaterialDetailList();
     }
 
-    async getBookingList(): Promise<void> {
+    async getImportMaterialDetailList(): Promise<void> {
         const loading = ElLoading.service({
             target: '.content',
         });
-        await storeModule.getBookings();
+        await storeModule.getImportMaterialDetails();
         loading.close();
     }
 
     async handlePaginate(): Promise<void> {
-        storeModule.setBookingQueryString({ page: this.selectedPage });
-        this.getBookingList();
+        storeModule.setQueryStringImportMaterialDetail({ page: this.selectedPage });
+        this.getImportMaterialDetailList();
     }
 
     toggleFilterForm(): void {

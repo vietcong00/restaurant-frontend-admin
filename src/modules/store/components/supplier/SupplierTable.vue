@@ -93,7 +93,6 @@ import { mixins, Options } from 'vue-property-decorator';
 
 import { ISupplier } from '../../types';
 import CompIcon from '../../../../components/CompIcon.vue';
-import { storeModule } from '../../store';
 import { StoreMixins } from '../../mixins';
 import { Delete as DeleteIcon, Edit as EditIcon } from '@element-plus/icons-vue';
 import { eventModule } from '@/modules/event/store';
@@ -119,10 +118,6 @@ export default class SupplierTable extends mixins(StoreMixins) {
                 updateAt: '2022-04-20T17:00:00.000Z',
             },
         ];
-    }
-
-    created(): void {
-        storeModule.getBookings();
     }
 
     isCanDelete(): boolean {

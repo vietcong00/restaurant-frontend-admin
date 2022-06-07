@@ -1,11 +1,11 @@
 <template>
-    <div class="supplier-list">
+    <div class="export-material-list">
         <BaseListPageHeader
             @toggle-filter-form="toggleFilterForm"
-            :pageTitle="$t('store.supplier.pageName')"
+            :pageTitle="$t('store.exportMaterial.pageName')"
             :hasSortBox="true"
             v-model:page="selectedPage"
-            :totalItems="totalSuppliers"
+            :totalItems="totalExportMaterials"
             :isShowCreateButton="isCanCreate"
             @create="onClickButtonCreate"
             @onPaginate="handlePaginate"
@@ -15,8 +15,7 @@
             </template>
         </BaseListPageHeader>
         <FilterForm :isToggleFilterForm="isToggleFilterForm" />
-        <SupplierTable />
-        <SupplierFormPopup />
+        <ExportMaterialTable />
     </div>
 </template>
 
@@ -26,23 +25,21 @@ import { PermissionResources, PermissionActions } from '@/modules/role/constants
 import { checkUserHasPermission } from '@/utils/helper';
 import { ElLoading } from 'element-plus';
 import { Options, Vue } from 'vue-class-component';
-import SupplierTable from '../components/supplier/SupplierTable.vue';
+import ExportMaterialTable from '../components/exportMaterial/ExportMaterialTable.vue';
 import { storeModule } from '../store';
-import FilterForm from '../components/supplier/FilterForm.vue';
-import SupplierFormPopup from '../components/supplier/SupplierFormPopup.vue';
+import FilterForm from '../components/exportMaterial/FilterForm.vue';
 
 @Options({
     components: {
-        SupplierTable,
+        ExportMaterialTable,
         FilterForm,
-        SupplierFormPopup,
     },
 })
-export default class SupplierPage extends Vue {
+export default class ExportMaterialPage extends Vue {
     isToggleFilterForm = true;
 
-    get totalSuppliers(): number {
-        return 20;
+    get totalExportMaterials(): number {
+        return storeModule.totalExportMaterials;
     }
 
     // check permission
@@ -53,37 +50,33 @@ export default class SupplierPage extends Vue {
     }
 
     get selectedPage(): number {
-        return storeModule.queryStringSupplier?.page || DEFAULT_FIRST_PAGE;
+        return storeModule.queryStringExportMaterial?.page || DEFAULT_FIRST_PAGE;
     }
 
     set selectedPage(value: number) {
-        storeModule.queryStringSupplier.page = value;
+        storeModule.queryStringExportMaterial.page = value;
     }
 
     created(): void {
-        storeModule.clearQueryStringSupplier();
-        this.getSupplierList();
+        storeModule.clearQueryStringExportMaterial();
+        this.getExportMaterialList();
     }
 
-    async getSupplierList(): Promise<void> {
+    async getExportMaterialList(): Promise<void> {
         const loading = ElLoading.service({
             target: '.content',
         });
-        await storeModule.getSuppliers();
+        await storeModule.getExportMaterials();
         loading.close();
     }
 
     async handlePaginate(): Promise<void> {
-        storeModule.setQueryStringMaterial({ page: this.selectedPage });
-        this.getSupplierList();
+        storeModule.setQueryStringExportMaterial({ page: this.selectedPage });
+        this.getExportMaterialList();
     }
 
     toggleFilterForm(): void {
         this.isToggleFilterForm = !this.isToggleFilterForm;
-    }
-
-    onClickButtonCreate(): void {
-        storeModule.setIsShowSupplierFormPopUp(true);
     }
 }
 </script>

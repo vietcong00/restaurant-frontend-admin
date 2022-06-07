@@ -388,7 +388,7 @@ const storeMenu: ISidebar = {
         },
         {
             name: 'common.app.menu.store.convert',
-            to: '/convert',
+            to: '/convert-history',
             class: '',
             active: false,
             pageName: PageName.STORE_CONVERT_PAGE,
@@ -427,7 +427,7 @@ const storeMenu: ISidebar = {
         },
         {
             name: 'common.app.menu.store.export',
-            to: '/export',
+            to: '/export-material',
             class: '',
             active: false,
             pageName: PageName.STORE_EXPORT_PAGE,

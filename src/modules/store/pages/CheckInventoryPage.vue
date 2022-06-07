@@ -41,29 +41,29 @@ export default class CheckInventoryPage extends Vue {
     // check permission
 
     get selectedPage(): number {
-        return storeModule.bookingQueryString?.page || DEFAULT_FIRST_PAGE;
+        return storeModule.queryStringCheckInventory?.page || DEFAULT_FIRST_PAGE;
     }
 
     set selectedPage(value: number) {
-        storeModule.bookingQueryString.page = value;
+        storeModule.queryStringCheckInventory.page = value;
     }
 
     created(): void {
-        storeModule.clearQueryString();
-        this.getBookingList();
+        storeModule.clearQueryStringCheckInventory();
+        this.getCheckInventoryList();
     }
 
-    async getBookingList(): Promise<void> {
+    async getCheckInventoryList(): Promise<void> {
         const loading = ElLoading.service({
             target: '.content',
         });
-        await storeModule.getBookings();
+        await storeModule.getCheckInventories();
         loading.close();
     }
 
     async handlePaginate(): Promise<void> {
-        storeModule.setBookingQueryString({ page: this.selectedPage });
-        this.getBookingList();
+        storeModule.setQueryStringCheckInventory({ page: this.selectedPage });
+        this.getCheckInventoryList();
     }
 
     toggleFilterForm(): void {

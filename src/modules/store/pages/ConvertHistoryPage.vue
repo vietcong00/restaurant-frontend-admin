@@ -1,8 +1,8 @@
 <template>
-    <div class="booking-list">
+    <div class="convert-history-list">
         <BaseListPageHeader
             @toggle-filter-form="toggleFilterForm"
-            :pageTitle="$t('booking.list.pageName')"
+            :pageTitle="$t('store.convertHistory.pageName')"
             :hasSortBox="true"
             v-model:page="selectedPage"
             :totalItems="totalBookings"
@@ -15,8 +15,8 @@
             </template>
         </BaseListPageHeader>
         <FilterForm :isToggleFilterForm="isToggleFilterForm" />
-        <booking-table />
-        <booking-form-popup />
+        <ConvertHistoryTable />
+        <ConvertHistoryDetailFormPopup />
     </div>
 </template>
 
@@ -26,19 +26,19 @@ import { PermissionResources, PermissionActions } from '@/modules/role/constants
 import { checkUserHasPermission } from '@/utils/helper';
 import { ElLoading } from 'element-plus';
 import { Options, Vue } from 'vue-class-component';
-import BookingTable from '../components/BookingTable.vue';
 import { storeModule } from '../store';
-import FilterForm from '../components/FilterForm.vue';
-import BookingFormPopup from '../components/BookingFormPopup.vue';
+import FilterForm from '../components/convertHistory/FilterForm.vue';
+import ConvertHistoryTable from '../components/convertHistory/ConvertHistoryTable.vue';
+import ConvertHistoryDetailFormPopup from '../components/convertHistory/ConvertHistoryDetailFormPopup.vue';
 
 @Options({
     components: {
-        BookingTable,
+        ConvertHistoryDetailFormPopup,
         FilterForm,
-        BookingFormPopup,
+        ConvertHistoryTable,
     },
 })
-export default class ConvertPage extends Vue {
+export default class ConvertHistoryPage extends Vue {
     isToggleFilterForm = true;
 
     get totalBookings(): number {

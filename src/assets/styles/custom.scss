@@ -25,3 +25,9 @@
 .form-group {
     margin-bottom: 25px;
 }
+
+.readonly-input-text {
+    :deep(.el-input__inner) {
+        box-shadow: none;
+    }
+}

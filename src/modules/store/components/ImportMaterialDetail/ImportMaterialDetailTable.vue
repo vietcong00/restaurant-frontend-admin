@@ -122,7 +122,6 @@ import { mixins, Options } from 'vue-property-decorator';
 
 import { IImportMaterialDetail } from '../../types';
 import CompIcon from '../../../../components/CompIcon.vue';
-import { storeModule } from '../../store';
 import { StoreMixins } from '../../mixins';
 import { Delete as DeleteIcon, Edit as EditIcon } from '@element-plus/icons-vue';
 import { eventModule } from '@/modules/event/store';
@@ -149,10 +148,6 @@ export default class ImportMaterialDetailTable extends mixins(StoreMixins) {
                 note: 'check',
             },
         ];
-    }
-
-    created(): void {
-        storeModule.getBookings();
     }
 
     isCanDelete(): boolean {

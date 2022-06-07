@@ -1,73 +1,81 @@
 <template>
-    <BaseTableLayout :data="inventoryDetailList">
+    <BaseTableLayout :data="convertHistoryList">
         <template #table-columns>
             <el-table-column
                 align="center"
-                :label="$t('store.inventoryDetail.inventoryDetailTable.header.id')"
+                :label="$t('store.convertHistory.convertHistoryTable.header.id')"
                 type="index"
                 :index="indexMethod"
                 width="75"
             >
             </el-table-column>
             <el-table-column
-                prop="nameMaterial"
-                :label="
-                    $t('store.inventoryDetail.inventoryDetailTable.header.nameMaterial')
-                "
-                sortable="custom"
+                prop="convertTime"
+                :label="$t('store.convertHistory.convertHistoryTable.header.convertTime')"
+                width="220"
             >
                 <template #default="scope">
-                    {{ scope.row.nameMaterial }}
+                    {{
+                        scope.row.convertTime
+                            ? parseDateTime(
+                                  scope.row.convertTime,
+                                  YYYY_MM_DD_HYPHEN_HH_MM_COLON,
+                              )
+                            : ''
+                    }}
                 </template>
             </el-table-column>
             <el-table-column
-                prop="inventoryQuantity"
-                :label="
-                    $t(
-                        'store.inventoryDetail.inventoryDetailTable.header.inventoryQuantity',
-                    )
-                "
-                sortable="custom"
+                prop="performer"
+                :label="$t('store.convertHistory.convertHistoryTable.header.performer')"
+                width="175"
             >
                 <template #default="scope">
-                    {{ scope.row.inventoryQuantity }}
+                    {{ scope.row.performer.name }}
                 </template>
             </el-table-column>
             <el-table-column
-                prop="inventoryUnit"
-                :label="
-                    $t('store.inventoryDetail.inventoryDetailTable.header.inventoryUnit')
-                "
+                prop="convertFrom"
+                :label="$t('store.convertHistory.convertHistoryTable.header.convertFrom')"
+                width="175"
             >
                 <template #default="scope">
-                    {{ scope.row.inventoryUnit }}
+                    {{ scope.row.convertFrom }}
                 </template>
             </el-table-column>
             <el-table-column
-                prop="damagedQuantity"
+                prop="quantityFrom"
                 :label="
-                    $t(
-                        'store.inventoryDetail.inventoryDetailTable.header.damagedQuantity',
-                    )
+                    $t('store.convertHistory.convertHistoryTable.header.quantityFrom')
                 "
+                width="250"
             >
                 <template #default="scope">
-                    {{ scope.row.damagedQuantity }}
+                    {{ scope.row.quantityFrom }}
                 </template>
             </el-table-column>
             <el-table-column
-                prop="damagedUnit"
-                :label="
-                    $t('store.inventoryDetail.inventoryDetailTable.header.damagedUnit')
-                "
+                prop="convertTo"
+                :label="$t('store.convertHistory.convertHistoryTable.header.convertTo')"
+                width="175"
             >
                 <template #default="scope">
-                    {{ scope.row.damagedUnit }}
+                    {{ scope.row.convertTo }}
+                </template>
+            </el-table-column>
+            <el-table-column
+                prop="quantityTo"
+                :label="$t('store.convertHistory.convertHistoryTable.header.quantityTo')"
+                width="250"
+            >
+                <template #default="scope">
+                    {{ scope.row.quantityTo }}
                 </template>
             </el-table-column>
             <el-table-column
                 prop="note"
-                :label="$t('store.inventoryDetail.inventoryDetailTable.header.note')"
+                :label="$t('store.convertHistory.convertHistoryTable.header.note')"
+                width="150"
             >
                 <template #default="scope">
                     {{ scope.row.note }}
@@ -76,7 +84,7 @@
             <el-table-column
                 align="center"
                 prop="id"
-                :label="$t('store.inventoryDetail.inventoryDetailTable.header.actions')"
+                :label="$t('store.convertHistory.convertHistoryTable.header.detail')"
                 fixed="right"
                 width="150"
             >
@@ -84,30 +92,16 @@
                     <div class="button-group">
                         <el-tooltip
                             effect="dark"
-                            :content="$t('store.inventoryDetail.tooltip.edit')"
+                            :content="$t('store.convertHistory.tooltip.detail')"
                             placement="top"
                             v-if="isCanUpdate(scope.row?.status)"
                         >
                             <el-button
                                 type="warning"
                                 size="mini"
-                                @click="onClickButtonEdit(scope.row)"
+                                @click="onClickUpdateExportMaterial(scope.row.id)"
                             >
-                                <EditIcon class="action-icon" />
-                            </el-button>
-                        </el-tooltip>
-                        <el-tooltip
-                            effect="dark"
-                            :content="$t('store.inventoryDetail.tooltip.delete')"
-                            placement="top"
-                            v-if="isCanDelete(scope.row?.status)"
-                        >
-                            <el-button
-                                type="danger"
-                                size="mini"
-                                @click="onClickButtonDelete(scope.row?.id)"
-                            >
-                                <DeleteIcon class="action-icon" />
+                                <DocumentIcon class="action-icon" />
                             </el-button>
                         </el-tooltip>
                     </div>
@@ -120,35 +114,45 @@
 <script lang="ts">
 import { mixins, Options } from 'vue-property-decorator';
 
-import { IInventoryDetail } from '../../types';
+import { IConvertHistory } from '../../types';
 import CompIcon from '../../../../components/CompIcon.vue';
+import { storeModule } from '../../store';
 import { StoreMixins } from '../../mixins';
-import { Delete as DeleteIcon, Edit as EditIcon } from '@element-plus/icons-vue';
+import { Document as DocumentIcon } from '@element-plus/icons-vue';
 import { eventModule } from '@/modules/event/store';
 import { PermissionResources, PermissionActions } from '@/modules/role/constants';
 import { checkUserHasPermission } from '@/utils/helper';
 
 @Options({
-    name: 'inventory-detail-table-component',
+    name: 'import-material-table-component',
     components: {
         CompIcon,
-        DeleteIcon,
-        EditIcon,
+        DocumentIcon,
     },
 })
-export default class InventoryDetailTable extends mixins(StoreMixins) {
-    get inventoryDetailList(): IInventoryDetail[] {
+export default class ExportMaterialTable extends mixins(StoreMixins) {
+    get convertHistoryList(): IConvertHistory[] {
         return [
             {
                 id: 1,
-                nameMaterial: 'cofe',
-                inventoryQuantity: 2,
-                inventoryUnit: 'kg',
-                damagedQuantity: 1,
-                damagedUnit: 'kg',
-                note: 'check',
+                convertTime: '2022-04-04 09:09:09',
+                convertFrom: 'Box',
+                quantityFrom: 4,
+                quantityBeforeConvertFrom: 10,
+                convertTo: 'can',
+                quantityTo: 40,
+                quantityBeforeConvertTo: 55,
+                performer: {
+                    id: 1,
+                    name: 'Chu Si Lam',
+                },
+                note: 'checker',
             },
         ];
+    }
+
+    created(): void {
+        storeModule.getBookings();
     }
 
     isCanDelete(): boolean {
@@ -161,6 +165,10 @@ export default class InventoryDetailTable extends mixins(StoreMixins) {
         return checkUserHasPermission(eventModule.userPermissions, [
             `${PermissionResources.EVENT}_${PermissionActions.UPDATE}`,
         ]);
+    }
+
+    onClickUpdateExportMaterial(id: number): void {
+        storeModule.setIsShowConvertHistoryFormPopUp(true);
     }
 }
 </script>

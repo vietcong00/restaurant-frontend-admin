@@ -59,7 +59,7 @@ export default class ErrorLayout extends Vue {
     align-items: center;
     justify-content: center;
     &.background-img {
-        background-image: url('../assets/images/login-bg.jpeg');
+        background-image: url('../assets/images/login-bg.jpg');
         height: 100vh;
         background-position: center;
         background-repeat: no-repeat;

@@ -41,29 +41,29 @@ export default class InventoryDetailPage extends Vue {
     // check permission
 
     get selectedPage(): number {
-        return storeModule.bookingQueryString?.page || DEFAULT_FIRST_PAGE;
+        return storeModule.queryStringInventoryDetail?.page || DEFAULT_FIRST_PAGE;
     }
 
     set selectedPage(value: number) {
-        storeModule.bookingQueryString.page = value;
+        storeModule.queryStringInventoryDetail.page = value;
     }
 
     created(): void {
-        storeModule.clearQueryString();
-        this.getBookingList();
+        storeModule.clearQueryStringInventoryDetail();
+        this.getInventoryDetailList();
     }
 
-    async getBookingList(): Promise<void> {
+    async getInventoryDetailList(): Promise<void> {
         const loading = ElLoading.service({
             target: '.content',
         });
-        await storeModule.getBookings();
+        await storeModule.getInventoryDetails();
         loading.close();
     }
 
     async handlePaginate(): Promise<void> {
-        storeModule.setBookingQueryString({ page: this.selectedPage });
-        this.getBookingList();
+        storeModule.setQueryStringInventoryDetail({ page: this.selectedPage });
+        this.getInventoryDetailList();
     }
 
     toggleFilterForm(): void {

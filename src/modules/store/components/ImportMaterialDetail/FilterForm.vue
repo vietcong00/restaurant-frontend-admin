@@ -32,9 +32,9 @@ import {
     LIMIT_PER_PAGE,
 } from '@/common/constants';
 import { storeModule } from '../../store';
-import { IQueryStringBooking } from '../../types';
 import { Prop, mixins } from 'vue-property-decorator';
 import { StoreMixins } from '../../mixins';
+import { IQueryStringImportMaterialDetail } from '../../types';
 
 export default class FilterForm extends mixins(StoreMixins) {
     @Prop({ default: false }) readonly isToggleFilterForm!: boolean;
@@ -45,8 +45,8 @@ export default class FilterForm extends mixins(StoreMixins) {
         orderBy: DEFAULT_ORDER_BY,
         orderDirection: DEFAULT_ORDER_DIRECTION,
         keyword: '',
-        status: [],
-    } as IQueryStringBooking;
+        idImportMaterial: undefined,
+    } as IQueryStringImportMaterialDetail;
 
     async resetFilter(): Promise<void> {
         this.filterForm = {
@@ -55,14 +55,14 @@ export default class FilterForm extends mixins(StoreMixins) {
             orderBy: DEFAULT_ORDER_BY,
             orderDirection: DEFAULT_ORDER_DIRECTION,
             keyword: '',
-            status: [],
+            idImportMaterial: undefined,
         };
-        storeModule.clearQueryString();
+        storeModule.clearQueryStringImportMaterialDetail();
         await this.handleFilter();
     }
 
     async handleFilter(): Promise<void> {
-        storeModule.setBookingQueryString({
+        storeModule.setQueryStringImportMaterialDetail({
             page: DEFAULT_FIRST_PAGE,
             limit: DEFAULT_SIZE_PER_PAGE,
             keyword: this.filterForm.keyword?.trim(),
@@ -70,7 +70,7 @@ export default class FilterForm extends mixins(StoreMixins) {
         const loading = ElLoading.service({
             target: '.content',
         });
-        await storeModule.getBookings();
+        await storeModule.getImportMaterialDetails();
         loading.close();
     }
 }

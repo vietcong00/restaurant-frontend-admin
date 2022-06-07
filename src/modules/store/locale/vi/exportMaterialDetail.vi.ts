@@ -1,23 +1,21 @@
 export default {
-    materialDialog: {
-        titleCreate: 'Tạo mới nguyên liệu',
-        titleUpdate: 'Cập nhật nguyên liệu',
+    exportMaterialDetailDialog: {
+        titleCreate: 'Tạo mới chi tiết xuất kho',
+        titleUpdate: 'Cập nhật chi tiết xuất kho',
     },
     button: {
         cancel: 'Hủy',
         submit: 'Xác nhận',
     },
-    material: 'Nguyên liệu',
-    quantity: 'Số lượng',
-    unit: 'Đơn vị đo',
 
-    materialTable: {
+    exportMaterialDetailTable: {
         header: {
             id: 'ID',
-            material: 'Nguyên liệu',
+            nameMaterial: 'Tên sản phẩm',
+            exportPrice: 'Giá xuất kho',
             quantity: 'Số lượng',
-            unit: 'Đơn vị đo',
-            updateAt: 'Thời gian cập nhật',
+            unit: 'Đơn vị',
+            note: 'Ghi chú',
             actions: 'Thao tác',
         },
     },
@@ -37,7 +35,6 @@ export default {
         editStatus: 'Thay đổi trạng thái',
         edit: 'Chỉnh sửa',
         delete: 'Xóa',
-        convert: 'Chuyển đổi',
     },
 
     message: {
@@ -57,5 +54,5 @@ export default {
         },
     },
 
-    pageName: ' Quản lý nguyên liệu',
+    pageName: ' Quản lý Chi tiết xuất kho',
 };

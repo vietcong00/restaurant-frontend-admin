@@ -176,6 +176,7 @@ export enum PageName {
     STORE_IMPORT_MATERIAL_PAGE = 'StoreImportMaterialPage',
     STORE_IMPORT_MATERIAL_DETAIL_PAGE = 'StoreImportMaterialDetailPage',
     STORE_EXPORT_PAGE = 'StoreExportPage',
+    STORE_EXPORT_MATERIAL_DETAIL_PAGE = 'StoreExportMaterialDetailPage',
     STORE_CHECK_INVENTORY_PAGE = 'StoreCheckInventoryPage',
     STORE_INVENTORY_DETAIL_PAGE = 'StoreInventoryDetailPage',
     PAYMENT_AT_RESTAURANT_PAGE = 'PaymentAtRestaurantPage',

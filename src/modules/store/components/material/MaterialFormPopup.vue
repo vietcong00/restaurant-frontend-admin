@@ -1,7 +1,7 @@
 <template>
     <el-dialog
         width="50%"
-        v-model="isShowBookingFormPopUp"
+        v-model="isShowMaterialFormPopUp"
         destroy-on-close
         @closed="closePopup"
         @open="form.openPopup"
@@ -58,11 +58,7 @@
                     <div
                         class="col-md-4 col-sm-6 d-flex justify-content-md-start justify-content-center"
                     >
-                        <el-button
-                            type="primary"
-                            @click="onClickSaveButton"
-                            :disabled="isDisabledSaveButton"
-                        >
+                        <el-button type="primary" @click="onClickSaveButton">
                             {{ $t('store.material.button.submit') }}
                         </el-button>
                     </div>
@@ -82,30 +78,24 @@ import { mixins, Options } from 'vue-property-decorator';
     name: 'material-form-popup',
 })
 export default class MaterialFormPopUp extends mixins(UtilMixins) {
-    get isDisabledSaveButton(): boolean {
-        return storeModule.isDisabledSaveButton;
+    get isShowMaterialFormPopUp(): boolean {
+        return storeModule.isShowMaterialFormPopUp || false;
     }
 
-    get isShowBookingFormPopUp(): boolean {
-        return storeModule.isShowBookingFormPopUp || false;
-    }
-
-    set isShowBookingFormPopUp(val: boolean) {
-        storeModule.setIsShowBookingFormPopUp(val);
+    set isShowMaterialFormPopUp(val: boolean) {
+        storeModule.setIsShowMaterialFormPopUp(val);
     }
 
     form = setup(() => initData());
 
     async closePopup(): Promise<void> {
-        storeModule.setIsShowBookingFormPopUp(false);
-        storeModule.setSelectedBooking(null);
+        storeModule.setIsShowMaterialFormPopUp(false);
+        storeModule.setSelectedMaterial(null);
         (this.form.resetForm as () => void)();
     }
 
     async onClickSaveButton(): Promise<void> {
-        storeModule.setIsDisabledSaveButton(true);
         await this.form.onSubmit();
-        storeModule.setIsDisabledSaveButton(false);
     }
 }
 </script>

@@ -1,50 +1,44 @@
 <template>
-    <BaseTableLayout :data="materialList">
+    <BaseTableLayout :data="exportList">
         <template #table-columns>
             <el-table-column
                 align="center"
-                :label="$t('store.material.materialTable.header.id')"
+                :label="$t('store.exportMaterial.exportMaterialTable.header.id')"
                 type="index"
                 :index="indexMethod"
                 width="75"
             >
             </el-table-column>
             <el-table-column
-                prop="material"
-                :label="$t('store.material.materialTable.header.material')"
+                prop="transporters"
+                :label="
+                    $t('store.exportMaterial.exportMaterialTable.header.transporters')
+                "
                 sortable="custom"
             >
                 <template #default="scope">
-                    {{ scope.row.material }}
+                    {{ scope.row.transporters }}
                 </template>
             </el-table-column>
             <el-table-column
-                prop="quantity"
-                :label="$t('store.material.materialTable.header.quantity')"
-                sortable="custom"
+                prop="warehouseStaff"
+                :label="
+                    $t('store.exportMaterial.exportMaterialTable.header.warehouseStaff')
+                "
             >
                 <template #default="scope">
-                    {{ scope.row.quantity }}
+                    {{ scope.row.warehouseStaff.name }}
                 </template>
             </el-table-column>
             <el-table-column
-                prop="unit"
-                :label="$t('store.material.materialTable.header.unit')"
-            >
-                <template #default="scope">
-                    {{ scope.row.unit }}
-                </template>
-            </el-table-column>
-            <el-table-column
-                prop="updateAt"
-                :label="$t('store.material.materialTable.header.updateAt')"
-                sortable="custom"
+                prop="importTime"
+                :label="$t('store.exportMaterial.exportMaterialTable.header.exportTime')"
             >
                 <template #default="scope">
                     {{
-                        scope.row.updateAt
+                        scope.row.exportTime
                             ? parseDateTime(
-                                  scope.row.updateAt,
+                                  scope.row.exportTime,
                                   YYYY_MM_DD_HYPHEN_HH_MM_COLON,
                               )
                             : ''
@@ -52,45 +46,39 @@
                 </template>
             </el-table-column>
             <el-table-column
+                prop="note"
+                :label="$t('store.exportMaterial.exportMaterialTable.header.note')"
+            >
+                <template #default="scope">
+                    {{ scope.row.note }}
+                </template>
+            </el-table-column>
+            <el-table-column
                 align="center"
                 prop="id"
-                :label="$t('store.material.materialTable.header.actions')"
+                :label="$t('store.exportMaterial.exportMaterialTable.header.actions')"
                 fixed="right"
-                width="200"
+                width="150"
             >
                 <template #default="scope">
                     <div class="button-group">
                         <el-tooltip
                             effect="dark"
-                            :content="$t('event.list.tooltip.edit')"
-                            placement="top"
-                            v-if="isCanUpdate(scope.row?.status)"
-                        >
-                            <el-button
-                                type="primary"
-                                size="mini"
-                                @click="onClickButtonConvert(scope.row)"
-                            >
-                                <SwitchIcon class="action-icon" />
-                            </el-button>
-                        </el-tooltip>
-                        <el-tooltip
-                            effect="dark"
-                            :content="$t('event.list.tooltip.edit')"
+                            :content="$t('store.exportMaterial.tooltip.edit')"
                             placement="top"
                             v-if="isCanUpdate(scope.row?.status)"
                         >
                             <el-button
                                 type="warning"
                                 size="mini"
-                                @click="onClickButtonEdit(scope.row)"
+                                @click="onClickUpdateexportMaterial(scope.row.id)"
                             >
                                 <EditIcon class="action-icon" />
                             </el-button>
                         </el-tooltip>
                         <el-tooltip
                             effect="dark"
-                            :content="$t('event.list.tooltip.delete')"
+                            :content="$t('store.exportMaterial.tooltip.delete')"
                             placement="top"
                             v-if="isCanDelete(scope.row?.status)"
                         >
@@ -112,44 +100,34 @@
 <script lang="ts">
 import { mixins, Options } from 'vue-property-decorator';
 
-import { IMaterial } from '../../types';
+import { IExportMaterial } from '../../types';
 import CompIcon from '../../../../components/CompIcon.vue';
-import { storeModule } from '../../store';
 import { StoreMixins } from '../../mixins';
-import {
-    Delete as DeleteIcon,
-    Edit as EditIcon,
-    Switch as SwitchIcon,
-} from '@element-plus/icons-vue';
+import { Delete as DeleteIcon, Edit as EditIcon } from '@element-plus/icons-vue';
 import { eventModule } from '@/modules/event/store';
 import { PermissionResources, PermissionActions } from '@/modules/role/constants';
 import { checkUserHasPermission } from '@/utils/helper';
 
 @Options({
-    name: 'material-table-component',
+    name: 'import-material-table-component',
     components: {
         CompIcon,
         DeleteIcon,
         EditIcon,
-        SwitchIcon,
     },
 })
-export default class MaterialTable extends mixins(StoreMixins) {
-    get materialList(): IMaterial[] {
+export default class ExportMaterialTable extends mixins(StoreMixins) {
+    get exportList(): IExportMaterial[] {
         return [
             {
                 id: 1,
-                material: 'thịt bò',
-                quantity: 2,
-                unit: 'kg',
-                updateAt: '2022-04-20T17:00:00.000Z',
-            },
-            {
-                id: 2,
-                material: 'sữa',
-                quantity: 400,
-                unit: 'Lit',
-                updateAt: '2022-04-20T17:00:00.000Z',
+                importTime: '2022-04-20T17:00:00.000Z',
+                transporters: 'Winmart',
+                warehouseStaff: {
+                    id: 1,
+                    name: 'Chu Sở Lâm',
+                },
+                note: 'check',
             },
         ];
     }
@@ -166,12 +144,8 @@ export default class MaterialTable extends mixins(StoreMixins) {
         ]);
     }
 
-    onClickButtonConvert(): void {
-        storeModule.setIsShowConvertMaterialFormPopUp(true);
-    }
-
-    onClickButtonEdit(): void {
-        storeModule.setIsShowMaterialFormPopUp(true);
+    onClickUpdateexportMaterial(id: number): void {
+        this.$router.push(`/export-material/${id}`);
     }
 }
 </script>

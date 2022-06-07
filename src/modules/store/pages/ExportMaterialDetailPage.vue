@@ -1,13 +1,11 @@
 <template>
-    <div class="booking-list">
+    <div class="export-material-detail-list">
         <BaseListPageHeader
             @toggle-filter-form="toggleFilterForm"
-            :pageTitle="$t('booking.list.pageName')"
+            :pageTitle="$t('store.exportMaterialDetail.pageName')"
             :hasSortBox="true"
             v-model:page="selectedPage"
-            :totalItems="totalBookings"
-            :isShowCreateButton="isCanCreate"
-            @create="onClickButtonCreate"
+            :totalItems="totalExportMaterialDetails"
             @onPaginate="handlePaginate"
         >
             <template #sort-box-content>
@@ -15,75 +13,61 @@
             </template>
         </BaseListPageHeader>
         <FilterForm :isToggleFilterForm="isToggleFilterForm" />
-        <booking-table />
-        <booking-form-popup />
+        <ExportMaterialDetailTable />
     </div>
 </template>
 
 <script lang="ts">
 import { DEFAULT_FIRST_PAGE } from '@/common/constants';
-import { PermissionResources, PermissionActions } from '@/modules/role/constants';
-import { checkUserHasPermission } from '@/utils/helper';
 import { ElLoading } from 'element-plus';
 import { Options, Vue } from 'vue-class-component';
-import BookingTable from '../components/BookingTable.vue';
+import ExportMaterialDetailTable from '../components/exportMaterialDetail/ExportMaterialDetailTable.vue';
 import { storeModule } from '../store';
-import FilterForm from '../components/FilterForm.vue';
-import BookingFormPopup from '../components/BookingFormPopup.vue';
+import FilterForm from '../components/exportMaterialDetail/FilterForm.vue';
 
 @Options({
     components: {
-        BookingTable,
+        ExportMaterialDetailTable,
         FilterForm,
-        BookingFormPopup,
     },
 })
-export default class ExportPage extends Vue {
+export default class ExportMaterialDetailPage extends Vue {
     isToggleFilterForm = true;
 
-    get totalBookings(): number {
-        return storeModule.totalBookings;
+    get totalExportMaterialDetails(): number {
+        return storeModule.totalExportMaterialDetails;
     }
 
     // check permission
-    get isCanCreate(): boolean {
-        return checkUserHasPermission(storeModule.userPermissions, [
-            `${PermissionResources.EVENT}_${PermissionActions.CREATE}`,
-        ]);
-    }
 
     get selectedPage(): number {
-        return storeModule.bookingQueryString?.page || DEFAULT_FIRST_PAGE;
+        return storeModule.queryStringExportMaterialDetail?.page || DEFAULT_FIRST_PAGE;
     }
 
     set selectedPage(value: number) {
-        storeModule.bookingQueryString.page = value;
+        storeModule.queryStringExportMaterialDetail.page = value;
     }
 
     created(): void {
-        storeModule.clearQueryString();
-        this.getBookingList();
+        storeModule.clearQueryStringExportMaterialDetail();
+        this.getExportMaterialDetailList();
     }
 
-    async getBookingList(): Promise<void> {
+    async getExportMaterialDetailList(): Promise<void> {
         const loading = ElLoading.service({
             target: '.content',
         });
-        await storeModule.getBookings();
+        await storeModule.getExportMaterialDetails();
         loading.close();
     }
 
     async handlePaginate(): Promise<void> {
-        storeModule.setBookingQueryString({ page: this.selectedPage });
-        this.getBookingList();
+        storeModule.setQueryStringExportMaterialDetail({ page: this.selectedPage });
+        this.getExportMaterialDetailList();
     }
 
     toggleFilterForm(): void {
         this.isToggleFilterForm = !this.isToggleFilterForm;
-    }
-
-    onClickButtonCreate(): void {
-        storeModule.setIsShowBookingFormPopUp(true);
     }
 }
 </script>

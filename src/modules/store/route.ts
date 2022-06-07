@@ -1,10 +1,11 @@
 import { RouteRecordRaw } from 'vue-router';
 import MaterialPage from './pages/MaterialPage.vue';
-import ConvertPage from './pages/ConvertPage.vue';
+import ConvertHistoryPage from './pages/ConvertHistoryPage.vue';
 import SupplierPage from './pages/SupplierPage.vue';
 import ImportMaterialPage from './pages/ImportMaterialPage.vue';
 import ImportMaterialDetailPage from './pages/ImportMaterialDetailPage.vue';
-import ExportPage from './pages/ExportPage.vue';
+import ExportMaterialPage from './pages/ExportMaterialPage.vue';
+import ExportMaterialDetailPage from './pages/ExportMaterialDetailPage.vue';
 import CheckInventoryPage from './pages/CheckInventoryPage.vue';
 import InventoryDetailPage from './pages/InventoryDetailPage.vue';
 
@@ -33,13 +34,13 @@ export default [
         ],
     },
     {
-        path: '/convert',
+        path: '/convert-history',
         component: MainLayout,
         children: [
             {
                 path: '',
                 name: PageName.STORE_CONVERT_PAGE,
-                component: ConvertPage,
+                component: ConvertHistoryPage,
                 meta: {
                     requiresAuth: true,
                     requiredPermissions: [
@@ -108,13 +109,13 @@ export default [
         ],
     },
     {
-        path: '/export',
+        path: '/export-material',
         component: MainLayout,
         children: [
             {
                 path: '',
                 name: PageName.STORE_EXPORT_PAGE,
-                component: ExportPage,
+                component: ExportMaterialPage,
                 meta: {
                     requiresAuth: true,
                     requiredPermissions: [
@@ -122,6 +123,21 @@ export default [
                         `${PermissionResources.REQUEST_ASSET}_${PermissionActions.CREATE}`,
                         `${PermissionResources.REQUEST_ASSET}_${PermissionActions.UPDATE}`,
                         `${PermissionResources.REQUEST_ASSET}_${PermissionActions.DELETE}`,
+                    ],
+                },
+            },
+            {
+                path: ':id',
+                name: PageName.STORE_EXPORT_MATERIAL_DETAIL_PAGE,
+                component: ExportMaterialDetailPage,
+                props: true,
+                meta: {
+                    requiresAuth: true,
+                    requiredPermissions: [
+                        `${PermissionResources.RECRUITMENT}_${PermissionActions.READ}`,
+                        `${PermissionResources.RECRUITMENT}_${PermissionActions.CREATE}`,
+                        `${PermissionResources.RECRUITMENT}_${PermissionActions.UPDATE}`,
+                        `${PermissionResources.RECRUITMENT}_${PermissionActions.DELETE}`,
                     ],
                 },
             },

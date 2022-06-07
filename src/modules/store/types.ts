@@ -1,6 +1,11 @@
-import { BookingStatus } from './constants';
 import { IQueryString } from '@/common/types';
 
+export type TModalType = 'Create' | 'Edit' | 'Close';
+export interface IWarehouseStaff {
+    id: number;
+    name: string;
+}
+// Material
 export interface IMaterial {
     id: number;
     material: string;
@@ -9,6 +14,22 @@ export interface IMaterial {
     updateAt: Date | string;
 }
 
+export interface IMaterialCreate {
+    material: string | undefined;
+    unit: string | undefined;
+    quantity: number | undefined;
+    updateAt: Date | string | undefined;
+}
+
+export interface IMaterialUpdate extends IMaterialCreate {
+    id: number | undefined;
+}
+
+export interface IQueryStringMaterial extends IQueryString {
+    keyword?: string;
+}
+
+// Supplier
 export interface ISupplier {
     id: number;
     name: string;
@@ -17,112 +38,41 @@ export interface ISupplier {
     updateAt: Date | string;
 }
 
-export interface IGetTables {
-    tables: Array<IMaterial>;
-    totalProduct: number;
-}
-
-export interface IPatchQueryTable {
-    status: string;
-    nameCustomer?: string;
-    phone?: string;
-    arrivalTime?: string;
-}
-
-export interface IBookingCreate {
-    nameCustomer: string | undefined;
+export interface ISupplierCreate {
+    name: string | undefined;
     phone: string | undefined;
-    arrivalTime: Date | string | undefined;
-    numberPeople: number | undefined;
+    address: string | undefined;
+    updateAt: Date | string | undefined;
 }
 
-export interface IBookingUpdate extends IBookingCreate {
+export interface ISupplierUpdate extends ISupplierCreate {
     id: number | undefined;
 }
 
-export interface IPatchBooking {
-    status?: string;
-    idTable?: number;
+export interface IQueryStringSupplier extends IQueryString {
+    keyword?: string;
 }
 
-export interface ICategory {
-    id: number | string;
-    name: string;
-}
-
-export interface IGetCategories {
-    categories: Array<ICategory>;
-}
-
-export interface IFood {
-    id: number;
-    name: string;
-    price: string;
-    descriptions: string;
-    imgLink: string;
-    category: ICategory;
-}
-
-export interface IGetFoods {
-    foods: Array<IFood>;
-    totalProduct: number;
-}
-
-export interface IRestaurant {
-    id: number;
-    name: string;
-    address: string;
-    phone: string;
-}
-
-export interface IGetRestaurant {
-    tables: Array<IRestaurant>;
-    totalProduct: number;
-}
-
-export interface IQueryStringBooking extends IQueryString {
-    keyword?: string | null;
-    status?: BookingStatus[] | null;
-    arrivalTimeRange?: string[] | null;
-}
-
-export type TModalType = 'Create' | 'Edit' | 'Close';
-
-export interface ITextItem {
-    name: string;
-    number: number;
-}
-
-export interface ITable {
-    id: number;
-    name: string;
-    status: string;
-    numberSeat: number;
-    idRestaurant: number;
-}
-
-export interface IBooking {
-    id: number;
-    nameCustomer: string;
-    phone: string;
-    arrivalTime: Date;
-    status: string;
-    table: ITable;
-    numberPeople: number;
-}
-
-export interface IInventoryOfficer {
-    id: number;
-    name: string;
-}
+// Inventory
 
 export interface ICheckInventory {
     id: number;
     checkTime: string;
-    inventoryOfficer: IInventoryOfficer;
+    warehouseStaff: IWarehouseStaff;
     status: string;
     note: string;
 }
+
+export interface ICheckInventoryUpdate {
+    id: number | undefined;
+    status: string | undefined;
+}
+
+export interface IQueryStringCheckInventory extends IQueryString {
+    keyword?: string;
+}
+
+// Inventory Detail
 export interface IInventoryDetail {
     id: number;
     nameMaterial: string;
@@ -133,16 +83,21 @@ export interface IInventoryDetail {
     note: string;
 }
 
-export interface IWarehouseStaff {
-    id: number;
-    name: string;
+export interface IQueryStringInventoryDetail extends IQueryString {
+    keyword?: string;
+    idCheckInventory?: number;
 }
+// import material
 export interface IImportMaterial {
     id: number;
     importTime: string;
     supplier: string;
     warehouseStaff: IWarehouseStaff;
     note: string;
+}
+
+export interface IQueryStringImportMaterial extends IQueryString {
+    keyword?: string;
 }
 export interface IImportMaterialDetail {
     id: number;
@@ -151,4 +106,54 @@ export interface IImportMaterialDetail {
     quantity: number;
     unit: string;
     note: string;
+}
+
+export interface IQueryStringImportMaterialDetail extends IQueryString {
+    keyword?: string;
+    idImportMaterial?: number;
+}
+export interface IExportMaterial {
+    id: number;
+    importTime: string;
+    transporters: string;
+    warehouseStaff: IWarehouseStaff;
+    note: string;
+}
+
+export interface IQueryStringExportMaterial extends IQueryString {
+    keyword?: string;
+}
+export interface IExportMaterialDetail {
+    id: number;
+    nameMaterial: string;
+    exportPrice: number;
+    quantity: number;
+    unit: string;
+    note: string;
+}
+
+export interface IQueryStringExportMaterialDetail extends IQueryString {
+    keyword?: string;
+    idExportMaterial?: number;
+}
+
+export interface IPerformer {
+    id: number;
+    name: string;
+}
+export interface IConvertHistory {
+    id: number;
+    convertTime: string;
+    convertFrom: string;
+    quantityFrom: number;
+    quantityBeforeConvertFrom: number;
+    quantityBeforeConvertTo: number;
+    convertTo: string;
+    quantityTo: number;
+    performer: IPerformer;
+    note: string;
+}
+
+export interface IQueryStringConvertHistory extends IQueryString {
+    keyword?: string;
 }

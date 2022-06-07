@@ -32,9 +32,9 @@ import {
     LIMIT_PER_PAGE,
 } from '@/common/constants';
 import { storeModule } from '../../store';
+import { IQueryStringExportMaterialDetail } from '../../types';
 import { Prop, mixins } from 'vue-property-decorator';
 import { StoreMixins } from '../../mixins';
-import { IQueryStringInventoryDetail } from '../../types';
 
 export default class FilterForm extends mixins(StoreMixins) {
     @Prop({ default: false }) readonly isToggleFilterForm!: boolean;
@@ -45,8 +45,8 @@ export default class FilterForm extends mixins(StoreMixins) {
         orderBy: DEFAULT_ORDER_BY,
         orderDirection: DEFAULT_ORDER_DIRECTION,
         keyword: '',
-        idCheckInventory: undefined,
-    } as IQueryStringInventoryDetail;
+        idExportMaterial: undefined,
+    } as IQueryStringExportMaterialDetail;
 
     async resetFilter(): Promise<void> {
         this.filterForm = {
@@ -55,14 +55,14 @@ export default class FilterForm extends mixins(StoreMixins) {
             orderBy: DEFAULT_ORDER_BY,
             orderDirection: DEFAULT_ORDER_DIRECTION,
             keyword: '',
-            idCheckInventory: undefined,
+            idExportMaterial: undefined,
         };
-        storeModule.clearQueryStringInventoryDetail();
+        storeModule.clearQueryStringExportMaterialDetail();
         await this.handleFilter();
     }
 
     async handleFilter(): Promise<void> {
-        storeModule.setQueryStringInventoryDetail({
+        storeModule.setQueryStringExportMaterialDetail({
             page: DEFAULT_FIRST_PAGE,
             limit: DEFAULT_SIZE_PER_PAGE,
             keyword: this.filterForm.keyword?.trim(),
@@ -70,7 +70,7 @@ export default class FilterForm extends mixins(StoreMixins) {
         const loading = ElLoading.service({
             target: '.content',
         });
-        await storeModule.getInventoryDetails();
+        await storeModule.getExportMaterialDetails();
         loading.close();
     }
 }

@@ -6,9 +6,8 @@
                 <div class="login-inner">
                     <img
                         class="m-auto d-block"
-                        width="150"
-                        height="80"
-                        src="@/assets/images/logo.png"
+                        height="50"
+                        src="@/assets/images/logo/logo-horizontal.png"
                     />
 
                     <el-button class="v-btn--text" @click="getGoogleLoginLink">
@@ -58,7 +57,7 @@ export default class LoginPage extends Vue {
 
 <style lang="scss" scoped>
 .login-page {
-    background-image: url('~@/assets/images/login-bg.jpeg');
+    background-image: url('~@/assets/images/login-bg.jpg');
     background-color: #f5f5f5;
     height: 100vh;
     display: flex;

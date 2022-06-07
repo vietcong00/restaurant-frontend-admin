@@ -15,8 +15,9 @@
             </template>
         </BaseListPageHeader>
         <FilterForm :isToggleFilterForm="isToggleFilterForm" />
-        <material-table />
-        <material-form-popup />
+        <MaterialTable />
+        <MaterialFormPopup />
+        <ConvertMaterialFormPopup />
     </div>
 </template>
 
@@ -30,12 +31,14 @@ import MaterialTable from '../components/material/MaterialTable.vue';
 import { storeModule } from '../store';
 import FilterForm from '../components/material/FilterForm.vue';
 import MaterialFormPopup from '../components/material/MaterialFormPopup.vue';
+import ConvertMaterialFormPopup from '../components/material/ConvertMaterialFormPopup.vue';
 
 @Options({
     components: {
         MaterialTable,
         FilterForm,
         MaterialFormPopup,
+        ConvertMaterialFormPopup,
     },
 })
 export default class MaterialPage extends Vue {

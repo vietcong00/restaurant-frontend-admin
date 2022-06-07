@@ -19,13 +19,13 @@
                 </template>
             </el-table-column>
             <el-table-column
-                prop="inventoryOfficer"
+                prop="warehouseStaff"
                 :label="
-                    $t('store.checkInventory.checkInventoryTable.header.inventoryOfficer')
+                    $t('store.checkInventory.checkInventoryTable.header.warehouseStaff')
                 "
             >
                 <template #default="scope">
-                    {{ scope.row.inventoryOfficer.name }}
+                    {{ scope.row.warehouseStaff.name }}
                 </template>
             </el-table-column>
             <el-table-column
@@ -93,7 +93,6 @@ import { mixins, Options } from 'vue-property-decorator';
 
 import { ICheckInventory } from '../../types';
 import CompIcon from '../../../../components/CompIcon.vue';
-import { storeModule } from '../../store';
 import { StoreMixins } from '../../mixins';
 import { Delete as DeleteIcon, Edit as EditIcon } from '@element-plus/icons-vue';
 import { eventModule } from '@/modules/event/store';
@@ -114,7 +113,7 @@ export default class CheckInventoryTable extends mixins(StoreMixins) {
             {
                 id: 1,
                 checkTime: '2022-04-20T17:00:00.000Z',
-                inventoryOfficer: {
+                warehouseStaff: {
                     id: 1,
                     name: 'Raiden Shogun',
                 },
@@ -122,10 +121,6 @@ export default class CheckInventoryTable extends mixins(StoreMixins) {
                 note: 'check',
             },
         ];
-    }
-
-    created(): void {
-        storeModule.getBookings();
     }
 
     isCanDelete(): boolean {

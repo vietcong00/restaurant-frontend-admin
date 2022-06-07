@@ -5,7 +5,7 @@
             :pageTitle="$t('store.importMaterial.pageName')"
             :hasSortBox="true"
             v-model:page="selectedPage"
-            :totalItems="totalBookings"
+            :totalItems="totalImportMaterials"
             @onPaginate="handlePaginate"
         >
             <template #sort-box-content>
@@ -33,22 +33,22 @@ import ImportMaterialTable from '../components/importMaterial/ImportMaterialTabl
 export default class ImportMaterialPage extends Vue {
     isToggleFilterForm = true;
 
-    get totalBookings(): number {
-        return storeModule.totalBookings;
+    get totalImportMaterials(): number {
+        return storeModule.totalImportMaterials;
     }
 
     // check permission
 
     get selectedPage(): number {
-        return storeModule.bookingQueryString?.page || DEFAULT_FIRST_PAGE;
+        return storeModule.queryStringImportMaterial?.page || DEFAULT_FIRST_PAGE;
     }
 
     set selectedPage(value: number) {
-        storeModule.bookingQueryString.page = value;
+        storeModule.queryStringImportMaterial.page = value;
     }
 
     created(): void {
-        storeModule.clearQueryString();
+        storeModule.clearQueryStringImportMaterial();
     }
 
     toggleFilterForm(): void {
