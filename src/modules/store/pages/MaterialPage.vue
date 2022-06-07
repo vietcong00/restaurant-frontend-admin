@@ -44,8 +44,8 @@ import ConvertMaterialFormPopup from '../components/material/ConvertMaterialForm
 export default class MaterialPage extends Vue {
     isToggleFilterForm = true;
 
-    get totalBookings(): number {
-        return 20;
+    get totalMaterials(): number {
+        return storeModule.totalMaterials;
     }
 
     // check permission
@@ -56,29 +56,29 @@ export default class MaterialPage extends Vue {
     }
 
     get selectedPage(): number {
-        return storeModule.bookingQueryString?.page || DEFAULT_FIRST_PAGE;
+        return storeModule.queryStringMaterial?.page || DEFAULT_FIRST_PAGE;
     }
 
     set selectedPage(value: number) {
-        storeModule.bookingQueryString.page = value;
+        storeModule.queryStringMaterial.page = value;
     }
 
     created(): void {
-        storeModule.clearQueryString();
-        this.getBookingList();
+        storeModule.clearQueryStringMaterial();
+        this.getMaterialList();
     }
 
-    async getBookingList(): Promise<void> {
+    async getMaterialList(): Promise<void> {
         const loading = ElLoading.service({
             target: '.content',
         });
-        await storeModule.getBookings();
+        await storeModule.getMaterials();
         loading.close();
     }
 
     async handlePaginate(): Promise<void> {
-        storeModule.setBookingQueryString({ page: this.selectedPage });
-        this.getBookingList();
+        storeModule.setQueryStringMaterial({ page: this.selectedPage });
+        this.getMaterialList();
     }
 
     toggleFilterForm(): void {
@@ -86,7 +86,7 @@ export default class MaterialPage extends Vue {
     }
 
     onClickButtonCreate(): void {
-        storeModule.setIsShowBookingFormPopUp(true);
+        storeModule.setIsShowMaterialFormPopUp(true);
     }
 }
 </script>

@@ -5,7 +5,7 @@
             :pageTitle="$t('store.convertHistory.pageName')"
             :hasSortBox="true"
             v-model:page="selectedPage"
-            :totalItems="totalBookings"
+            :totalItems="totalConvertHistories"
             :isShowCreateButton="isCanCreate"
             @create="onClickButtonCreate"
             @onPaginate="handlePaginate"
@@ -41,8 +41,8 @@ import ConvertHistoryDetailFormPopup from '../components/convertHistory/ConvertH
 export default class ConvertHistoryPage extends Vue {
     isToggleFilterForm = true;
 
-    get totalBookings(): number {
-        return storeModule.totalBookings;
+    get totalConvertHistories(): number {
+        return storeModule.totalConvertHistories;
     }
 
     // check permission
@@ -53,29 +53,29 @@ export default class ConvertHistoryPage extends Vue {
     }
 
     get selectedPage(): number {
-        return storeModule.bookingQueryString?.page || DEFAULT_FIRST_PAGE;
+        return storeModule.queryStringConvertHistory?.page || DEFAULT_FIRST_PAGE;
     }
 
     set selectedPage(value: number) {
-        storeModule.bookingQueryString.page = value;
+        storeModule.queryStringConvertHistory.page = value;
     }
 
     created(): void {
-        storeModule.clearQueryString();
-        this.getBookingList();
+        storeModule.clearQueryStringConvertHistory();
+        this.getConvertHistoryList();
     }
 
-    async getBookingList(): Promise<void> {
+    async getConvertHistoryList(): Promise<void> {
         const loading = ElLoading.service({
             target: '.content',
         });
-        await storeModule.getBookings();
+        await storeModule.getConvertHistories();
         loading.close();
     }
 
     async handlePaginate(): Promise<void> {
-        storeModule.setBookingQueryString({ page: this.selectedPage });
-        this.getBookingList();
+        storeModule.setQueryStringConvertHistory({ page: this.selectedPage });
+        this.getConvertHistoryList();
     }
 
     toggleFilterForm(): void {
@@ -83,7 +83,7 @@ export default class ConvertHistoryPage extends Vue {
     }
 
     onClickButtonCreate(): void {
-        storeModule.setIsShowBookingFormPopUp(true);
+        storeModule.setIsShowConvertHistoryFormPopUp(true);
     }
 }
 </script>

@@ -151,10 +151,6 @@ export default class ExportMaterialTable extends mixins(StoreMixins) {
         ];
     }
 
-    created(): void {
-        storeModule.getBookings();
-    }
-
     isCanDelete(): boolean {
         return checkUserHasPermission(eventModule.userPermissions, [
             `${PermissionResources.EVENT}_${PermissionActions.DELETE}`,
