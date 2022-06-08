@@ -71,7 +71,7 @@
 
 <script lang="ts">
 import { setup } from 'vue-class-component';
-import { initData } from '../../composition/createForm';
+import { initData } from '../../composition/supplierForm';
 import { storeModule } from '../../store';
 import { UtilMixins } from '@/mixins/utilMixins';
 import { mixins, Options } from 'vue-property-decorator';
@@ -79,6 +79,8 @@ import { mixins, Options } from 'vue-property-decorator';
     name: 'supplier-form-popup',
 })
 export default class SupplierFormPopUp extends mixins(UtilMixins) {
+    form = setup(() => initData());
+
     get isShowSupplierFormPopUp(): boolean {
         return storeModule.isShowSupplierFormPopUp || false;
     }
@@ -87,8 +89,6 @@ export default class SupplierFormPopUp extends mixins(UtilMixins) {
         storeModule.setIsShowSupplierFormPopUp(val);
     }
 
-    form = setup(() => initData());
-
     async closePopup(): Promise<void> {
         storeModule.setIsShowSupplierFormPopUp(false);
         storeModule.setSelectedSupplier(null);
@@ -96,7 +96,7 @@ export default class SupplierFormPopUp extends mixins(UtilMixins) {
     }
 
     async onClickSaveButton(): Promise<void> {
-        await this.form.onSubmit();
+        (this.form.onSubmit as () => void)();
     }
 }
 </script>

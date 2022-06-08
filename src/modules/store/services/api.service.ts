@@ -4,6 +4,12 @@ import { BaseService } from '@/utils/api';
 class MaterialService extends BaseService {}
 export const materialService = new MaterialService({ baseUrl: 'material' }, service);
 
+class ConvertMaterialService extends BaseService {}
+export const convertMaterialService = new ConvertMaterialService(
+    { baseUrl: 'convert-material' },
+    service,
+);
+
 class SupplierService extends BaseService {}
 export const supplierService = new SupplierService({ baseUrl: 'supplier' }, service);
 
@@ -45,6 +51,6 @@ export const exportMaterialDetailService = new ExportMaterialDetailService(
 
 class ConvertHistoryService extends BaseService {}
 export const convertHistoryService = new ConvertHistoryService(
-    { baseUrl: 'convert-history' },
+    { baseUrl: 'convert-material' },
     service,
 );

@@ -3,6 +3,7 @@
         width="50%"
         v-model="isShowConvertMaterialFormPopUp"
         @closed="closePopup"
+        @open="form.openPopup"
         custom-class="convert-material-form-popup"
     >
         <template #title>
@@ -21,41 +22,46 @@
             <div class="col-md-4">
                 <BaseInputText
                     :isDisabled="true"
-                    v-model:value="selectedConvertHistory.performer.name"
+                    :value="namePerformer"
                     :label="$t('store.convertHistory.convertHistoryPopup.performer')"
                 />
             </div>
             <div class="col-md-4">
                 <BaseInputText
-                    v-model:value="selectedConvertHistory.note"
+                    v-model:value="form.note"
                     :label="$t('store.convertHistory.convertHistoryPopup.note')"
                 />
             </div>
             <div class="col-md-5">
-                <BaseInputText
-                    :isDisabled="true"
-                    v-model:value="selectedConvertHistory.convertFrom"
+                <BaseSingleSelect
+                    v-model:value="form.idMaterialFrom"
                     :label="$t('store.convertHistory.convertHistoryPopup.convertFrom')"
+                    :placeholder="
+                        $t('store.convertHistory.convertHistoryPopup.convertFrom')
+                    "
+                    :isRequired="true"
+                    :options="materialOptions"
+                    @change="onChangeMaterialFrom"
+                    :filterable="true"
                 />
                 <BaseInputText
                     :isDisabled="true"
-                    v-model:value="selectedConvertHistory.quantityBeforeConvertFrom"
+                    v-model:value="form.quantityBeforeConvertFrom"
                     :label="
                         $t(
                             'store.convertHistory.convertHistoryPopup.quantityBeforeConvert',
                         )
                     "
                 />
-                <BaseInputText
-                    v-model:value="selectedConvertHistory.quantityFrom"
+                <BaseInputNumber
+                    v-model:value="form.quantityFrom"
+                    :min="0"
+                    :isRequired="true"
                     :label="$t('store.convertHistory.convertHistoryPopup.quantityFrom')"
                 />
                 <BaseInputText
                     :isDisabled="true"
-                    :value="
-                        selectedConvertHistory.quantityBeforeConvertFrom -
-                        selectedConvertHistory.quantityFrom
-                    "
+                    :value="quantityAfterConvertFrom"
                     :label="
                         $t(
                             'store.convertHistory.convertHistoryPopup.quantityAfterConvert',
@@ -70,29 +76,35 @@
                 />
             </div>
             <div class="col-md-5">
-                <BaseInputText
-                    v-model:value="selectedConvertHistory.convertTo"
+                <BaseSingleSelect
+                    v-model:value="form.idMaterialTo"
                     :label="$t('store.convertHistory.convertHistoryPopup.convertTo')"
+                    :placeholder="
+                        $t('store.convertHistory.convertHistoryPopup.convertTo')
+                    "
+                    :isRequired="true"
+                    :options="materialOptions"
+                    @change="onChangeMaterialTo"
+                    :filterable="true"
                 />
                 <BaseInputText
                     :isDisabled="true"
-                    v-model:value="selectedConvertHistory.quantityBeforeConvertTo"
+                    v-model:value="form.quantityBeforeConvertTo"
                     :label="
                         $t(
                             'store.convertHistory.convertHistoryPopup.quantityBeforeConvert',
                         )
                     "
                 />
-                <BaseInputText
-                    v-model:value="selectedConvertHistory.quantityTo"
+                <BaseInputNumber
+                    v-model:value="form.quantityTo"
+                    :min="0"
+                    :isRequired="true"
                     :label="$t('store.convertHistory.convertHistoryPopup.quantityFrom')"
                 />
                 <BaseInputText
                     :isDisabled="true"
-                    :value="
-                        selectedConvertHistory.quantityBeforeConvertTo +
-                        selectedConvertHistory.quantityTo
-                    "
+                    :value="quantityAfterConvertTo"
                     :label="
                         $t(
                             'store.convertHistory.convertHistoryPopup.quantityAfterConvert',
@@ -108,7 +120,14 @@
                         class="col-md-4 col-sm-6 d-flex justify-content-md-end justify-content-center"
                     >
                         <el-button @click="onClickCancel">
-                            {{ $t('billing.form.button.cancel') }}
+                            {{ $t('store.material.button.cancel') }}
+                        </el-button>
+                    </div>
+                    <div
+                        class="col-md-4 col-sm-6 d-flex justify-content-md-start justify-content-center"
+                    >
+                        <el-button type="primary" @click="onClickSaveButton">
+                            {{ $t('store.material.button.submit') }}
                         </el-button>
                     </div>
                 </div>
@@ -118,36 +137,62 @@
 </template>
 
 <script lang="ts">
-import { IConvertHistory } from '../../types';
 import { storeModule } from '../../store';
-import { mixins } from 'vue-class-component';
+import { mixins, setup } from 'vue-class-component';
 import { StoreMixins } from '../../mixins';
+import { initData } from '../../composition/convertMaterialForm';
+import { appService } from '@/utils/app';
+import { ISelectMaterialOptions } from '../../types';
 
 export default class ConvertMaterialFormPopup extends mixins(StoreMixins) {
+    form = setup(() => initData());
+
+    get materialOptions(): ISelectMaterialOptions[] {
+        return storeModule.materialOptions;
+    }
+
+    get namePerformer(): string {
+        return appService.getUser().fullName;
+    }
+
     get isShowConvertMaterialFormPopUp(): boolean {
         return storeModule.isShowConvertMaterialFormPopUp;
     }
 
-    get selectedConvertHistory(): IConvertHistory {
-        return {
-            id: 1,
-            convertTime: '2022-04-04 09:09:09',
-            convertFrom: 'Box',
-            quantityFrom: 4,
-            quantityBeforeConvertFrom: 10,
-            convertTo: 'can',
-            quantityTo: 40,
-            quantityBeforeConvertTo: 55,
-            performer: {
-                id: 1,
-                name: 'Chu Si Lam',
-            },
-            note: 'checker',
-        };
+    get quantityAfterConvertTo(): number {
+        return this.form.quantityTo
+            ? parseFloat(this.form.quantityBeforeConvertTo as string) +
+                  parseFloat(this.form.quantityTo as string)
+            : parseFloat(this.form.quantityBeforeConvertTo as string);
+    }
+
+    get quantityAfterConvertFrom(): number {
+        return this.form.quantityFrom
+            ? parseFloat(this.form.quantityBeforeConvertFrom as string) -
+                  parseFloat(this.form.quantityFrom as string)
+            : parseFloat(this.form.quantityBeforeConvertFrom as string);
+    }
+
+    onChangeMaterialTo(): void {
+        const materialSelected = this.materialOptions.find(
+            (material) => material.value === this.form.idMaterialTo,
+        );
+        this.form.quantityBeforeConvertTo = materialSelected?.quantity;
+    }
+
+    onChangeMaterialFrom(): void {
+        const materialSelected = this.materialOptions.find(
+            (material) => material.value === this.form.idMaterialFrom,
+        );
+        this.form.quantityBeforeConvertFrom = materialSelected?.quantity;
     }
 
     onClickCancel(): void {
         storeModule.setIsShowConvertMaterialFormPopUp(false);
+    }
+
+    async onClickSaveButton(): Promise<void> {
+        await this.form.onSubmit();
     }
 
     async closePopup(): Promise<void> {

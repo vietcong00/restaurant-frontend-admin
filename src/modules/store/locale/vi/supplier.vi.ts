@@ -17,7 +17,7 @@ export default {
             name: 'Tên',
             phone: 'Điện thoại',
             address: 'Địa chỉ',
-            updateAt: 'Thời gian cập nhật',
+            updatedAt: 'Thời gian cập nhật',
             actions: 'Thao tác',
         },
     },
@@ -42,17 +42,17 @@ export default {
     message: {
         title: 'Thông báo',
         create: {
-            success: 'Tạo sự kiện thành công!',
+            success: 'Tạo nhà cung cấp thành công!',
         },
 
         update: {
-            success: 'Cập nhật sự kiện thành công!',
+            success: 'Cập nhật nhà cung cấp thành công!',
         },
 
         delete: {
-            title: 'Xóa sự kiện',
-            confirmAsk: 'Bạn có chắc chắn muốn xóa sự kiện này không?',
-            success: 'Xóa sự kiện thành công!',
+            title: 'Xóa Nhà cung cấp',
+            confirmAsk: 'Bạn có chắc chắn muốn xóa nhà cung cấp này không?',
+            success: 'Xóa Nhà cung cấp thành công!',
         },
     },
 

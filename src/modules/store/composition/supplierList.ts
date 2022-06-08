@@ -7,32 +7,32 @@ import {
     showSuccessNotificationFunction,
 } from '@/utils/helper';
 import { ElLoading } from 'element-plus';
-import { materialService } from '../services/api.service';
+import { supplierService } from '../services/api.service';
 
 export const setupDelete = () => {
-    const deleteMaterial = async (id: number) => {
+    const deleteSupplier = async (id: number) => {
         const isConfirm = await showConfirmPopUpFunction(
-            i18n.global.t('store.material.message.delete.confirmAsk') as string,
-            i18n.global.t('store.material.message.delete.title') as string,
+            i18n.global.t('store.supplier.message.delete.confirmAsk') as string,
+            i18n.global.t('store.supplier.message.delete.title') as string,
             {},
         );
         if (isConfirm) {
             const loading = ElLoading.service({
                 target: '.content',
             });
-            const response = await materialService.delete(id);
+            const response = await supplierService.delete(id);
             loading.close();
             if (response.success) {
                 showSuccessNotificationFunction(
-                    i18n.global.t('store.material.message.delete.success') as string,
+                    i18n.global.t('store.supplier.message.delete.success') as string,
                 );
-                storeModule.setQueryStringMaterial({
+                storeModule.setQueryStringSupplier({
                     page: DEFAULT_FIRST_PAGE,
                 });
                 const loading = ElLoading.service({
                     target: '.content',
                 });
-                await storeModule.getMaterials();
+                await storeModule.getSuppliers();
                 loading.close();
             } else {
                 showErrorNotificationFunction(response.message);
@@ -40,12 +40,12 @@ export const setupDelete = () => {
                     const loading = ElLoading.service({
                         target: '.content',
                     });
-                    await storeModule.getMaterials();
+                    await storeModule.getSuppliers();
                     loading.close();
                 }
             }
         }
     };
 
-    return { deleteMaterial };
+    return { deleteSupplier };
 };

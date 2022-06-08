@@ -1,103 +1,111 @@
-import { IBooking } from '../../table-diagram/types';
-import { bookingService } from '../../table-diagram/services/api.service';
-import { IBookingCreate } from '../types';
-import { DEFAULT_FIRST_PAGE, HttpStatus } from '@/common/constants';
+import { IMaterial, IMaterialCreate } from './../types';
+import { materialService } from './../services/api.service';
+import {
+    DEFAULT_FIRST_PAGE,
+    HttpStatus,
+    INPUT_NUMBER_MAX_VALUE,
+    INPUT_TEXT_MAX_LENGTH,
+} from '@/common/constants';
 import { IBodyResponse } from '@/common/types';
 import {
     showSuccessNotificationFunction,
     showErrorNotificationFunction,
 } from '@/utils/helper';
 import { ElLoading } from 'element-plus';
-import moment from 'moment';
 import { useField, useForm } from 'vee-validate';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-
-import { BookingSchema } from '../constants';
 import { storeModule } from '../store';
+import yup from '@/plugins/yup';
 
-export const validateBookingSchema = BookingSchema;
+const validateMaterialSchema = yup.object({
+    material: yup.string().trim().max(INPUT_TEXT_MAX_LENGTH).required(),
+    unit: yup.string().trim().optional().required(),
+    quantity: yup
+        .number()
+        .integer()
+        .min(0)
+        .optional()
+        .transform((val) => (isNaN(val) ? null : val))
+        .max(INPUT_NUMBER_MAX_VALUE),
+});
 
 export function initData() {
     const { t } = useI18n();
     const initValues = {
-        nameCustomer: '',
-        phone: '',
-        numberPeople: undefined,
-        arrivalTime: undefined,
+        material: '',
+        unit: '',
+        quantity: undefined,
     };
-    const isCreate = computed(() => !storeModule.selectedBooking?.id);
+    const isCreate = computed(() => !storeModule.selectedMaterial?.id);
     const { handleSubmit, errors, resetForm, validate } = useForm({
         initialValues: initValues,
-        validationSchema: validateBookingSchema,
+        validationSchema: validateMaterialSchema,
     });
 
     const onSubmit = handleSubmit(async (values) => {
         const createBody = {
             ...values,
-            nameCustomer: values.nameCustomer?.trim(),
-            phone: values.phone,
-            numberPeople: values.numberPeople,
-            arrivalTime: moment(values.arrivalTime).utc().fmFullTimeWithoutSecond(),
-        } as IBookingCreate;
+            material: values.material?.trim(),
+            unit: values.unit,
+            quantity: values.quantity,
+        } as IMaterialCreate;
         let response;
-        const bookingId = storeModule.selectedBooking?.id;
+        const materialId = storeModule.selectedMaterial?.id;
         const loading = ElLoading.service({
-            target: '.booking-form-popup',
+            target: '.material-form-popup',
         });
         if (!isCreate.value) {
-            response = await bookingService.update(bookingId as number, createBody);
+            response = await materialService.update(materialId as number, createBody);
         } else {
-            response = await bookingService.create(createBody);
+            response = await materialService.create(createBody);
         }
         loading.close();
         if (response.success) {
             showSuccessNotificationFunction(
                 !isCreate.value
-                    ? t('booking.list.message.update.success')
-                    : (t('booking.list.message.create.success') as string),
+                    ? t('store.material.message.update.success')
+                    : (t('store.material.message.create.success') as string),
             );
-            storeModule.setBookingQueryString({
+            storeModule.setQueryStringMaterial({
                 page: DEFAULT_FIRST_PAGE,
             });
             const loading = ElLoading.service({
                 target: '.content',
             });
-            await storeModule.getBookings();
+            await storeModule.getMaterials();
             loading.close();
-            await storeModule.setIsShowBookingFormPopUp(false);
+            await storeModule.setIsShowMaterialFormPopUp(false);
         } else {
             showErrorNotificationFunction(response.message as string);
             if (response.code === HttpStatus.ITEM_NOT_FOUND) {
-                storeModule.setIsShowBookingFormPopUp(false);
+                storeModule.setIsShowMaterialFormPopUp(false);
                 const loading = ElLoading.service({
                     target: '.content',
                 });
-                await storeModule.getBookings();
+                await storeModule.getMaterials();
                 loading.close();
             }
         }
     });
-    const { value: nameCustomer } = useField('nameCustomer');
-    const { value: phone } = useField('phone');
-    const { value: numberPeople } = useField('numberPeople');
-    const { value: arrivalTime } = useField('arrivalTime');
+    const { value: material } = useField('material');
+    const { value: unit } = useField('unit');
+    const { value: quantity } = useField('quantity');
 
     const openPopup = async () => {
         if (!isCreate.value) {
             const loading = ElLoading.service({
-                target: '.booking-form-popup',
+                target: '.material-form-popup',
             });
-            const bookingDetail = (await bookingService.getDetail(
-                storeModule.selectedBooking?.id || 0,
-            )) as IBodyResponse<IBooking>;
+            const materialDetail = (await materialService.getDetail(
+                storeModule.selectedMaterial?.id || 0,
+            )) as IBodyResponse<IMaterial>;
             loading.close();
             resetForm({
                 values: {
-                    nameCustomer: bookingDetail.data?.nameCustomer,
-                    phone: bookingDetail.data?.phone,
-                    numberPeople: bookingDetail.data?.numberPeople,
-                    arrivalTime: moment(bookingDetail.data?.arrivalTime).fmDayString(),
+                    material: materialDetail.data?.material,
+                    unit: materialDetail.data?.unit,
+                    quantity: materialDetail.data?.quantity,
                 },
             });
         } else {
@@ -107,12 +115,11 @@ export function initData() {
         }
     };
     return {
-        nameCustomer,
-        phone,
-        numberPeople,
-        arrivalTime,
-        errors,
+        material,
+        unit,
+        quantity,
 
+        errors,
         validate,
         openPopup,
         onSubmit,

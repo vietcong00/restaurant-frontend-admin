@@ -42,9 +42,9 @@
             >
                 <template #default="scope">
                     {{
-                        scope.row.updateAt
+                        scope.row.updatedAt
                             ? parseDateTime(
-                                  scope.row.updateAt,
+                                  scope.row.updatedAt,
                                   YYYY_MM_DD_HYPHEN_HH_MM_COLON,
                               )
                             : ''
@@ -112,7 +112,7 @@
 <script lang="ts">
 import { mixins, Options } from 'vue-property-decorator';
 
-import { IMaterial } from '../../types';
+import { IMaterial, IMaterialUpdate } from '../../types';
 import CompIcon from '../../../../components/CompIcon.vue';
 import { storeModule } from '../../store';
 import { StoreMixins } from '../../mixins';
@@ -124,6 +124,8 @@ import {
 import { eventModule } from '@/modules/event/store';
 import { PermissionResources, PermissionActions } from '@/modules/role/constants';
 import { checkUserHasPermission } from '@/utils/helper';
+import { setupDelete } from '../../composition/materialList';
+import { setup } from 'vue-class-component';
 
 @Options({
     name: 'material-table-component',
@@ -135,23 +137,10 @@ import { checkUserHasPermission } from '@/utils/helper';
     },
 })
 export default class MaterialTable extends mixins(StoreMixins) {
+    deleteAction = setup(() => setupDelete());
+
     get materialList(): IMaterial[] {
-        return [
-            {
-                id: 1,
-                material: 'thịt bò',
-                quantity: 2,
-                unit: 'kg',
-                updateAt: '2022-04-20T17:00:00.000Z',
-            },
-            {
-                id: 2,
-                material: 'sữa',
-                quantity: 400,
-                unit: 'Lit',
-                updateAt: '2022-04-20T17:00:00.000Z',
-            },
-        ];
+        return storeModule.materialList;
     }
 
     isCanDelete(): boolean {
@@ -166,12 +155,18 @@ export default class MaterialTable extends mixins(StoreMixins) {
         ]);
     }
 
-    onClickButtonConvert(): void {
+    onClickButtonConvert(convertMaterial: IMaterialUpdate): void {
+        storeModule.setSelectedMaterial(convertMaterial);
         storeModule.setIsShowConvertMaterialFormPopUp(true);
     }
 
-    onClickButtonEdit(): void {
+    onClickButtonEdit(updateMaterial: IMaterialUpdate): void {
+        storeModule.setSelectedMaterial(updateMaterial);
         storeModule.setIsShowMaterialFormPopUp(true);
+    }
+
+    async onClickButtonDelete(id: number): Promise<void> {
+        await this.deleteAction.deleteMaterial(id);
     }
 }
 </script>

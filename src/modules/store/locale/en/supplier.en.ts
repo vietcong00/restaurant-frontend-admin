@@ -16,7 +16,7 @@ export default {
             name: 'Name',
             phone: 'Phone',
             address: 'Address',
-            updateAt: 'Update At',
+            updatedAt: 'Updated At',
             actions: 'Actions',
         },
     },
@@ -41,17 +41,17 @@ export default {
     message: {
         title: 'Notification',
         create: {
-            success: 'Create event successfully!',
+            success: 'Create supplier successfully!',
         },
 
         update: {
-            success: 'Update event successfully!',
+            success: 'Update supplier successfully!',
         },
 
         delete: {
             title: 'Notification',
-            confirmAsk: 'Are you sure you want to delete this event?',
-            success: 'Delete event successfully!',
+            confirmAsk: 'Are you sure you want to delete this supplier?',
+            success: 'Delete supplier successfully!',
         },
     },
 

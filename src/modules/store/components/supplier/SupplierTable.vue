@@ -19,7 +19,7 @@
                 </template>
             </el-table-column>
             <el-table-column
-                prop="name"
+                prop="phone"
                 :label="$t('store.supplier.supplierTable.header.phone')"
                 sortable="custom"
             >
@@ -28,7 +28,7 @@
                 </template>
             </el-table-column>
             <el-table-column
-                prop="idCategory"
+                prop="address"
                 :label="$t('store.supplier.supplierTable.header.address')"
             >
                 <template #default="scope">
@@ -36,12 +36,19 @@
                 </template>
             </el-table-column>
             <el-table-column
-                prop="arrivalTime"
-                :label="$t('store.supplier.supplierTable.header.updateAt')"
+                prop="updatedAt"
+                :label="$t('store.supplier.supplierTable.header.updatedAt')"
                 sortable="custom"
             >
                 <template #default="scope">
-                    {{ parseDateTimeTime(scope.row.updateAt) }}
+                    {{
+                        scope.row.updatedAt
+                            ? parseDateTime(
+                                  scope.row.updatedAt,
+                                  YYYY_MM_DD_HYPHEN_HH_MM_COLON,
+                              )
+                            : ''
+                    }}
                 </template>
             </el-table-column>
             <el-table-column
@@ -91,13 +98,16 @@
 <script lang="ts">
 import { mixins, Options } from 'vue-property-decorator';
 
-import { ISupplier } from '../../types';
+import { ISupplier, ISupplierUpdate } from '../../types';
 import CompIcon from '../../../../components/CompIcon.vue';
 import { StoreMixins } from '../../mixins';
 import { Delete as DeleteIcon, Edit as EditIcon } from '@element-plus/icons-vue';
 import { eventModule } from '@/modules/event/store';
 import { PermissionResources, PermissionActions } from '@/modules/role/constants';
 import { checkUserHasPermission } from '@/utils/helper';
+import { storeModule } from '../../store';
+import { setupDelete } from '../../composition/supplierList';
+import { setup } from 'vue-class-component';
 
 @Options({
     name: 'supplier-table-component',
@@ -108,16 +118,10 @@ import { checkUserHasPermission } from '@/utils/helper';
     },
 })
 export default class SupplierTable extends mixins(StoreMixins) {
+    deleteAction = setup(() => setupDelete());
+
     get supplierList(): ISupplier[] {
-        return [
-            {
-                id: 1,
-                name: 'Vinmart',
-                phone: '123456789',
-                address: '99 Đại La',
-                updateAt: '2022-04-20T17:00:00.000Z',
-            },
-        ];
+        return storeModule.supplierList;
     }
 
     isCanDelete(): boolean {
@@ -130,6 +134,15 @@ export default class SupplierTable extends mixins(StoreMixins) {
         return checkUserHasPermission(eventModule.userPermissions, [
             `${PermissionResources.EVENT}_${PermissionActions.UPDATE}`,
         ]);
+    }
+
+    async onClickButtonEdit(updateSupplier: ISupplierUpdate): Promise<void> {
+        storeModule.setSelectedSupplier(updateSupplier);
+        storeModule.setIsShowSupplierFormPopUp(true);
+    }
+
+    async onClickButtonDelete(id: number): Promise<void> {
+        await this.deleteAction.deleteSupplier(id);
     }
 }
 </script>

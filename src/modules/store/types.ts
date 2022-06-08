@@ -137,6 +137,13 @@ export interface IQueryStringExportMaterialDetail extends IQueryString {
     idExportMaterial?: number;
 }
 
+// Convert Material
+
+export interface ISelectMaterialOptions {
+    label: string;
+    value: string | number;
+    quantity: number;
+}
 export interface IPerformer {
     id: number;
     name: string;
@@ -144,13 +151,25 @@ export interface IPerformer {
 export interface IConvertHistory {
     id: number;
     convertTime: string;
-    convertFrom: string;
+    idMaterialFrom: number;
     quantityFrom: number;
     quantityBeforeConvertFrom: number;
     quantityBeforeConvertTo: number;
-    convertTo: string;
+    idMaterialTo: number;
     quantityTo: number;
     performer: IPerformer;
+    note: string;
+}
+
+export interface IConvertMaterialCreate {
+    convertTime: string | undefined;
+    idMaterialFrom: number | undefined;
+    quantityFrom: number | undefined;
+    quantityBeforeConvertFrom: number | undefined;
+    quantityBeforeConvertTo: number | undefined;
+    idMaterialTo: number | undefined;
+    quantityTo: number | undefined;
+    performer: IPerformer | undefined;
     note: string;
 }
 

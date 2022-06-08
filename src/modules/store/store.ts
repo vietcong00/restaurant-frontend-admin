@@ -29,6 +29,7 @@ import {
     IQueryStringInventoryDetail,
     IQueryStringMaterial,
     IQueryStringSupplier,
+    ISelectMaterialOptions,
     ISupplier,
     ISupplierUpdate,
 } from './types';
@@ -107,6 +108,7 @@ class StoreModule extends VuexModule {
 
     // convert
     isShowConvertMaterialFormPopUp = false;
+    materialOptions: ISelectMaterialOptions[] = [];
 
     // GETTERS
     get userPermissions(): string[] {
@@ -318,6 +320,12 @@ class StoreModule extends VuexModule {
         this.selectedCheckInventory = selectedCheckInventory;
     }
 
+    // Other
+    @Mutation
+    MUTATE_MATERIAL_OPTIONS(materialOptions: ISelectMaterialOptions[]) {
+        this.materialOptions = materialOptions;
+    }
+
     // ACTION
 
     // clear query string
@@ -449,6 +457,12 @@ class StoreModule extends VuexModule {
         this.MUTATE_SELECTED_CHECK_INVENTORY(checkInventory);
     }
 
+    // Other
+    @Action
+    setMaterialOptions(materialOptions: ISelectMaterialOptions[]) {
+        this.MUTATE_MATERIAL_OPTIONS(materialOptions);
+    }
+
     // API Table
     @Action
     async getMaterials() {
@@ -458,6 +472,14 @@ class StoreModule extends VuexModule {
         if (response.success) {
             this.MUTATE_MATERIAL_LIST(response?.data?.items || []);
             this.MUTATE_TOTAL_MATERIALS(response?.data?.totalItems || 0);
+            const materialOptions = (response?.data?.items || []).map(
+                (option: IMaterial) => ({
+                    label: `${option.material} (${option.unit})`,
+                    value: option.id,
+                    quantity: option.quantity,
+                }),
+            );
+            this.MUTATE_MATERIAL_OPTIONS(materialOptions);
         } else {
             this.MUTATE_MATERIAL_LIST([]);
             this.MUTATE_TOTAL_MATERIALS(0);

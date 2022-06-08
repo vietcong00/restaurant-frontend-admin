@@ -11,7 +11,7 @@ export default {
         header: {
             id: 'ID',
             checkTime: 'Check Time',
-            inventoryOfficer: 'Inventory Officer',
+            warehouseStaff: 'Warehouse Staff',
             status: 'Status',
             note: 'Note',
             actions: 'Actions',

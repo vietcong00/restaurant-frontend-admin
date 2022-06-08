@@ -1,7 +1,7 @@
 <template>
     <el-dialog
         width="50%"
-        v-model="isShowConvertHistoryDetailFormPopUp"
+        v-model="isShowConvertHistoryFormPopUp"
         @closed="closePopup"
         custom-class="convert-history-detail-form-popup"
     >
@@ -127,18 +127,18 @@ import { IConvertHistory } from '../../types';
 import { storeModule } from '../../store';
 
 export default class ConvertHistoryDetailFormPopup extends UtilMixins {
-    get isShowConvertHistoryDetailFormPopUp(): boolean {
-        return storeModule.isShowConvertHistoryDetailFormPopUp;
+    get isShowConvertHistoryFormPopUp(): boolean {
+        return storeModule.isShowConvertHistoryFormPopUp;
     }
 
     get selectedConvertHistory(): IConvertHistory {
         return {
             id: 1,
             convertTime: '2022-04-04 09:09:09',
-            convertFrom: 'Box',
+            idMaterialFrom: 1,
             quantityFrom: 4,
             quantityBeforeConvertFrom: 10,
-            convertTo: 'can',
+            idMaterialTo: 2,
             quantityTo: 40,
             quantityBeforeConvertTo: 55,
             performer: {

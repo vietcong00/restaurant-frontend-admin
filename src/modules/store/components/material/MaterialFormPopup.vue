@@ -70,7 +70,7 @@
 
 <script lang="ts">
 import { setup } from 'vue-class-component';
-import { initData } from '../../composition/createForm';
+import { initData } from '../../composition/materialForm';
 import { storeModule } from '../../store';
 import { UtilMixins } from '@/mixins/utilMixins';
 import { mixins, Options } from 'vue-property-decorator';

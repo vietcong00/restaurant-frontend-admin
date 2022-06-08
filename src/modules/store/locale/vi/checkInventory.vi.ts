@@ -12,7 +12,7 @@ export default {
         header: {
             id: 'ID',
             checkTime: 'Thời gian kiểm kho',
-            inventoryOfficer: 'Nhân viên kiểm kho',
+            warehouseStaff: 'Nhân viên kho',
             status: 'Trạng thái',
             note: 'Ghi chú',
             actions: 'Thao tác',

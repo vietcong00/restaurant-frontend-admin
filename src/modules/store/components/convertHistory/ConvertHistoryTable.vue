@@ -136,10 +136,10 @@ export default class ExportMaterialTable extends mixins(StoreMixins) {
             {
                 id: 1,
                 convertTime: '2022-04-04 09:09:09',
-                convertFrom: 'Box',
+                idMaterialFrom: 1,
                 quantityFrom: 4,
                 quantityBeforeConvertFrom: 10,
-                convertTo: 'can',
+                idMaterialTo: 2,
                 quantityTo: 40,
                 quantityBeforeConvertTo: 55,
                 performer: {
