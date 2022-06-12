@@ -146,4 +146,10 @@ export default {
     other: {
         action: 'Action',
     },
+    acceptStatus: {
+        APPROVE: 'Approve',
+        CHECKED_AGAIN: 'Checked Again',
+        REQUEST_CHECK_AGAIN: 'Request Check Again',
+        WAITING_APPROVE: 'Waiting Approve',
+    },
 };

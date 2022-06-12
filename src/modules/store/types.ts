@@ -1,3 +1,4 @@
+import { AcceptStatus } from './constants';
 import { IQueryString } from '@/common/types';
 
 export type TModalType = 'Create' | 'Edit' | 'Close';
@@ -85,15 +86,16 @@ export interface IInventoryDetail {
 
 export interface IQueryStringInventoryDetail extends IQueryString {
     keyword?: string;
-    idCheckInventory?: number;
+    checkInventoryId?: number;
 }
 // import material
 export interface IImportMaterial {
     id: number;
-    importTime: string;
     supplier: string;
     warehouseStaff: IWarehouseStaff;
+    totalPaymentImport: number;
     note: string;
+    status: AcceptStatus;
 }
 
 export interface IQueryStringImportMaterial extends IQueryString {
@@ -110,11 +112,10 @@ export interface IImportMaterialDetail {
 
 export interface IQueryStringImportMaterialDetail extends IQueryString {
     keyword?: string;
-    idImportMaterial?: number;
+    importMaterialId?: number;
 }
 export interface IExportMaterial {
     id: number;
-    importTime: string;
     transporters: string;
     warehouseStaff: IWarehouseStaff;
     note: string;
@@ -134,7 +135,7 @@ export interface IExportMaterialDetail {
 
 export interface IQueryStringExportMaterialDetail extends IQueryString {
     keyword?: string;
-    idExportMaterial?: number;
+    exportMaterialId?: number;
 }
 
 // Convert Material
@@ -152,10 +153,12 @@ export interface IConvertHistory {
     id: number;
     convertTime: string;
     idMaterialFrom: number;
+    materialFrom: IMaterial;
     quantityFrom: number;
     quantityBeforeConvertFrom: number;
     quantityBeforeConvertTo: number;
     idMaterialTo: number;
+    materialTo: IMaterial;
     quantityTo: number;
     performer: IPerformer;
     note: string;

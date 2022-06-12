@@ -6,8 +6,7 @@
             :hasSortBox="true"
             v-model:page="selectedPage"
             :totalItems="totalExportMaterials"
-            :isShowCreateButton="isCanCreate"
-            @create="onClickButtonCreate"
+            :isShowCreateButton="false"
             @onPaginate="handlePaginate"
         >
             <template #sort-box-content>

@@ -13,30 +13,46 @@
                 prop="supplier"
                 :label="$t('store.importMaterial.importMaterialTable.header.supplier')"
                 sortable="custom"
+                width="200"
             >
                 <template #default="scope">
-                    {{ parseDateTimeTime(scope.row.supplier) }}
+                    {{ scope.row.supplier.name }}
                 </template>
             </el-table-column>
             <el-table-column
                 prop="warehouseStaff"
+                width="200"
                 :label="
                     $t('store.importMaterial.importMaterialTable.header.warehouseStaff')
                 "
             >
                 <template #default="scope">
-                    {{ scope.row.warehouseStaff.name }}
+                    {{ scope.row.warehouseStaff.fullName }}
+                </template>
+            </el-table-column>
+            <el-table-column
+                prop="totalPaymentImport"
+                width="250"
+                :label="
+                    $t(
+                        'store.importMaterial.importMaterialTable.header.totalPaymentImport',
+                    )
+                "
+            >
+                <template #default="scope">
+                    {{ parseMoney(scope.row.totalPaymentImport) }}
                 </template>
             </el-table-column>
             <el-table-column
                 prop="importTime"
+                width="200"
                 :label="$t('store.importMaterial.importMaterialTable.header.importTime')"
             >
                 <template #default="scope">
                     {{
-                        scope.row.importTime
+                        scope.row.createdAt
                             ? parseDateTime(
-                                  scope.row.importTime,
+                                  scope.row.createdAt,
                                   YYYY_MM_DD_HYPHEN_HH_MM_COLON,
                               )
                             : ''
@@ -44,8 +60,22 @@
                 </template>
             </el-table-column>
             <el-table-column
+                prop="status"
+                width="200"
+                :label="$t('store.importMaterial.importMaterialTable.header.status')"
+            >
+                <template #default="scope">
+                    <MenuAcceptStatus
+                        :status="scope.row.status"
+                        :id="scope.row.id"
+                        @set-status="setStatus"
+                    />
+                </template>
+            </el-table-column>
+            <el-table-column
                 prop="note"
                 :label="$t('store.importMaterial.importMaterialTable.header.note')"
+                width="200"
             >
                 <template #default="scope">
                     {{ scope.row.note }}
@@ -62,7 +92,7 @@
                     <div class="button-group">
                         <el-tooltip
                             effect="dark"
-                            :content="$t('store.importMaterial.tooltip.edit')"
+                            :content="$t('store.importMaterial.tooltip.detail')"
                             placement="top"
                             v-if="isCanUpdate(scope.row?.status)"
                         >
@@ -72,20 +102,6 @@
                                 @click="onClickUpdateImportMaterial(scope.row.id)"
                             >
                                 <EditIcon class="action-icon" />
-                            </el-button>
-                        </el-tooltip>
-                        <el-tooltip
-                            effect="dark"
-                            :content="$t('store.importMaterial.tooltip.delete')"
-                            placement="top"
-                            v-if="isCanDelete(scope.row?.status)"
-                        >
-                            <el-button
-                                type="danger"
-                                size="mini"
-                                @click="onClickButtonDelete(scope.row?.id)"
-                            >
-                                <DeleteIcon class="action-icon" />
                             </el-button>
                         </el-tooltip>
                     </div>
@@ -104,7 +120,18 @@ import { StoreMixins } from '../../mixins';
 import { Delete as DeleteIcon, Edit as EditIcon } from '@element-plus/icons-vue';
 import { eventModule } from '@/modules/event/store';
 import { PermissionResources, PermissionActions } from '@/modules/role/constants';
-import { checkUserHasPermission } from '@/utils/helper';
+import {
+    checkUserHasPermission,
+    showErrorNotificationFunction,
+    showSuccessNotificationFunction,
+} from '@/utils/helper';
+import { storeModule } from '../../store';
+import { importMaterialService } from '../../services/api.service';
+import { HttpStatus } from '@/common/constants';
+import { IEmitStatus } from '@/common/types';
+import i18n from '@/plugins/vue-i18n';
+import { ElLoading } from 'element-plus';
+import MenuAcceptStatus from '@/layouts/components/MenuAcceptStatus.vue';
 
 @Options({
     name: 'import-material-table-component',
@@ -112,28 +139,12 @@ import { checkUserHasPermission } from '@/utils/helper';
         CompIcon,
         DeleteIcon,
         EditIcon,
+        MenuAcceptStatus,
     },
 })
 export default class ImportMaterialTable extends mixins(StoreMixins) {
     get supplierList(): IImportMaterial[] {
-        return [
-            {
-                id: 1,
-                importTime: '2022-04-20T17:00:00.000Z',
-                supplier: 'Winmart',
-                warehouseStaff: {
-                    id: 1,
-                    name: 'Chu Sở Lâm',
-                },
-                note: 'check',
-            },
-        ];
-    }
-
-    isCanDelete(): boolean {
-        return checkUserHasPermission(eventModule.userPermissions, [
-            `${PermissionResources.EVENT}_${PermissionActions.DELETE}`,
-        ]);
+        return storeModule.importMaterialList;
     }
 
     isCanUpdate(): boolean {
@@ -143,7 +154,39 @@ export default class ImportMaterialTable extends mixins(StoreMixins) {
     }
 
     onClickUpdateImportMaterial(id: number): void {
+        storeModule.setQueryStringImportMaterialDetail({ importMaterialId: id });
         this.$router.push(`/import-material/${id}`);
+    }
+
+    async setStatus(data: IEmitStatus): Promise<void> {
+        const loading = ElLoading.service({
+            target: '.content',
+        });
+
+        const response = await importMaterialService.update(data.id, {
+            status: data.status,
+        });
+
+        loading.close();
+        if (response.success) {
+            showSuccessNotificationFunction(
+                i18n.global.t('store.importMaterial.message.update.success'),
+            );
+            const loading = ElLoading.service({
+                target: '.content',
+            });
+            await storeModule.getImportMaterials();
+            loading.close();
+        } else {
+            showErrorNotificationFunction(response.message as string);
+            if (response.code === HttpStatus.ITEM_NOT_FOUND) {
+                const loading = ElLoading.service({
+                    target: '.content',
+                });
+                await storeModule.getImportMaterials();
+                loading.close();
+            }
+        }
     }
 }
 </script>

@@ -23,6 +23,7 @@ import { Options, Vue } from 'vue-class-component';
 import FilterForm from '../components/importMaterial/FilterForm.vue';
 import { storeModule } from '../store';
 import ImportMaterialTable from '../components/importMaterial/ImportMaterialTable.vue';
+import { ElLoading } from 'element-plus';
 
 @Options({
     components: {
@@ -49,6 +50,15 @@ export default class ImportMaterialPage extends Vue {
 
     created(): void {
         storeModule.clearQueryStringImportMaterial();
+        this.getImportMaterialList();
+    }
+
+    async getImportMaterialList(): Promise<void> {
+        const loading = ElLoading.service({
+            target: '.content',
+        });
+        await storeModule.getImportMaterials();
+        loading.close();
     }
 
     toggleFilterForm(): void {

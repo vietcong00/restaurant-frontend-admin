@@ -14,7 +14,7 @@
             >
                 <router-link
                     :to="sidebar.to"
-                    v-if="!sidebar.childs && hasPermission(sidebar)"
+                    v-if="!sidebar.children && hasPermission(sidebar)"
                 >
                     <el-menu-item
                         :index="['m', sidebarIndex, Date.now()].join('-')"
@@ -29,7 +29,7 @@
                     </el-menu-item>
                 </router-link>
                 <el-sub-menu
-                    v-if="sidebar.childs && hasPermission(sidebar)"
+                    v-if="sidebar.children && hasPermission(sidebar)"
                     :index="['m', sidebarIndex].join('-')"
                     :class="{ 'active-menu': isActiveParentMenu(sidebar) }"
                 >
@@ -41,7 +41,7 @@
                         <router-link
                             :to="item.to"
                             :key="itemIndex"
-                            v-for="(item, itemIndex) in sidebar.childs"
+                            v-for="(item, itemIndex) in sidebar.children"
                         >
                             <el-menu-item
                                 :index="['m', sidebarIndex, itemIndex].join('-')"
@@ -109,7 +109,7 @@ export default class SideBarMobile extends Vue {
     }
 
     isActiveParentMenu(items: ISidebar): boolean | undefined {
-        const isActive = items?.childs
+        const isActive = items?.children
             ?.map((item: ISidebar) => item.to)
             .includes(this.$route.path);
         return isActive;
@@ -117,8 +117,8 @@ export default class SideBarMobile extends Vue {
 
     hasPermission(item: ISidebar): boolean {
         if (authModule.userProfile.isSuperAdmin) return true;
-        if (item?.childs) {
-            return item?.childs.some((child) =>
+        if (item?.children) {
+            return item?.children.some((child) =>
                 checkPermission(child?.requiredPermissions as string[]),
             );
         } else {

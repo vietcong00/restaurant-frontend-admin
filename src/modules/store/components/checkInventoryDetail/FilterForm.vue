@@ -45,7 +45,7 @@ export default class FilterForm extends mixins(StoreMixins) {
         orderBy: DEFAULT_ORDER_BY,
         orderDirection: DEFAULT_ORDER_DIRECTION,
         keyword: '',
-        idCheckInventory: undefined,
+        checkInventoryId: undefined,
     } as IQueryStringInventoryDetail;
 
     async resetFilter(): Promise<void> {
@@ -55,7 +55,7 @@ export default class FilterForm extends mixins(StoreMixins) {
             orderBy: DEFAULT_ORDER_BY,
             orderDirection: DEFAULT_ORDER_DIRECTION,
             keyword: '',
-            idCheckInventory: undefined,
+            checkInventoryId: undefined,
         };
         storeModule.clearQueryStringInventoryDetail();
         await this.handleFilter();

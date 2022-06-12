@@ -1,10 +1,9 @@
-export enum BookingStatus {
-    WAITING = 'waiting',
-    CANCELED = 'canceled',
-    DONE = 'done',
+export enum AcceptStatus {
+    APPROVE = 'APPROVE',
+    WAITING_APPROVE = 'WAITING_APPROVE',
+    REQUEST_CHECK_AGAIN = 'REQUEST_CHECK_AGAIN',
+    CHECKED_AGAIN = 'CHECKED_AGAIN',
 }
-
-export const userQuantityRange = [[0, 50], [50, 100], [100]];
 
 export const SortOptions = [
     {
@@ -25,31 +24,21 @@ export const SortOptions = [
     },
 ];
 
-export const bookingStatusOptions = [
+export const AcceptStatusOptions = [
     {
-        label: 'booking.list.status.done',
-        value: BookingStatus.DONE,
+        label: 'app.acceptStatus.approve',
+        value: AcceptStatus.APPROVE,
     },
     {
-        label: 'booking.list.status.canceled',
-        value: BookingStatus.CANCELED,
+        label: 'app.acceptStatus.checkedAgain',
+        value: AcceptStatus.CHECKED_AGAIN,
     },
     {
-        label: 'booking.list.status.waiting',
-        value: BookingStatus.WAITING,
-    },
-];
-
-export const ALL_USER_QUANTITY_RANGE = -1;
-
-export const SortOption = [
-    {
-        label: 'Title',
-        value: 'title',
+        label: 'app.acceptStatus.requestCheckAgain',
+        value: AcceptStatus.REQUEST_CHECK_AGAIN,
     },
     {
-        label: 'event.list.header',
+        label: 'app.acceptStatus.waitingApprove',
+        value: AcceptStatus.WAITING_APPROVE,
     },
 ];
-
-export const LIMIT_ARRIVAL_TIME_BOOKING = 10800;

@@ -1,5 +1,5 @@
 <template>
-    <BaseTableLayout :data="supplierList">
+    <BaseTableLayout :data="checkInventoryList">
         <template #table-columns>
             <el-table-column
                 align="center"
@@ -15,7 +15,7 @@
                 sortable="custom"
             >
                 <template #default="scope">
-                    {{ parseDateTimeTime(scope.row.checkTime) }}
+                    {{ parseDateTimeTime(scope.row.createdAt) }}
                 </template>
             </el-table-column>
             <el-table-column
@@ -25,7 +25,7 @@
                 "
             >
                 <template #default="scope">
-                    {{ scope.row.warehouseStaff.name }}
+                    {{ scope.row.warehouseStaff.fullName }}
                 </template>
             </el-table-column>
             <el-table-column
@@ -33,7 +33,11 @@
                 :label="$t('store.checkInventory.checkInventoryTable.header.status')"
             >
                 <template #default="scope">
-                    {{ scope.row.status }}
+                    <MenuAcceptStatus
+                        :status="scope.row.status"
+                        :id="scope.row.id"
+                        @set-status="setStatus"
+                    />
                 </template>
             </el-table-column>
             <el-table-column
@@ -55,7 +59,7 @@
                     <div class="button-group">
                         <el-tooltip
                             effect="dark"
-                            :content="$t('store.checkInventory.tooltip.edit')"
+                            :content="$t('store.checkInventory.tooltip.detail')"
                             placement="top"
                             v-if="isCanUpdate(scope.row?.status)"
                         >
@@ -65,20 +69,6 @@
                                 @click="onClickUpdateInventory(scope.row.id)"
                             >
                                 <EditIcon class="action-icon" />
-                            </el-button>
-                        </el-tooltip>
-                        <el-tooltip
-                            effect="dark"
-                            :content="$t('store.checkInventory.tooltip.delete')"
-                            placement="top"
-                            v-if="isCanDelete(scope.row?.status)"
-                        >
-                            <el-button
-                                type="danger"
-                                size="mini"
-                                @click="onClickButtonDelete(scope.row?.id)"
-                            >
-                                <DeleteIcon class="action-icon" />
                             </el-button>
                         </el-tooltip>
                     </div>
@@ -97,7 +87,18 @@ import { StoreMixins } from '../../mixins';
 import { Delete as DeleteIcon, Edit as EditIcon } from '@element-plus/icons-vue';
 import { eventModule } from '@/modules/event/store';
 import { PermissionResources, PermissionActions } from '@/modules/role/constants';
-import { checkUserHasPermission } from '@/utils/helper';
+import {
+    checkUserHasPermission,
+    showErrorNotificationFunction,
+    showSuccessNotificationFunction,
+} from '@/utils/helper';
+import { storeModule } from '../../store';
+import MenuAcceptStatus from '@/layouts/components/MenuAcceptStatus.vue';
+import { HttpStatus } from '@/common/constants';
+import { IEmitStatus } from '@/common/types';
+import i18n from '@/plugins/vue-i18n';
+import { ElLoading } from 'element-plus';
+import { checkInventoryService } from '../../services/api.service';
 
 @Options({
     name: 'check-inventory-table-component',
@@ -105,22 +106,12 @@ import { checkUserHasPermission } from '@/utils/helper';
         CompIcon,
         DeleteIcon,
         EditIcon,
+        MenuAcceptStatus,
     },
 })
 export default class CheckInventoryTable extends mixins(StoreMixins) {
-    get supplierList(): ICheckInventory[] {
-        return [
-            {
-                id: 1,
-                checkTime: '2022-04-20T17:00:00.000Z',
-                warehouseStaff: {
-                    id: 1,
-                    name: 'Raiden Shogun',
-                },
-                status: 'Create',
-                note: 'check',
-            },
-        ];
+    get checkInventoryList(): ICheckInventory[] {
+        return storeModule.checkInventoryList;
     }
 
     isCanDelete(): boolean {
@@ -136,7 +127,42 @@ export default class CheckInventoryTable extends mixins(StoreMixins) {
     }
 
     onClickUpdateInventory(id: number): void {
+        storeModule.setQueryStringInventoryDetail({
+            checkInventoryId: id,
+        });
         this.$router.push(`/check-inventory/${id}`);
+    }
+
+    async setStatus(data: IEmitStatus): Promise<void> {
+        const loading = ElLoading.service({
+            target: '.content',
+        });
+
+        const response = await checkInventoryService.update(data.id, {
+            status: data.status,
+        });
+
+        loading.close();
+        if (response.success) {
+            showSuccessNotificationFunction(
+                i18n.global.t('store.checkInventory.message.update.success'),
+            );
+            const loading = ElLoading.service({
+                target: '.content',
+            });
+            await storeModule.getCheckInventories();
+            loading.close();
+        } else {
+            showErrorNotificationFunction(response.message as string);
+            if (response.code === HttpStatus.ITEM_NOT_FOUND) {
+                storeModule.setIsShowMaterialFormPopUp(false);
+                const loading = ElLoading.service({
+                    target: '.content',
+                });
+                await storeModule.getCheckInventories();
+                loading.close();
+            }
+        }
     }
 }
 </script>

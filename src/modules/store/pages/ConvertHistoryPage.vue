@@ -6,8 +6,7 @@
             :hasSortBox="true"
             v-model:page="selectedPage"
             :totalItems="totalConvertHistories"
-            :isShowCreateButton="isCanCreate"
-            @create="onClickButtonCreate"
+            :isShowCreateButton="false"
             @onPaginate="handlePaginate"
         >
             <template #sort-box-content>
@@ -80,10 +79,6 @@ export default class ConvertHistoryPage extends Vue {
 
     toggleFilterForm(): void {
         this.isToggleFilterForm = !this.isToggleFilterForm;
-    }
-
-    onClickButtonCreate(): void {
-        storeModule.setIsShowConvertHistoryFormPopUp(true);
     }
 }
 </script>

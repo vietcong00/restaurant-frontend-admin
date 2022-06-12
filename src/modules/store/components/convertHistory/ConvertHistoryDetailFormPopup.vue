@@ -14,33 +14,38 @@
             <div class="col-md-4">
                 <BaseInputText
                     :isDisabled="true"
-                    v-model:value="selectedConvertHistory.convertTime"
+                    :value="selectedConvertHistory.createdAt"
                     :label="$t('store.convertHistory.convertHistoryPopup.convertTime')"
                 />
             </div>
             <div class="col-md-4">
                 <BaseInputText
                     :isDisabled="true"
-                    v-model:value="selectedConvertHistory.performer.name"
+                    :value="selectedConvertHistory.performer.fullName"
                     :label="$t('store.convertHistory.convertHistoryPopup.performer')"
                 />
             </div>
             <div class="col-md-4">
                 <BaseInputText
                     :isDisabled="true"
-                    v-model:value="selectedConvertHistory.note"
+                    :value="selectedConvertHistory.note"
                     :label="$t('store.convertHistory.convertHistoryPopup.note')"
                 />
             </div>
             <div class="col-md-5">
                 <BaseInputText
                     :isDisabled="true"
-                    v-model:value="selectedConvertHistory.convertFrom"
+                    :value="
+                        parseMaterial(
+                            selectedConvertHistory.materialFrom.material,
+                            selectedConvertHistory.materialFrom.unit,
+                        )
+                    "
                     :label="$t('store.convertHistory.convertHistoryPopup.convertFrom')"
                 />
                 <BaseInputText
                     :isDisabled="true"
-                    v-model:value="selectedConvertHistory.quantityBeforeConvertFrom"
+                    :value="selectedConvertHistory.quantityBeforeConvertFrom"
                     :label="
                         $t(
                             'store.convertHistory.convertHistoryPopup.quantityBeforeConvert',
@@ -49,7 +54,7 @@
                 />
                 <BaseInputText
                     :isDisabled="true"
-                    v-model:value="selectedConvertHistory.quantityFrom"
+                    :value="selectedConvertHistory.quantityFrom"
                     :label="$t('store.convertHistory.convertHistoryPopup.quantityFrom')"
                 />
                 <BaseInputText
@@ -74,12 +79,17 @@
             <div class="col-md-5">
                 <BaseInputText
                     :isDisabled="true"
-                    v-model:value="selectedConvertHistory.convertTo"
+                    :value="
+                        parseMaterial(
+                            selectedConvertHistory.materialTo.material,
+                            selectedConvertHistory.materialTo.unit,
+                        )
+                    "
                     :label="$t('store.convertHistory.convertHistoryPopup.convertTo')"
                 />
                 <BaseInputText
                     :isDisabled="true"
-                    v-model:value="selectedConvertHistory.quantityBeforeConvertTo"
+                    :value="selectedConvertHistory.quantityBeforeConvertTo"
                     :label="
                         $t(
                             'store.convertHistory.convertHistoryPopup.quantityBeforeConvert',
@@ -88,7 +98,7 @@
                 />
                 <BaseInputText
                     :isDisabled="true"
-                    v-model:value="selectedConvertHistory.quantityTo"
+                    :value="selectedConvertHistory.quantityTo"
                     :label="$t('store.convertHistory.convertHistoryPopup.quantityFrom')"
                 />
                 <BaseInputText
@@ -105,48 +115,22 @@
                 />
             </div>
         </div>
-        <template #footer>
-            <span class="dialog-footer">
-                <div class="row justify-content-center">
-                    <div
-                        class="col-md-4 col-sm-6 d-flex justify-content-md-end justify-content-center"
-                    >
-                        <el-button @click="onClickCancel">
-                            {{ $t('billing.form.button.cancel') }}
-                        </el-button>
-                    </div>
-                </div>
-            </span>
-        </template>
     </el-dialog>
 </template>
 
 <script lang="ts">
-import { UtilMixins } from '@/mixins/utilMixins';
 import { IConvertHistory } from '../../types';
 import { storeModule } from '../../store';
+import { mixins } from 'vue-class-component';
+import { StoreMixins } from '../../mixins';
 
-export default class ConvertHistoryDetailFormPopup extends UtilMixins {
+export default class ConvertHistoryDetailFormPopup extends mixins(StoreMixins) {
     get isShowConvertHistoryFormPopUp(): boolean {
         return storeModule.isShowConvertHistoryFormPopUp;
     }
 
-    get selectedConvertHistory(): IConvertHistory {
-        return {
-            id: 1,
-            convertTime: '2022-04-04 09:09:09',
-            idMaterialFrom: 1,
-            quantityFrom: 4,
-            quantityBeforeConvertFrom: 10,
-            idMaterialTo: 2,
-            quantityTo: 40,
-            quantityBeforeConvertTo: 55,
-            performer: {
-                id: 1,
-                name: 'Chu Si Lam',
-            },
-            note: 'checker',
-        };
+    get selectedConvertHistory(): IConvertHistory | null {
+        return storeModule.selectedConvertMaterial;
     }
 
     onClickCancel(): void {

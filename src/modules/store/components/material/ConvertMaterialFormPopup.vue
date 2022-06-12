@@ -197,6 +197,8 @@ export default class ConvertMaterialFormPopup extends mixins(StoreMixins) {
 
     async closePopup(): Promise<void> {
         storeModule.setIsShowConvertMaterialFormPopUp(false);
+        storeModule.setSelectedMaterial(null);
+        (this.form.resetForm as () => void)();
     }
 }
 </script>

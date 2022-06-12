@@ -11,17 +11,19 @@
             </el-table-column>
             <el-table-column
                 prop="nameMaterial"
+                width="200"
                 :label="
                     $t('store.inventoryDetail.inventoryDetailTable.header.nameMaterial')
                 "
                 sortable="custom"
             >
                 <template #default="scope">
-                    {{ scope.row.nameMaterial }}
+                    {{ scope.row.material.material }}
                 </template>
             </el-table-column>
             <el-table-column
                 prop="inventoryQuantity"
+                width="250"
                 :label="
                     $t(
                         'store.inventoryDetail.inventoryDetailTable.header.inventoryQuantity',
@@ -34,17 +36,17 @@
                 </template>
             </el-table-column>
             <el-table-column
-                prop="inventoryUnit"
-                :label="
-                    $t('store.inventoryDetail.inventoryDetailTable.header.inventoryUnit')
-                "
+                prop="unit"
+                width="150"
+                :label="$t('store.inventoryDetail.inventoryDetailTable.header.unit')"
             >
                 <template #default="scope">
-                    {{ scope.row.inventoryUnit }}
+                    {{ scope.row.material.unit }}
                 </template>
             </el-table-column>
             <el-table-column
                 prop="damagedQuantity"
+                width="200"
                 :label="
                     $t(
                         'store.inventoryDetail.inventoryDetailTable.header.damagedQuantity',
@@ -56,17 +58,8 @@
                 </template>
             </el-table-column>
             <el-table-column
-                prop="damagedUnit"
-                :label="
-                    $t('store.inventoryDetail.inventoryDetailTable.header.damagedUnit')
-                "
-            >
-                <template #default="scope">
-                    {{ scope.row.damagedUnit }}
-                </template>
-            </el-table-column>
-            <el-table-column
                 prop="note"
+                width="200"
                 :label="$t('store.inventoryDetail.inventoryDetailTable.header.note')"
             >
                 <template #default="scope">
@@ -74,43 +67,17 @@
                 </template>
             </el-table-column>
             <el-table-column
-                align="center"
-                prop="id"
-                :label="$t('store.inventoryDetail.inventoryDetailTable.header.actions')"
+                prop="status"
+                width="200"
                 fixed="right"
-                width="150"
+                :label="$t('store.inventoryDetail.inventoryDetailTable.header.status')"
             >
                 <template #default="scope">
-                    <div class="button-group">
-                        <el-tooltip
-                            effect="dark"
-                            :content="$t('store.inventoryDetail.tooltip.edit')"
-                            placement="top"
-                            v-if="isCanUpdate(scope.row?.status)"
-                        >
-                            <el-button
-                                type="warning"
-                                size="mini"
-                                @click="onClickButtonEdit(scope.row)"
-                            >
-                                <EditIcon class="action-icon" />
-                            </el-button>
-                        </el-tooltip>
-                        <el-tooltip
-                            effect="dark"
-                            :content="$t('store.inventoryDetail.tooltip.delete')"
-                            placement="top"
-                            v-if="isCanDelete(scope.row?.status)"
-                        >
-                            <el-button
-                                type="danger"
-                                size="mini"
-                                @click="onClickButtonDelete(scope.row?.id)"
-                            >
-                                <DeleteIcon class="action-icon" />
-                            </el-button>
-                        </el-tooltip>
-                    </div>
+                    <MenuAcceptStatus
+                        :status="scope.row.status"
+                        :id="scope.row.id"
+                        @set-status="setStatus"
+                    />
                 </template>
             </el-table-column>
         </template>
@@ -126,29 +93,31 @@ import { StoreMixins } from '../../mixins';
 import { Delete as DeleteIcon, Edit as EditIcon } from '@element-plus/icons-vue';
 import { eventModule } from '@/modules/event/store';
 import { PermissionResources, PermissionActions } from '@/modules/role/constants';
-import { checkUserHasPermission } from '@/utils/helper';
+import {
+    checkUserHasPermission,
+    showErrorNotificationFunction,
+    showSuccessNotificationFunction,
+} from '@/utils/helper';
+import { storeModule } from '../../store';
+import MenuAcceptStatus from '@/layouts/components/MenuAcceptStatus.vue';
+import { IEmitStatus } from '@/common/types';
+import { checkInventoryDetailService } from '../../services/api.service';
+import { ElLoading } from 'element-plus';
+import { HttpStatus } from '@/common/constants';
+import i18n from '@/plugins/vue-i18n';
 
 @Options({
-    name: 'inventory-detail-table-component',
+    name: 'check-inventory-detail-table-component',
     components: {
         CompIcon,
         DeleteIcon,
         EditIcon,
+        MenuAcceptStatus,
     },
 })
-export default class InventoryDetailTable extends mixins(StoreMixins) {
+export default class CheckInventoryDetailTable extends mixins(StoreMixins) {
     get inventoryDetailList(): IInventoryDetail[] {
-        return [
-            {
-                id: 1,
-                nameMaterial: 'cofe',
-                inventoryQuantity: 2,
-                inventoryUnit: 'kg',
-                damagedQuantity: 1,
-                damagedUnit: 'kg',
-                note: 'check',
-            },
-        ];
+        return storeModule.inventoryDetailList;
     }
 
     isCanDelete(): boolean {
@@ -161,6 +130,37 @@ export default class InventoryDetailTable extends mixins(StoreMixins) {
         return checkUserHasPermission(eventModule.userPermissions, [
             `${PermissionResources.EVENT}_${PermissionActions.UPDATE}`,
         ]);
+    }
+
+    async setStatus(data: IEmitStatus): Promise<void> {
+        const loading = ElLoading.service({
+            target: '.content',
+        });
+
+        const response = await checkInventoryDetailService.update(data.id, {
+            status: data.status,
+        });
+
+        loading.close();
+        if (response.success) {
+            showSuccessNotificationFunction(
+                i18n.global.t('store.inventoryDetail.message.update.success'),
+            );
+            const loading = ElLoading.service({
+                target: '.content',
+            });
+            await storeModule.getInventoryDetails();
+            loading.close();
+        } else {
+            showErrorNotificationFunction(response.message as string);
+            if (response.code === HttpStatus.ITEM_NOT_FOUND) {
+                const loading = ElLoading.service({
+                    target: '.content',
+                });
+                await storeModule.getInventoryDetails();
+                loading.close();
+            }
+        }
     }
 }
 </script>

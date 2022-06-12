@@ -5,7 +5,6 @@ import moment from 'moment';
 
 export class StoreMixins extends mixins(UtilMixins) {
     YYYY_MM_DD_HYPHEN_HH_MM_COLON = this.DATE_TIME_FORMAT.YYYY_MM_DD_HYPHEN_HH_MM_COLON;
-
     parseDateTimeTime = (date: string): string => {
         if (!date) {
             return '';
@@ -14,4 +13,8 @@ export class StoreMixins extends mixins(UtilMixins) {
             'recruitment.candidate.info.at',
         )} ${moment(date).fmDayString()}`;
     };
+
+    parseMaterial(name: string, unit: string): string {
+        return `${name} (${unit})`;
+    }
 }

@@ -1,5 +1,5 @@
 <template>
-    <BaseTableLayout :data="supplierList">
+    <BaseTableLayout :data="importDetailList">
         <template #table-columns>
             <el-table-column
                 align="center"
@@ -21,20 +21,30 @@
                 sortable="custom"
             >
                 <template #default="scope">
-                    {{ scope.row.nameMaterial }}
+                    {{ scope.row.material.material }}
+                </template>
+            </el-table-column>
+            <el-table-column
+                prop="unit"
+                :label="
+                    $t('store.importMaterialDetail.importMaterialDetailTable.header.unit')
+                "
+            >
+                <template #default="scope">
+                    {{ scope.row.material.unit }}
                 </template>
             </el-table-column>
             <el-table-column
                 prop="importPrice"
                 :label="
                     $t(
-                        'store.importMaterialDetail.importMaterialDetailTable.header.importPrice',
+                        'store.importMaterialDetail.importMaterialDetailTable.header.pricePerUnit',
                     )
                 "
                 sortable="custom"
             >
                 <template #default="scope">
-                    {{ parseMoney(scope.row.importPrice) }}
+                    {{ parseMoney(scope.row.pricePerUnit) }}
                 </template>
             </el-table-column>
             <el-table-column
@@ -50,16 +60,6 @@
                 </template>
             </el-table-column>
             <el-table-column
-                prop="unit"
-                :label="
-                    $t('store.importMaterialDetail.importMaterialDetailTable.header.unit')
-                "
-            >
-                <template #default="scope">
-                    {{ scope.row.unit }}
-                </template>
-            </el-table-column>
-            <el-table-column
                 prop="note"
                 :label="
                     $t('store.importMaterialDetail.importMaterialDetailTable.header.note')
@@ -70,47 +70,21 @@
                 </template>
             </el-table-column>
             <el-table-column
-                align="center"
-                prop="id"
+                prop="status"
+                width="200"
+                fixed="right"
                 :label="
                     $t(
-                        'store.importMaterialDetail.importMaterialDetailTable.header.actions',
+                        'store.importMaterialDetail.importMaterialDetailTable.header.status',
                     )
                 "
-                fixed="right"
-                width="150"
             >
                 <template #default="scope">
-                    <div class="button-group">
-                        <el-tooltip
-                            effect="dark"
-                            :content="$t('store.importMaterialDetail.tooltip.edit')"
-                            placement="top"
-                            v-if="isCanUpdate(scope.row?.status)"
-                        >
-                            <el-button
-                                type="warning"
-                                size="mini"
-                                @click="onClickButtonEdit(scope.row)"
-                            >
-                                <EditIcon class="action-icon" />
-                            </el-button>
-                        </el-tooltip>
-                        <el-tooltip
-                            effect="dark"
-                            :content="$t('store.importMaterialDetail.tooltip.delete')"
-                            placement="top"
-                            v-if="isCanDelete(scope.row?.status)"
-                        >
-                            <el-button
-                                type="danger"
-                                size="mini"
-                                @click="onClickButtonDelete(scope.row?.id)"
-                            >
-                                <DeleteIcon class="action-icon" />
-                            </el-button>
-                        </el-tooltip>
-                    </div>
+                    <MenuAcceptStatus
+                        :status="scope.row.status"
+                        :id="scope.row.id"
+                        @set-status="setStatus"
+                    />
                 </template>
             </el-table-column>
         </template>
@@ -126,7 +100,18 @@ import { StoreMixins } from '../../mixins';
 import { Delete as DeleteIcon, Edit as EditIcon } from '@element-plus/icons-vue';
 import { eventModule } from '@/modules/event/store';
 import { PermissionResources, PermissionActions } from '@/modules/role/constants';
-import { checkUserHasPermission } from '@/utils/helper';
+import {
+    checkUserHasPermission,
+    showErrorNotificationFunction,
+    showSuccessNotificationFunction,
+} from '@/utils/helper';
+import { storeModule } from '../../store';
+import { importMaterialDetailService } from '../../services/api.service';
+import { HttpStatus } from '@/common/constants';
+import { IEmitStatus } from '@/common/types';
+import i18n from '@/plugins/vue-i18n';
+import { ElLoading } from 'element-plus';
+import MenuAcceptStatus from '@/layouts/components/MenuAcceptStatus.vue';
 
 @Options({
     name: 'import-material-detail-table-component',
@@ -134,20 +119,12 @@ import { checkUserHasPermission } from '@/utils/helper';
         CompIcon,
         DeleteIcon,
         EditIcon,
+        MenuAcceptStatus,
     },
 })
 export default class ImportMaterialDetailTable extends mixins(StoreMixins) {
-    get supplierList(): IImportMaterialDetail[] {
-        return [
-            {
-                id: 1,
-                nameMaterial: 'coca',
-                importPrice: 200000,
-                quantity: 2,
-                unit: 'kg',
-                note: 'check',
-            },
-        ];
+    get importDetailList(): IImportMaterialDetail[] {
+        return storeModule.importMaterialDetailList;
     }
 
     isCanDelete(): boolean {
@@ -160,6 +137,37 @@ export default class ImportMaterialDetailTable extends mixins(StoreMixins) {
         return checkUserHasPermission(eventModule.userPermissions, [
             `${PermissionResources.EVENT}_${PermissionActions.UPDATE}`,
         ]);
+    }
+
+    async setStatus(data: IEmitStatus): Promise<void> {
+        const loading = ElLoading.service({
+            target: '.content',
+        });
+
+        const response = await importMaterialDetailService.update(data.id, {
+            status: data.status,
+        });
+
+        loading.close();
+        if (response.success) {
+            showSuccessNotificationFunction(
+                i18n.global.t('store.importMaterialDetail.message.update.success'),
+            );
+            const loading = ElLoading.service({
+                target: '.content',
+            });
+            await storeModule.getImportMaterialOrders();
+            loading.close();
+        } else {
+            showErrorNotificationFunction(response.message as string);
+            if (response.code === HttpStatus.ITEM_NOT_FOUND) {
+                const loading = ElLoading.service({
+                    target: '.content',
+                });
+                await storeModule.getImportMaterialOrders();
+                loading.close();
+            }
+        }
     }
 }
 </script>

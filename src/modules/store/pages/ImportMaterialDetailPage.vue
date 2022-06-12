@@ -7,6 +7,8 @@
             v-model:page="selectedPage"
             :totalItems="totalImportMaterialDetails"
             @onPaginate="handlePaginate"
+            :isShowBackButton="true"
+            @on-click-back-button="onBack"
         >
             <template #sort-box-content>
                 <Sort />
@@ -18,7 +20,7 @@
 </template>
 
 <script lang="ts">
-import { DEFAULT_FIRST_PAGE } from '@/common/constants';
+import { DEFAULT_FIRST_PAGE, PageName } from '@/common/constants';
 import { ElLoading } from 'element-plus';
 import { Options, Vue } from 'vue-class-component';
 import ImportMaterialDetailTable from '../components/importMaterialDetail/ImportMaterialDetailTable.vue';
@@ -57,7 +59,7 @@ export default class ImportMaterialDetailPage extends Vue {
         const loading = ElLoading.service({
             target: '.content',
         });
-        await storeModule.getImportMaterialDetails();
+        await storeModule.getImportMaterialOrders();
         loading.close();
     }
 
@@ -68,6 +70,10 @@ export default class ImportMaterialDetailPage extends Vue {
 
     toggleFilterForm(): void {
         this.isToggleFilterForm = !this.isToggleFilterForm;
+    }
+
+    onBack(): void {
+        this.$router.push({ name: PageName.STORE_IMPORT_MATERIAL_PAGE });
     }
 }
 </script>

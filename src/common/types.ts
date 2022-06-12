@@ -1,3 +1,4 @@
+import { AcceptStatus } from './../modules/store/constants';
 import { AxiosResponse } from 'axios';
 import {
     WITH_DELETED_OPTION,
@@ -32,16 +33,11 @@ export interface IGetListResponse<T> {
 // Interfaces for sidebar
 export interface ISidebar {
     icon?: string;
-    /* eslint-disable */
     iconComponent?: Component;
     name?: string;
-    class?: string;
     to?: string;
-    badge?: number | string;
     active?: boolean;
-    subdrop?: boolean;
-    hasNotify?: boolean;
-    childs?: ISidebar[];
+    children?: ISidebar[];
     pageName?: string;
     requiredPermissions?: string[];
 }
@@ -149,7 +145,7 @@ export interface IDropdownUserQuery extends IQueryDropdown {
     withInactive?: WITH_INACTIVE_OPTION;
 }
 
-export interface IContractTypeQueryDropDown extends IQueryDropdown {}
+export type IContractTypeQueryDropDown = IQueryDropdown;
 
 export interface IDropdownRoleItem {
     id: number;
@@ -228,4 +224,9 @@ export interface IImportResponse {
 
 export interface IBulkImportResponse {
     results: Record<string, IImportResponse>;
+}
+
+export interface IEmitStatus {
+    id: number;
+    status: AcceptStatus;
 }

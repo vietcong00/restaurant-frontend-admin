@@ -7,7 +7,7 @@ import ImportMaterialDetailPage from './pages/ImportMaterialDetailPage.vue';
 import ExportMaterialPage from './pages/ExportMaterialPage.vue';
 import ExportMaterialDetailPage from './pages/ExportMaterialDetailPage.vue';
 import CheckInventoryPage from './pages/CheckInventoryPage.vue';
-import InventoryDetailPage from './pages/InventoryDetailPage.vue';
+import CheckInventoryDetailPage from './pages/CheckInventoryDetailPage.vue';
 
 import MainLayout from '@/layouts/MainLayout.vue';
 import { PageName } from '@/common/constants';
@@ -164,7 +164,7 @@ export default [
             {
                 path: ':id',
                 name: PageName.STORE_INVENTORY_DETAIL_PAGE,
-                component: InventoryDetailPage,
+                component: CheckInventoryDetailPage,
                 props: true,
                 meta: {
                     requiresAuth: true,

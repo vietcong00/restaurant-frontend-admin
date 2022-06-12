@@ -45,7 +45,7 @@ export default class FilterForm extends mixins(StoreMixins) {
         orderBy: DEFAULT_ORDER_BY,
         orderDirection: DEFAULT_ORDER_DIRECTION,
         keyword: '',
-        idImportMaterial: undefined,
+        importMaterialId: undefined,
     } as IQueryStringImportMaterialDetail;
 
     async resetFilter(): Promise<void> {
@@ -55,7 +55,7 @@ export default class FilterForm extends mixins(StoreMixins) {
             orderBy: DEFAULT_ORDER_BY,
             orderDirection: DEFAULT_ORDER_DIRECTION,
             keyword: '',
-            idImportMaterial: undefined,
+            importMaterialId: undefined,
         };
         storeModule.clearQueryStringImportMaterialDetail();
         await this.handleFilter();
@@ -70,7 +70,7 @@ export default class FilterForm extends mixins(StoreMixins) {
         const loading = ElLoading.service({
             target: '.content',
         });
-        await storeModule.getImportMaterialDetails();
+        await storeModule.getImportMaterialOrders();
         loading.close();
     }
 }

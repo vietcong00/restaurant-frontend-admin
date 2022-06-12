@@ -2,6 +2,14 @@
     <div class="cp-header">
         <!-- Cpanel Left -->
         <div class="cp-left">
+            <el-button
+                class="filter-exchange header-breadcrumb"
+                size="medium"
+                @click="onClickBackButton"
+                v-if="isShowBackButton"
+            >
+                <ArrowLeftIcon style="width: 1.4em; height: 1.4em; align-items: center" />
+            </el-button>
             <h3 class="cp-page-title">{{ pageTitle }}</h3>
             <div class="cp-button" v-if="isShowCreateButton">
                 <el-button size="mini" type="primary" @click="onClickCreateButton">
@@ -123,6 +131,7 @@ export default class ListPageHeader extends Vue {
     @Prop({ default: true }) readonly hasFilterForm!: boolean;
     @Prop({ default: false }) readonly hasSortBox!: boolean;
     @Prop({ default: false }) readonly isShowCreateButton!: boolean;
+    @Prop({ default: false }) readonly isShowBackButton!: boolean;
     @Prop({ default: false }) readonly isShowSearchBox!: boolean;
 
     @Model('page', { type: Number })
@@ -192,6 +201,10 @@ export default class ListPageHeader extends Vue {
     onClickSearchButton(): void {
         this.keywordValue = this.keywordValue?.trim();
         this.$emit('search');
+    }
+
+    onClickBackButton(): void {
+        this.$emit('on-click-back-button');
     }
 
     onPaginate(): void {
@@ -410,5 +423,15 @@ export default class ListPageHeader extends Vue {
 }
 :deep(.invalid-feedback) {
     margin-top: 0 !important;
+}
+.filter-exchange {
+    width: 36px;
+    height: 36px;
+    border: 0;
+    padding: 0;
+    &:hover {
+        background-color: #ededed;
+        color: black;
+    }
 }
 </style>

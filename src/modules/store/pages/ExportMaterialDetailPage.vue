@@ -7,6 +7,8 @@
             v-model:page="selectedPage"
             :totalItems="totalExportMaterialDetails"
             @onPaginate="handlePaginate"
+            :isShowBackButton="false"
+            @on-click-back-button="onBack"
         >
             <template #sort-box-content>
                 <Sort />
@@ -18,7 +20,7 @@
 </template>
 
 <script lang="ts">
-import { DEFAULT_FIRST_PAGE } from '@/common/constants';
+import { DEFAULT_FIRST_PAGE, PageName } from '@/common/constants';
 import { ElLoading } from 'element-plus';
 import { Options, Vue } from 'vue-class-component';
 import ExportMaterialDetailTable from '../components/exportMaterialDetail/ExportMaterialDetailTable.vue';
@@ -57,7 +59,7 @@ export default class ExportMaterialDetailPage extends Vue {
         const loading = ElLoading.service({
             target: '.content',
         });
-        await storeModule.getExportMaterialDetails();
+        await storeModule.getExportMaterialOrders();
         loading.close();
     }
 
@@ -68,6 +70,10 @@ export default class ExportMaterialDetailPage extends Vue {
 
     toggleFilterForm(): void {
         this.isToggleFilterForm = !this.isToggleFilterForm;
+    }
+
+    onBack(): void {
+        this.$router.push({ name: PageName.STORE_EXPORT_PAGE });
     }
 }
 </script>

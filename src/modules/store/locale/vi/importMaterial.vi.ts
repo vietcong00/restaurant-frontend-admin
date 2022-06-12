@@ -1,19 +1,12 @@
 export default {
-    importMaterialDialog: {
-        titleCreate: 'Tạo mới nhập hàng',
-        titleUpdate: 'Cập nhật nhập hàng',
-    },
-    button: {
-        cancel: 'Hủy',
-        submit: 'Xác nhận',
-    },
-
     importMaterialTable: {
         header: {
             id: 'ID',
             importTime: 'Thời gian nhập hàng',
             supplier: 'Nhà cung cấp',
             warehouseStaff: 'Nhân viên nhập hàng',
+            totalPaymentImport: 'Tổng tiền nhập hàng',
+            status: 'Trạng thái',
             note: 'Ghi chú',
             actions: 'Thao tác',
         },
@@ -25,31 +18,16 @@ export default {
 
     placeholder: {
         keyword: 'Nhập từ khóa',
-        material: 'Nhập nguyên liệu',
-        quantity: 'Nhập số lượng',
-        unit: 'Nhập đơn vị',
     },
 
     tooltip: {
-        editStatus: 'Thay đổi trạng thái',
-        edit: 'Chỉnh sửa',
-        delete: 'Xóa',
+        detail: 'Chi tiết',
     },
 
     message: {
         title: 'Thông báo',
-        create: {
-            success: 'Tạo sự kiện thành công!',
-        },
-
         update: {
             success: 'Cập nhật sự kiện thành công!',
-        },
-
-        delete: {
-            title: 'Xóa sự kiện',
-            confirmAsk: 'Bạn có chắc chắn muốn xóa sự kiện này không?',
-            success: 'Xóa sự kiện thành công!',
         },
     },
 

@@ -1,21 +1,12 @@
 export default {
-    inventoryDetailDialog: {
-        titleCreate: 'Tạo mới chi tiết hàng tồn',
-        titleUpdate: 'Cập nhật chi tiết hàng tồn',
-    },
-    button: {
-        cancel: 'Hủy',
-        submit: 'Xác nhận',
-    },
-
     inventoryDetailTable: {
         header: {
             id: 'ID',
             nameMaterial: 'Tên nguyên liệu',
             inventoryQuantity: 'Số lượng hàng tồn',
-            inventoryUnit: 'Đơn vị hàng tồn',
+            unit: 'Đơn vị',
             damagedQuantity: 'Số lượng hỏng',
-            damagedUnit: 'Đơn vị hỏng',
+            status: 'Trạng thái',
             note: 'Ghi chú',
             actions: 'Thao tác',
         },
@@ -27,33 +18,19 @@ export default {
 
     placeholder: {
         keyword: 'Nhập từ khóa',
-        material: 'Nhập nguyên liệu',
-        quantity: 'Nhập số lượng',
-        unit: 'Nhập đơn vị',
     },
 
     tooltip: {
-        editStatus: 'Thay đổi trạng thái',
-        edit: 'Chỉnh sửa',
-        delete: 'Xóa',
+        detail: 'Chi tiết',
     },
 
     message: {
         title: 'Thông báo',
-        create: {
-            success: 'Tạo sự kiện thành công!',
-        },
 
         update: {
-            success: 'Cập nhật sự kiện thành công!',
-        },
-
-        delete: {
-            title: 'Xóa sự kiện',
-            confirmAsk: 'Bạn có chắc chắn muốn xóa sự kiện này không?',
-            success: 'Xóa sự kiện thành công!',
+            success: 'Cập nhật trạng thái thành công!',
         },
     },
 
-    pageName: ' Quản lý Kiểm kho',
+    pageName: 'Chi tiết kiểm kho',
 };

@@ -1,12 +1,4 @@
 export default {
-    CheckInventoryDialog: {
-        titleCreate: 'Create new check inventory',
-        titleUpdate: 'Update check inventory',
-    },
-    button: {
-        cancel: 'Cancel',
-        submit: 'Submit',
-    },
     checkInventoryTable: {
         header: {
             id: 'ID',
@@ -24,33 +16,18 @@ export default {
 
     placeholder: {
         keyword: 'Enter keyword',
-        name: 'Enter name',
-        phone: 'Enter phone',
-        address: 'Enter Address',
     },
 
     tooltip: {
-        editStatus: 'Edit status',
-        edit: 'Edit',
-        delete: 'Delete',
+        detail: 'Detail',
     },
 
     message: {
         title: 'Notification',
-        create: {
-            success: 'Create event successfully!',
-        },
-
         update: {
-            success: 'Update event successfully!',
-        },
-
-        delete: {
-            title: 'Notification',
-            confirmAsk: 'Are you sure you want to delete this event?',
-            success: 'Delete event successfully!',
+            success: 'Update status successfully!',
         },
     },
 
-    pageName: 'Check Inventory management',
+    pageName: 'Check Inventory Management',
 };

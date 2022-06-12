@@ -16,9 +16,9 @@
             >
                 <template #default="scope">
                     {{
-                        scope.row.convertTime
+                        scope.row.createdAt
                             ? parseDateTime(
-                                  scope.row.convertTime,
+                                  scope.row.createdAt,
                                   YYYY_MM_DD_HYPHEN_HH_MM_COLON,
                               )
                             : ''
@@ -31,7 +31,7 @@
                 width="175"
             >
                 <template #default="scope">
-                    {{ scope.row.performer.name }}
+                    {{ scope.row.performer.fullName }}
                 </template>
             </el-table-column>
             <el-table-column
@@ -40,7 +40,12 @@
                 width="175"
             >
                 <template #default="scope">
-                    {{ scope.row.convertFrom }}
+                    {{
+                        parseMaterial(
+                            scope.row.materialFrom.material,
+                            scope.row.materialFrom.unit,
+                        )
+                    }}
                 </template>
             </el-table-column>
             <el-table-column
@@ -60,7 +65,12 @@
                 width="175"
             >
                 <template #default="scope">
-                    {{ scope.row.convertTo }}
+                    {{
+                        parseMaterial(
+                            scope.row.materialTo.material,
+                            scope.row.materialTo.unit,
+                        )
+                    }}
                 </template>
             </el-table-column>
             <el-table-column
@@ -99,7 +109,7 @@
                             <el-button
                                 type="warning"
                                 size="mini"
-                                @click="onClickUpdateExportMaterial(scope.row.id)"
+                                @click="onClickDetail(scope.row)"
                             >
                                 <DocumentIcon class="action-icon" />
                             </el-button>
@@ -132,23 +142,7 @@ import { checkUserHasPermission } from '@/utils/helper';
 })
 export default class ExportMaterialTable extends mixins(StoreMixins) {
     get convertHistoryList(): IConvertHistory[] {
-        return [
-            {
-                id: 1,
-                convertTime: '2022-04-04 09:09:09',
-                idMaterialFrom: 1,
-                quantityFrom: 4,
-                quantityBeforeConvertFrom: 10,
-                idMaterialTo: 2,
-                quantityTo: 40,
-                quantityBeforeConvertTo: 55,
-                performer: {
-                    id: 1,
-                    name: 'Chu Si Lam',
-                },
-                note: 'checker',
-            },
-        ];
+        return storeModule.convertHistoryList;
     }
 
     isCanDelete(): boolean {
@@ -163,7 +157,8 @@ export default class ExportMaterialTable extends mixins(StoreMixins) {
         ]);
     }
 
-    onClickUpdateExportMaterial(id: number): void {
+    onClickDetail(convertMaterial: IConvertHistory): void {
+        storeModule.setSelectedConvertMaterial(convertMaterial);
         storeModule.setIsShowConvertHistoryFormPopUp(true);
     }
 }

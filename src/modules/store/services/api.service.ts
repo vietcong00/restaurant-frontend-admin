@@ -19,9 +19,9 @@ export const checkInventoryService = new CheckInventoryService(
     service,
 );
 
-class InventoryDetailService extends BaseService {}
-export const inventoryDetailService = new InventoryDetailService(
-    { baseUrl: 'inventory-detail' },
+class CheckInventoryDetailService extends BaseService {}
+export const checkInventoryDetailService = new CheckInventoryDetailService(
+    { baseUrl: 'check-inventory-detail' },
     service,
 );
 
@@ -33,19 +33,19 @@ export const importMaterialService = new ImportMaterialService(
 
 class ImportMaterialDetailService extends BaseService {}
 export const importMaterialDetailService = new ImportMaterialDetailService(
-    { baseUrl: 'import-material-detail' },
+    { baseUrl: 'import-material-order' },
     service,
 );
 
 class ExportMaterialService extends BaseService {}
 export const exportMaterialService = new ExportMaterialService(
-    { baseUrl: 'emport-material' },
+    { baseUrl: 'export-material' },
     service,
 );
 
 class ExportMaterialDetailService extends BaseService {}
 export const exportMaterialDetailService = new ExportMaterialDetailService(
-    { baseUrl: 'export-material-detail' },
+    { baseUrl: 'export-material-order' },
     service,
 );
 

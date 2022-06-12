@@ -34,13 +34,13 @@ import {
     ISupplierUpdate,
 } from './types';
 import {
+    checkInventoryDetailService,
     checkInventoryService,
     convertHistoryService,
     exportMaterialDetailService,
     exportMaterialService,
     importMaterialDetailService,
     importMaterialService,
-    inventoryDetailService,
     materialService,
     supplierService,
 } from './services/api.service';
@@ -53,7 +53,7 @@ const initQueryString = {
     keyword: '',
 };
 
-@Module({ dynamic: true, namespaced: true, store, name: 'material' })
+@Module({ dynamic: true, namespaced: true, store, name: 'store' })
 class StoreModule extends VuexModule {
     // Material
     materialList: Array<IMaterial> = [];
@@ -103,6 +103,7 @@ class StoreModule extends VuexModule {
     // convert history
     convertHistoryList: Array<IConvertHistory> = [];
     totalConvertHistories = 0;
+    selectedConvertMaterial: IConvertHistory | null = null;
     queryStringConvertHistory: IQueryStringConvertHistory = initQueryString;
     isShowConvertHistoryFormPopUp = false;
 
@@ -320,6 +321,11 @@ class StoreModule extends VuexModule {
         this.selectedCheckInventory = selectedCheckInventory;
     }
 
+    @Mutation
+    MUTATE_SELECTED_CONVERT_MATERIAL(selectedConvertMaterial: IConvertHistory | null) {
+        this.selectedConvertMaterial = selectedConvertMaterial;
+    }
+
     // Other
     @Mutation
     MUTATE_MATERIAL_OPTIONS(materialOptions: ISelectMaterialOptions[]) {
@@ -457,6 +463,11 @@ class StoreModule extends VuexModule {
         this.MUTATE_SELECTED_CHECK_INVENTORY(checkInventory);
     }
 
+    @Action
+    setSelectedConvertMaterial(convertHistory: IConvertHistory | null) {
+        this.MUTATE_SELECTED_CONVERT_MATERIAL(convertHistory);
+    }
+
     // Other
     @Action
     setMaterialOptions(materialOptions: ISelectMaterialOptions[]) {
@@ -519,7 +530,7 @@ class StoreModule extends VuexModule {
 
     @Action
     async getInventoryDetails() {
-        const response = (await inventoryDetailService.getList({
+        const response = (await checkInventoryDetailService.getList({
             ...this.queryStringInventoryDetail,
         })) as IBodyResponse<IGetListResponse<IInventoryDetail>>;
         if (response.success) {
@@ -548,7 +559,7 @@ class StoreModule extends VuexModule {
     }
 
     @Action
-    async getImportMaterialDetails() {
+    async getImportMaterialOrders() {
         const response = (await importMaterialDetailService.getList({
             ...this.queryStringImportMaterialDetail,
         })) as IBodyResponse<IGetListResponse<IImportMaterialDetail>>;
@@ -578,7 +589,7 @@ class StoreModule extends VuexModule {
     }
 
     @Action
-    async getExportMaterialDetails() {
+    async getExportMaterialOrders() {
         const response = (await exportMaterialDetailService.getList({
             ...this.queryStringExportMaterialDetail,
         })) as IBodyResponse<IGetListResponse<IExportMaterialDetail>>;

@@ -21,20 +21,20 @@
                 sortable="custom"
             >
                 <template #default="scope">
-                    {{ scope.row.nameMaterial }}
+                    {{ scope.row.material.material }}
                 </template>
             </el-table-column>
             <el-table-column
                 prop="importPrice"
                 :label="
                     $t(
-                        'store.exportMaterialDetail.exportMaterialDetailTable.header.exportPrice',
+                        'store.exportMaterialDetail.exportMaterialDetailTable.header.pricePerUnit',
                     )
                 "
                 sortable="custom"
             >
                 <template #default="scope">
-                    {{ parseMoney(scope.row.exportPrice) }}
+                    {{ parseMoney(scope.row.pricePerUnit) }}
                 </template>
             </el-table-column>
             <el-table-column
@@ -56,7 +56,7 @@
                 "
             >
                 <template #default="scope">
-                    {{ scope.row.unit }}
+                    {{ scope.row.material.unit }}
                 </template>
             </el-table-column>
             <el-table-column
@@ -70,47 +70,21 @@
                 </template>
             </el-table-column>
             <el-table-column
-                align="center"
-                prop="id"
+                prop="status"
+                width="200"
+                fixed="right"
                 :label="
                     $t(
-                        'store.exportMaterialDetail.exportMaterialDetailTable.header.actions',
+                        'store.exportMaterialDetail.exportMaterialDetailTable.header.status',
                     )
                 "
-                fixed="right"
-                width="150"
             >
                 <template #default="scope">
-                    <div class="button-group">
-                        <el-tooltip
-                            effect="dark"
-                            :content="$t('store.exportMaterialDetail.tooltip.edit')"
-                            placement="top"
-                            v-if="isCanUpdate(scope.row?.status)"
-                        >
-                            <el-button
-                                type="warning"
-                                size="mini"
-                                @click="onClickButtonEdit(scope.row)"
-                            >
-                                <EditIcon class="action-icon" />
-                            </el-button>
-                        </el-tooltip>
-                        <el-tooltip
-                            effect="dark"
-                            :content="$t('store.exportMaterialDetail.tooltip.delete')"
-                            placement="top"
-                            v-if="isCanDelete(scope.row?.status)"
-                        >
-                            <el-button
-                                type="danger"
-                                size="mini"
-                                @click="onClickButtonDelete(scope.row?.id)"
-                            >
-                                <DeleteIcon class="action-icon" />
-                            </el-button>
-                        </el-tooltip>
-                    </div>
+                    <MenuAcceptStatus
+                        :status="scope.row.status"
+                        :id="scope.row.id"
+                        @set-status="setStatus"
+                    />
                 </template>
             </el-table-column>
         </template>
@@ -126,7 +100,18 @@ import { StoreMixins } from '../../mixins';
 import { Delete as DeleteIcon, Edit as EditIcon } from '@element-plus/icons-vue';
 import { eventModule } from '@/modules/event/store';
 import { PermissionResources, PermissionActions } from '@/modules/role/constants';
-import { checkUserHasPermission } from '@/utils/helper';
+import {
+    checkUserHasPermission,
+    showErrorNotificationFunction,
+    showSuccessNotificationFunction,
+} from '@/utils/helper';
+import { storeModule } from '../../store';
+import { exportMaterialDetailService } from '../../services/api.service';
+import { HttpStatus } from '@/common/constants';
+import { IEmitStatus } from '@/common/types';
+import i18n from '@/plugins/vue-i18n';
+import { ElLoading } from 'element-plus';
+import MenuAcceptStatus from '@/layouts/components/MenuAcceptStatus.vue';
 
 @Options({
     name: 'import-material-detail-table-component',
@@ -134,20 +119,12 @@ import { checkUserHasPermission } from '@/utils/helper';
         CompIcon,
         DeleteIcon,
         EditIcon,
+        MenuAcceptStatus,
     },
 })
 export default class ExportMaterialDetailTable extends mixins(StoreMixins) {
     get materialExportList(): IExportMaterialDetail[] {
-        return [
-            {
-                id: 1,
-                nameMaterial: 'coca',
-                exportPrice: 200000,
-                quantity: 2,
-                unit: 'kg',
-                note: 'check',
-            },
-        ];
+        return storeModule.exportMaterialDetailList;
     }
 
     isCanDelete(): boolean {
@@ -160,6 +137,37 @@ export default class ExportMaterialDetailTable extends mixins(StoreMixins) {
         return checkUserHasPermission(eventModule.userPermissions, [
             `${PermissionResources.EVENT}_${PermissionActions.UPDATE}`,
         ]);
+    }
+
+    async setStatus(data: IEmitStatus): Promise<void> {
+        const loading = ElLoading.service({
+            target: '.content',
+        });
+
+        const response = await exportMaterialDetailService.update(data.id, {
+            status: data.status,
+        });
+
+        loading.close();
+        if (response.success) {
+            showSuccessNotificationFunction(
+                i18n.global.t('store.exportMaterialDetail.message.update.success'),
+            );
+            const loading = ElLoading.service({
+                target: '.content',
+            });
+            await storeModule.getExportMaterialOrders();
+            loading.close();
+        } else {
+            showErrorNotificationFunction(response.message as string);
+            if (response.code === HttpStatus.ITEM_NOT_FOUND) {
+                const loading = ElLoading.service({
+                    target: '.content',
+                });
+                await storeModule.getExportMaterialOrders();
+                loading.close();
+            }
+        }
     }
 }
 </script>

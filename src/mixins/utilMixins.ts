@@ -19,6 +19,7 @@ import {
 import { appModule } from '@/store/app';
 import { IAppliedPosition, IUserPosition } from '@/modules/setting/type';
 import moment from 'moment';
+import { AcceptStatus } from '@/modules/store/constants';
 
 export class UtilMixins extends Vue {
     // Common variable
@@ -29,6 +30,8 @@ export class UtilMixins extends Vue {
     INPUT_URL_MAX_LENGTH = INPUT_URL_MAX_LENGTH;
     INPUT_TEXT_MAX_LENGTH = INPUT_TEXT_MAX_LENGTH;
     YYYY_MM_DD_HYPHEN_HH_MM_COLON = DATE_TIME_FORMAT.YYYY_MM_DD_HYPHEN_HH_MM_COLON;
+    AcceptStatus = AcceptStatus;
+
     // Common function
     async showConfirmPopup(
         message: string,

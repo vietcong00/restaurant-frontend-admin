@@ -143,4 +143,10 @@ export default {
         save: 'Lưu',
         dontSave: 'Không lưu',
     },
+    acceptStatus: {
+        APPROVE: 'Chấp nhận',
+        CHECKED_AGAIN: 'Đã kiểm tra lại',
+        REQUEST_CHECK_AGAIN: 'Yêu cầu kiểm tra lại',
+        WAITING_APPROVE: 'Chờ chấp nhận',
+    },
 };

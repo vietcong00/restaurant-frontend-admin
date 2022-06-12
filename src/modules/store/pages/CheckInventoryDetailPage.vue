@@ -1,12 +1,14 @@
 <template>
-    <div class="supplier-list">
+    <div class="inventory-detail-list">
         <BaseListPageHeader
             @toggle-filter-form="toggleFilterForm"
-            :pageTitle="$t('store.supplier.pageName')"
+            :pageTitle="$t('store.inventoryDetail.pageName')"
             :hasSortBox="true"
             v-model:page="selectedPage"
             :totalItems="totalSuppliers"
             @onPaginate="handlePaginate"
+            :isShowBackButton="true"
+            @on-click-back-button="onBack"
         >
             <template #sort-box-content>
                 <Sort />
@@ -18,12 +20,12 @@
 </template>
 
 <script lang="ts">
-import { DEFAULT_FIRST_PAGE } from '@/common/constants';
+import { DEFAULT_FIRST_PAGE, PageName } from '@/common/constants';
 import { ElLoading } from 'element-plus';
 import { Options, Vue } from 'vue-class-component';
-import InventoryDetailTable from '../components/inventoryDetail/InventoryDetailTable.vue';
+import InventoryDetailTable from '../components/checkInventoryDetail/CheckInventoryDetailTable.vue';
 import { storeModule } from '../store';
-import FilterForm from '../components/inventoryDetail/FilterForm.vue';
+import FilterForm from '../components/checkInventoryDetail/FilterForm.vue';
 
 @Options({
     components: {
@@ -31,7 +33,7 @@ import FilterForm from '../components/inventoryDetail/FilterForm.vue';
         FilterForm,
     },
 })
-export default class InventoryDetailPage extends Vue {
+export default class CheckInventoryDetailPage extends Vue {
     isToggleFilterForm = true;
 
     get totalSuppliers(): number {
@@ -68,6 +70,10 @@ export default class InventoryDetailPage extends Vue {
 
     toggleFilterForm(): void {
         this.isToggleFilterForm = !this.isToggleFilterForm;
+    }
+
+    onBack(): void {
+        this.$router.push({ name: PageName.STORE_CHECK_INVENTORY_PAGE });
     }
 }
 </script>
