@@ -188,12 +188,12 @@ const storeMenu: ISidebar = {
     ],
 };
 
-const paymentMenu: ISidebar = {
+const payment: ISidebar = {
     iconComponent: QuestionIcon,
     name: 'common.app.menu.payment.title',
     active: false,
-    to: '/orders-at-restaurant',
-    pageName: PageName.PAYMENT_AT_RESTAURANT_PAGE,
+    to: '/payment',
+    pageName: PageName.PAYMENT_PAGE,
     requiredPermissions: [
         `${PermissionResources.USER}_${PermissionActions.READ}`,
         `${PermissionResources.USER}_${PermissionActions.CREATE}`,
@@ -223,7 +223,6 @@ export const sidebars = [
     booking,
     menuMenu,
     storeMenu,
-    paymentMenu,
     billing,
     reportMenu,
 ];

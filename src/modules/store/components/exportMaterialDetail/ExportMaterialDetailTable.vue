@@ -7,7 +7,6 @@
                     $t('store.exportMaterialDetail.exportMaterialDetailTable.header.id')
                 "
                 type="index"
-                :index="indexMethod"
                 width="75"
             >
             </el-table-column>

@@ -1,3 +1,4 @@
+import { tableDiagramModule } from './../table-diagram/store';
 import { bookingService } from './../table-diagram/services/api.service';
 import { getModule, VuexModule, Mutation, Action, Module } from 'vuex-module-decorators';
 import store from '@/store';
@@ -6,11 +7,14 @@ import {
     DEFAULT_FIRST_PAGE,
     LIMIT_PER_PAGE,
     DEFAULT_ORDER_DIRECTION,
+    HttpStatus,
 } from '@/common/constants';
 import { IBodyResponse, IGetListResponse } from '@/common/types';
 import { DEFAULT_ORDER_BY } from '../user/constants';
 import { appService } from '@/utils/app';
 import { PermissionResources } from '../role/constants';
+import { showErrorNotificationFunction } from '@/utils/helper';
+import { ElLoading } from 'element-plus';
 
 const initQueryString = {
     page: DEFAULT_FIRST_PAGE,
@@ -18,45 +22,29 @@ const initQueryString = {
     orderBy: DEFAULT_ORDER_BY,
     orderDirection: DEFAULT_ORDER_DIRECTION,
     keyword: null,
+    status: null,
+    idTable: null,
+    arrivalTimeRange: null,
 };
 
 @Module({ dynamic: true, namespaced: true, store, name: 'booking' })
 class BookingModule extends VuexModule {
     bookingList: Array<IBooking> = [];
+    bookingTableDetailList: Array<IBooking> = [];
+
     totalBookings = 0;
+    totalBookingTableDetail = 0;
 
     selectedBooking: IBookingUpdate | null = null;
 
-    tableSelected = -1;
-    numberPeople = -1;
-
     isShowModalChosenTable = false;
     isShowModalTableDetail = false;
-    idBookingSelected = -1;
-    arrivalTimeSelected = -1;
-    numberSeatSelected = 0;
-    canChosenTable = false;
 
     bookingQueryString: IQueryStringBooking = initQueryString;
+    bookingTableQueryString: IQueryStringBooking = initQueryString;
 
     isShowBookingFormPopUp = false;
     isDisabledSaveButton = false;
-
-    get checkCanChosenTable() {
-        return this.canChosenTable;
-    }
-
-    get getNumberSeatSelected() {
-        return this.numberSeatSelected;
-    }
-
-    get getTableSelected() {
-        return this.tableSelected;
-    }
-
-    get getNumberPeople() {
-        return this.numberPeople;
-    }
 
     get checkShowModalChosenTable() {
         return this.isShowModalChosenTable;
@@ -64,10 +52,6 @@ class BookingModule extends VuexModule {
 
     get checkShowModalTableDetail() {
         return this.isShowModalTableDetail;
-    }
-
-    get getArrivalTimeSelected() {
-        return this.arrivalTimeSelected;
     }
 
     // GETTERS
@@ -86,31 +70,6 @@ class BookingModule extends VuexModule {
     }
 
     @Mutation
-    SET_CAN_CHOSEN_TABLE(data: boolean) {
-        this.canChosenTable = data;
-    }
-
-    @Mutation
-    SET_NUMBER_SEAT_SELECTED(data: number) {
-        this.numberSeatSelected = data;
-    }
-
-    @Mutation
-    SET_ARRIVAL_TIME_SELECTED(data: number) {
-        this.arrivalTimeSelected = data;
-    }
-
-    @Mutation
-    SET_SELECTED_TABLE(data: number) {
-        this.tableSelected = data;
-    }
-
-    @Mutation
-    SET_NUMBER_PEOPLE(data: number) {
-        this.numberPeople = data;
-    }
-
-    @Mutation
     UPDATE_CHECK_SHOW_MODAL_CHOSEN_TABLE(data: boolean) {
         this.isShowModalChosenTable = data;
     }
@@ -121,9 +80,17 @@ class BookingModule extends VuexModule {
     }
 
     @Mutation
-    MUTATE_EVENT_QUERY_STRING(query: IQueryStringBooking) {
+    MUTATE_BOOKING_QUERY_STRING(query: IQueryStringBooking) {
         this.bookingQueryString = {
             ...this.bookingQueryString,
+            ...query,
+        };
+    }
+
+    @Mutation
+    MUTATE_BOOKING_TABLE_QUERY_STRING(query: IQueryStringBooking) {
+        this.bookingTableQueryString = {
+            ...this.bookingTableQueryString,
             ...query,
         };
     }
@@ -143,21 +110,20 @@ class BookingModule extends VuexModule {
         this.isDisabledSaveButton = value;
     }
 
+    @Mutation
+    MUTATE_BOOKING_TABLE_DETAIL_LIST(data: Array<IBooking>) {
+        this.bookingTableDetailList = data;
+    }
+
+    @Mutation
+    MUTATE_TOTAL_BOOKING_TABLE_DETAIL(data: number) {
+        this.totalBookingTableDetail = data;
+    }
+
     // ACTION
 
     @Action
-    setTableSelected(data: number) {
-        this.SET_SELECTED_TABLE(data);
-    }
-
-    @Action
-    setNumberPeople(data: number) {
-        this.SET_NUMBER_PEOPLE(data);
-    }
-
-    @Action
     updateCheckShowModalChosenTable(data: boolean) {
-        this.SET_SELECTED_TABLE(-1);
         this.UPDATE_CHECK_SHOW_MODAL_CHOSEN_TABLE(data);
     }
 
@@ -167,28 +133,23 @@ class BookingModule extends VuexModule {
     }
 
     @Action
-    setArrivalTimeSelected(data: number) {
-        this.SET_ARRIVAL_TIME_SELECTED(data);
+    clearBookingQueryString() {
+        this.MUTATE_BOOKING_QUERY_STRING(initQueryString);
     }
 
     @Action
-    setNumberSeatSelected(data: number) {
-        this.SET_NUMBER_SEAT_SELECTED(data);
-    }
-
-    @Action
-    setCanChosenTable(data: boolean) {
-        this.SET_CAN_CHOSEN_TABLE(data);
-    }
-
-    @Action
-    clearQueryString() {
-        this.MUTATE_EVENT_QUERY_STRING(initQueryString);
+    clearBookingTableQueryString() {
+        this.MUTATE_BOOKING_TABLE_QUERY_STRING(initQueryString);
     }
 
     @Action
     setBookingQueryString(query: IQueryStringBooking) {
-        this.MUTATE_EVENT_QUERY_STRING(query);
+        this.MUTATE_BOOKING_QUERY_STRING(query);
+    }
+
+    @Action
+    setBookingTableQueryString(query: IQueryStringBooking) {
+        this.MUTATE_BOOKING_TABLE_QUERY_STRING(query);
     }
 
     @Action
@@ -206,18 +167,63 @@ class BookingModule extends VuexModule {
         this.MUTATE_IS_DISABLED_SAVE_BUTTON(value);
     }
 
+    @Action
+    updateBookingTableDetailList(data: Array<IBooking>) {
+        this.MUTATE_BOOKING_TABLE_DETAIL_LIST(data);
+    }
+
     // API Table
     @Action
     async getBookings() {
+        const loading = ElLoading.service({
+            target: '.content',
+        });
         const response = (await bookingService.getList({
             ...this.bookingQueryString,
         })) as IBodyResponse<IGetListResponse<IBooking>>;
+        loading.close();
         if (response.success) {
             this.MUTATE_BOOKING_LIST(response?.data?.items || []);
             this.MUTATE_TOTAL_BOOKINGS(response?.data?.totalItems || 0);
         } else {
             this.MUTATE_BOOKING_LIST([]);
             this.MUTATE_TOTAL_BOOKINGS(0);
+            showErrorNotificationFunction(response.message as string);
+            if (response.code === HttpStatus.ITEM_NOT_FOUND) {
+                const loading = ElLoading.service({
+                    target: '.content',
+                });
+                loading.close();
+            }
+        }
+        return response;
+    }
+
+    @Action
+    async getBookingTables() {
+        this.MUTATE_BOOKING_TABLE_QUERY_STRING({
+            idTable: tableDiagramModule.tableSelected?.id,
+        });
+        const loading = ElLoading.service({
+            target: '.content',
+        });
+        const response = (await bookingService.getList({
+            ...this.bookingTableQueryString,
+        })) as IBodyResponse<IGetListResponse<IBooking>>;
+        loading.close();
+        if (response.success) {
+            this.MUTATE_BOOKING_TABLE_DETAIL_LIST(response?.data?.items || []);
+            this.MUTATE_TOTAL_BOOKING_TABLE_DETAIL(response?.data?.totalItems || 0);
+        } else {
+            this.MUTATE_BOOKING_TABLE_DETAIL_LIST([]);
+            this.MUTATE_TOTAL_BOOKING_TABLE_DETAIL(0);
+            showErrorNotificationFunction(response.message as string);
+            if (response.code === HttpStatus.ITEM_NOT_FOUND) {
+                const loading = ElLoading.service({
+                    target: '.content',
+                });
+                loading.close();
+            }
         }
         return response;
     }

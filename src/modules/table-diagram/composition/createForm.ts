@@ -1,17 +1,6 @@
-import { useField, useForm } from 'vee-validate';
+import { useField } from 'vee-validate';
 import { useI18n } from 'vue-i18n';
-import { DEFAULT_FIRST_PAGE, HttpStatus } from '@common/constants';
-import { IEvent, IEventCreate } from '../types';
 import { EventSchema } from '../constants';
-import moment from 'moment';
-import { eventService } from '../services/api.service';
-import { tableDiagramModule } from '../store';
-import {
-    showErrorNotificationFunction,
-    showSuccessNotificationFunction,
-} from '@/utils/helper';
-import { ElLoading } from 'element-plus';
-import { IBodyResponse } from '@/common/types';
 
 export const validateEventSchema = EventSchema;
 

@@ -1,46 +1,5 @@
 import { IQueryString } from '@/common/types';
 
-export interface ITable {
-    id: number;
-    name: string;
-    status: string;
-    numberSeat: number;
-    idRestaurant: number;
-}
-
-export interface IPatchQueryTable {
-    status: string;
-    nameCustomer?: string;
-    phone?: string;
-    arrivalTime?: string;
-}
-
-export interface IBooking {
-    id: number;
-    nameCustomer: string;
-    phone: string;
-    arrivalTime: Date;
-    status: string;
-    table: ITable;
-    numberPeople: number;
-}
-
-export interface IBookingCreate {
-    nameCustomer: string | undefined;
-    phone: string | undefined;
-    arrivalTime: Date | string | undefined;
-    numberPeople: number | undefined;
-}
-
-export interface IBookingUpdate extends IBookingCreate {
-    id: number | undefined;
-}
-
-export interface IPatchBooking {
-    status?: string;
-    idTable?: number;
-}
-
 export interface ICategory {
     id: number;
     name: string;
@@ -61,27 +20,20 @@ export interface ICategoryUpdate extends ICategoryCreate {
 export interface IFood {
     id: number;
     name: string;
-    price: string;
-    imgLink: string;
-    category: ICategory;
+    price: number;
+    imgLink?: string;
+    category?: ICategory;
 }
 
 export interface IFoodCreate {
     name: string | undefined;
-    price: string | undefined;
-    imgLink: string | undefined;
-    category: ICategory | undefined;
+    price: number | undefined;
+    imgLink?: string | undefined;
+    category?: ICategory | undefined;
 }
 
 export interface IFoodUpdate extends IFoodCreate {
     id: number | undefined;
-}
-
-export interface IRestaurant {
-    id: number;
-    name: string;
-    address: string;
-    phone: string;
 }
 
 export interface IQueryStringFood extends IQueryString {

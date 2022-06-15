@@ -5,7 +5,6 @@
                 align="center"
                 :label="$t('store.checkInventory.checkInventoryTable.header.id')"
                 type="index"
-                :index="indexMethod"
                 width="75"
             >
             </el-table-column>

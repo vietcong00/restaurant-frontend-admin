@@ -5,7 +5,6 @@
                 align="center"
                 :label="$t('booking.list.bookingTable.header.id')"
                 type="index"
-                :index="indexMethod"
                 width="75"
             >
             </el-table-column>
@@ -117,16 +116,7 @@
                                 </template>
                             </el-popconfirm>
                         </div>
-                        <div
-                            class="booking-change-table"
-                            @click="
-                                openModal(
-                                    scope.row.id,
-                                    scope.row.arrivalTime,
-                                    scope.row.numberPeople,
-                                )
-                            "
-                        >
+                        <div class="booking-change-table" @click="openModal(scope.row)">
                             <comp-icon :iconName="'dinning-table-small-icon'" />
                         </div>
                     </div>
@@ -143,6 +133,8 @@ import { IBooking } from '../types';
 import CompIcon from '../../../components/CompIcon.vue';
 import { bookingModule } from '../store';
 import { BookingMixins } from '../mixins';
+import { bookingService } from '@/modules/table-diagram/services/api.service';
+import { tableDiagramModule } from '@/modules/table-diagram/store';
 
 @Options({
     name: 'booking-table-component',
@@ -157,6 +149,21 @@ export default class BookingTable extends mixins(BookingMixins) {
 
     created(): void {
         bookingModule.getBookings();
+    }
+
+    async changeStatus(id: number, status: string): Promise<void> {
+        const response = await bookingService.update(id, {
+            status: status,
+        });
+        if (response.success) {
+            bookingModule.getBookings();
+            tableDiagramModule.setCanChosenTable(false);
+        }
+    }
+
+    openModal(booking: IBooking): void {
+        bookingModule.setSelectedBooking(booking);
+        bookingModule.updateCheckShowModalChosenTable(true);
     }
 }
 </script>

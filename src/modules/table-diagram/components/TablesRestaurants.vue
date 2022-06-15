@@ -1,25 +1,25 @@
 <template>
-    <div class="table-item" :class="idTable === getTableSelected ? 'selected' : ''">
-        <div :class="status">
+    <div class="table-item" :class="table.id === tableSelected?.id ? 'selected' : ''">
+        <div :class="table.status">
             <div
                 class="table-layout"
-                @click="
-                    selectTable(checkShowModalChosenTable, idTable, status, numberSeat)
+                @click="selectTable(isShowModalChosenTable, table)"
+                :class="
+                    table.numberSeat < selectedBooking?.numberPeople ? 'not-enough' : ''
                 "
-                :class="numberSeat < getNumberPeople ? 'not-enough' : ''"
             >
                 <img
                     class="table-img"
                     :src="
                         require(`../../../assets/images/table/table-${getImgLink(
-                            numberSeat,
+                            table?.numberSeat,
                         )}.png`)
                     "
                     alt=""
                 />
                 <div class="table-name">{{ name }}</div>
             </div>
-            <modal-table-detail-booking v-show="checkShowModalTableDetail" />
+            <ModalTableDetailBooking v-if="isShowModalTableDetail" />
         </div>
     </div>
 </template>
@@ -30,50 +30,34 @@ import { tableDiagramModule } from '../store';
 import ModalTableDetailBooking from './ModalTableDetailBooking.vue';
 import { ElMessageBox } from 'element-plus';
 import { LIMIT_ARRIVAL_TIME_BOOKING } from '../constants';
+import { Prop } from 'vue-property-decorator';
+import { bookingModule } from '@/modules/booking/store';
+import { ITable } from '../types';
+import { IBookingUpdate } from '@/modules/booking/types';
 
 @Options({
     name: 'table',
-    props: {
-        idTable: {
-            type: Number,
-        },
-        name: {
-            type: String,
-        },
-        numberSeat: {
-            type: Number,
-        },
-        status: {
-            type: String,
-        },
-    },
     components: {
         ModalTableDetailBooking,
     },
 })
 export default class TablesRestaurants extends Vue {
-    get getTableSelected(): number {
-        return tableDiagramModule.getTableSelected;
+    @Prop({}) table!: ITable;
+
+    get tableSelected(): ITable | null {
+        return tableDiagramModule.tableSelected;
     }
 
-    get getArrivalTimeSelected(): number {
-        return tableDiagramModule.getArrivalTimeSelected;
+    get isShowModalTableDetail(): boolean {
+        return tableDiagramModule.isShowModalTableDetail;
     }
 
-    get checkShowModalTableDetail(): boolean {
-        return tableDiagramModule.checkShowModalTableDetail;
+    get isShowModalChosenTable(): boolean {
+        return bookingModule.isShowModalChosenTable;
     }
 
-    get checkShowModalChosenTable(): boolean {
-        return tableDiagramModule.checkShowModalChosenTable;
-    }
-
-    get getNumberPeople(): number {
-        return tableDiagramModule.getNumberPeople;
-    }
-
-    get getNumberSeatSelected(): number {
-        return tableDiagramModule.getNumberSeatSelected;
+    get selectedBooking(): IBookingUpdate | null {
+        return bookingModule.selectedBooking;
     }
 
     getImgLink(numberSeat: number): string {
@@ -95,24 +79,30 @@ export default class TablesRestaurants extends Vue {
         }
     }
 
-    selectTable(
-        isChosenTableModal: boolean,
-        idTable: number,
-        status: string,
-        numberSeat: number,
-    ): void {
-        tableDiagramModule.setTableSelected(idTable);
-        tableDiagramModule.setNumberSeatSelected(numberSeat);
+    selectTable(isChosenTableModal: boolean, table: ITable): void {
+        tableDiagramModule.setTableSelected(table);
         // tableDiagramModule.getBookingsOfTableDetail();
+        console.log('isChosenTableModal', isChosenTableModal);
         let success = false;
         if (isChosenTableModal) {
-            if (this.checkNumberSeat(this.getNumberPeople, numberSeat)) {
+            if (
+                this.checkNumberSeat(
+                    this.selectedBooking?.numberPeople || 0,
+                    table.numberSeat,
+                )
+            ) {
+                console.log('checkNumberSeat success');
+
                 success = true;
-                if (status === 'used') {
+                if (table.status === 'used') {
                     const now = new Date();
                     if (
-                        Math.abs(now.getTime() / 1000 - this.getArrivalTimeSelected) <
-                        LIMIT_ARRIVAL_TIME_BOOKING
+                        Math.abs(
+                            now.getTime() / 1000 -
+                                new Date(
+                                    this.selectedBooking?.arrivalTime as Date,
+                                ).getTime(),
+                        ) < LIMIT_ARRIVAL_TIME_BOOKING
                     ) {
                         const textWarning = `Bàn bạn vừa chọn đang được sử dụng. Vui lòng chọn bàn khác!`;
                         ElMessageBox.alert(textWarning, 'Warning', {
@@ -129,6 +119,8 @@ export default class TablesRestaurants extends Vue {
     }
 
     checkNumberSeat(numberPeople: number, numberSeat: number): boolean {
+        console.log('checkNumberSeat', numberPeople, numberSeat);
+
         if (numberPeople > numberSeat) {
             const textWarning = `Yêu cầu đặt bàn có ${numberPeople} chỗ. Bàn bạn vừa chọn chỉ có ${numberSeat} chỗ. Vui lòng chọn bàn khác!`;
             ElMessageBox.alert(textWarning, 'Warning', {

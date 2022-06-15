@@ -6,7 +6,7 @@
                     <div class="modal-header">
                         <slot name="header-label"> Danh sách đặt bàn</slot>
                         <div class="close-icon" @click="closeModal">
-                            <comp-icon :iconName="'close-icon'" />
+                            <CloseBoldIcon style="height: 20px; width: 25px" />
                         </div>
                     </div>
 
@@ -24,7 +24,6 @@
                                             align="center"
                                             label="#"
                                             type="index"
-                                            :index="indexMethod"
                                             width="50"
                                         >
                                         </el-table-column>
@@ -73,7 +72,10 @@
                                         >
                                             <template #default="scope">
                                                 <div class="booking__table__name_table">
-                                                    {{ checkTableNull(scope.row.table) }}
+                                                    {{
+                                                        scope.row?.table?.name ||
+                                                        'Chưa thiết lập bàn'
+                                                    }}
                                                 </div>
                                             </template>
                                         </el-table-column>
@@ -156,14 +158,14 @@
                                 type="info"
                                 plain
                                 class="modal-button"
-                                @click="sendData('Ready')"
+                                @click="sendData('ready')"
                                 ><div class="text-btn">Đã sử dụng xong</div></el-button
                             >
                             <el-button
                                 type="danger"
                                 plain
                                 class="modal-button"
-                                @click="sendData('Used')"
+                                @click="sendData('used')"
                                 ><div class="text-btn">Bắt đầu sử dụng</div></el-button
                             >
                         </slot>
@@ -176,51 +178,70 @@
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
-
 import { tableDiagramModule } from '../store';
-
+import { CloseBold as CloseBoldIcon } from '@element-plus/icons-vue';
+import { tableService } from '../services/api.service';
+import { HttpStatus } from '@/common/constants';
+import {
+    showSuccessNotificationFunction,
+    showErrorNotificationFunction,
+} from '@/utils/helper';
+import { ElLoading } from 'element-plus';
+import { IBooking } from '@/modules/booking/types';
+import { bookingModule } from '@/modules/booking/store';
+import { ITable } from '../types';
 @Options({
     name: 'modal-table-detail-booking',
+    components: { CloseBoldIcon },
 })
 export default class ModalTableDetailBooking extends Vue {
-    // get getBookingTableDetailList(): IBooking[] {
-    //     return tableDiagramModule.getBookingTableDetailList;
-    // }
+    get getBookingTableDetailList(): IBooking[] {
+        return bookingModule.bookingTableDetailList;
+    }
 
     closeModal(): void {
         tableDiagramModule.updateCheckShowModalTableDetail(false);
     }
 
-    sendData(status: string): void {
-        this.closeModal();
-        tableDiagramModule.patchTable({ status: status });
+    created(): void {
+        bookingModule.getBookingTables();
     }
 
-    checkTableNull(table: any): string {
+    async sendData(status: string): Promise<void> {
+        this.closeModal();
+
+        const loading = ElLoading.service({
+            target: '.content',
+        });
+        const response = await tableService.update(
+            tableDiagramModule.tableSelected?.id as number,
+            {
+                status: status,
+            },
+        );
+        loading.close();
+        if (response.success) {
+            showSuccessNotificationFunction('Thay đổi trạng thái bàn thành công');
+            await tableDiagramModule.getTables();
+            loading.close();
+        } else {
+            showErrorNotificationFunction(response.message);
+            if (response.code === HttpStatus.ITEM_NOT_FOUND) {
+                const loading = ElLoading.service({
+                    target: '.content',
+                });
+                await tableDiagramModule.getTables();
+                loading.close();
+            }
+        }
+    }
+
+    checkTableNull(table: ITable): string {
         if (table === null) {
             return 'Chưa chọn bàn';
         }
         return table.name;
     }
-
-    // changeStatus(id: number, status: string): void {
-    //     tableDiagramModule.updateIdBookingSelected(id);
-    //     tableDiagramModule.patchBooking({
-    //         status: status,
-    //     });
-    //     let tableStatus = '';
-    //     switch (status) {
-    //         case 'Done':
-    //             tableStatus = 'used';
-    //             break;
-    //         case 'Canceled':
-    //             tableStatus = 'ready';
-    //             break;
-    //         default:
-    //             break;
-    //     }
-    //     tableDiagramModule.patchTable({ status: tableStatus });
-    // }
 
     formatDate(date: Date): string {
         var year = date.getFullYear().toString();

@@ -91,7 +91,7 @@ export default class FilterForm extends mixins(BookingMixins) {
             status: [],
         };
         this.arrivalTimeRange = [];
-        bookingModule.clearQueryString();
+        bookingModule.clearBookingQueryString();
         await this.handleFilter();
     }
 

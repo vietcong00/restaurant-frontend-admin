@@ -32,10 +32,10 @@ export interface IBooking {
 }
 
 export interface IBookingCreate {
-    nameCustomer: string | undefined;
-    phone: string | undefined;
-    arrivalTime: Date | string | undefined;
-    numberPeople: number | undefined;
+    nameCustomer?: string | undefined;
+    phone?: string | undefined;
+    arrivalTime?: Date | string | undefined;
+    numberPeople?: number | undefined;
 }
 
 export interface IBookingUpdate extends IBookingCreate {
@@ -91,6 +91,7 @@ export interface IQueryStringBooking extends IQueryString {
     keyword?: string | null;
     status?: BookingStatus[] | null;
     arrivalTimeRange?: string[] | null;
+    idTable?: number | null;
 }
 
 export type TModalType = 'Create' | 'Edit' | 'Close';

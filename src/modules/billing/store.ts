@@ -89,6 +89,7 @@ class BillingModule extends VuexModule {
                     price: 123321,
                 },
                 quantity: 12,
+                total: 0,
             },
         ];
         let totalFoodPrice = 0;

@@ -24,16 +24,14 @@
         <tables-restaurants
             v-for="(table, index) in tableList"
             :key="index"
-            :idTable="table.id"
-            :name="table.name"
-            :numberSeat="table.numberSeat"
-            :status="table.status"
+            :table="table"
         />
     </div>
     <img class="img-item" src="../../../assets/images/table/cash-machine.png" />
 </template>
 
 <script lang="ts">
+import { bookingModule } from '@/modules/booking/store';
 import { ElLoading } from 'element-plus';
 import { Options, Vue } from 'vue-class-component';
 import TablesRestaurants from '../components/TablesRestaurants.vue';
@@ -53,6 +51,8 @@ export default class TableDiagramPage extends Vue {
 
     created(): void {
         tableDiagramModule.clearQueryString();
+        tableDiagramModule.setTableSelected(null);
+        bookingModule.setSelectedBooking(null);
         this.getTableList();
     }
 

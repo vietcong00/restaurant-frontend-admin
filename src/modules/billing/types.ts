@@ -1,5 +1,5 @@
-import { IFood } from './../table-diagram/types';
 import { IQueryString } from '@/common/types';
+import { IFood } from '../menu/types';
 
 export enum STATUS_BILLING {
     WAIT_FOR_PAY = 'waitForPay',
@@ -19,7 +19,7 @@ export interface IFoodBilling {
     id: number;
     food: IFood;
     quantity: number;
-    total?: number;
+    total: number;
 }
 export interface IBilling {
     id: number;

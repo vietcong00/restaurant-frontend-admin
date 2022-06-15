@@ -52,6 +52,7 @@
                     :is-required="true"
                     :min-date="new Date()"
                     :default-value="minEndDate"
+                    :type="'datetime'"
                     :date-format="YYYY_MM_DD_HYPHEN_HH_MM_COLON"
                     :value-format="YYYY_MM_DD_HYPHEN_HH_MM_COLON"
                 />

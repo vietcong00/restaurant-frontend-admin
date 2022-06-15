@@ -5,7 +5,6 @@
                 align="center"
                 :label="$t('store.supplier.supplierTable.header.id')"
                 type="index"
-                :index="indexMethod"
                 width="75"
             >
             </el-table-column>

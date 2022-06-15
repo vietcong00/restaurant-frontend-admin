@@ -1,6 +1,5 @@
-import { IBooking } from './../../table-diagram/types';
 import { bookingService } from './../../table-diagram/services/api.service';
-import { IBookingCreate } from './../types';
+import { IBooking, IBookingCreate } from './../types';
 import { DEFAULT_FIRST_PAGE, HttpStatus } from '@/common/constants';
 import { IBodyResponse } from '@/common/types';
 import {
