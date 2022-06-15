@@ -15,9 +15,8 @@ import { ITokenOption } from '@/utils/token';
 import { PageName } from '@/common/constants';
 import i18n from '@/plugins/vue-i18n';
 import { showAlertMessageFunction } from '@/utils/helper';
-import { IProvince, IUser } from '../user/types';
+import { IProvince, IUser, IUserPosition } from '../user/types';
 import { ISelectOptions, IBodyResponse, IBank, IGetListResponse } from '@/common/types';
-import { IUserPosition } from '../setting/type';
 
 const initUser: IUserProfile = {
     id: NaN,

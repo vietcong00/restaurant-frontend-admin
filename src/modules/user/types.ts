@@ -1,7 +1,22 @@
 import { IQueryString } from '@/common/types';
-import { UserGender, UserRole, UserStatus } from './constants';
+import { SettingKey, UserGender, UserRole, UserStatus } from './constants';
 import { IRole } from '../role/types';
+import { SupportLanguage } from '@/common/constants';
 
+export type IUserPosition = {
+    code: string;
+    value: Record<SupportLanguage, string>;
+    inUse?: boolean;
+};
+
+export interface IGeneralSetting<T> {
+    key: SettingKey;
+    values: T[];
+}
+
+export interface IGetGeneralSettingQuery {
+    key: string;
+}
 export interface IProvince {
     id: number;
     name: string;

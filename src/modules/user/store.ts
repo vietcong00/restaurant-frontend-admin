@@ -4,6 +4,7 @@ import {
     IQueryStringUser,
     IUserFilterForm,
     IImportUser,
+    IUserPosition,
 } from '@/modules/user/types';
 import { Module, VuexModule, Action, Mutation, getModule } from 'vuex-module-decorators';
 import {
@@ -21,7 +22,6 @@ import store from '@/store';
 import { commonService } from '@/common/services/api.services';
 import { appService } from '@/utils/app';
 import { PermissionResources } from '../role/constants';
-import { IUserPosition } from '../setting/type';
 import { capitalize } from 'lodash';
 import { trimObject } from '@/utils/helper';
 

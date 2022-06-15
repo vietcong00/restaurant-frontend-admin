@@ -17,9 +17,9 @@ import {
     SupportLanguage,
 } from '@/common/constants';
 import { appModule } from '@/store/app';
-import { IAppliedPosition, IUserPosition } from '@/modules/setting/type';
 import moment from 'moment';
 import { AcceptStatus } from '@/modules/store/constants';
+import { IUserPosition } from '@/modules/user/types';
 
 export class UtilMixins extends Vue {
     // Common variable
@@ -85,9 +85,7 @@ export class UtilMixins extends Vue {
         return moment(dateTime).locale(currentLanguage).format(dateTimeFormat);
     }
 
-    getPositionOptions(
-        userPositionList: IUserPosition[] | IAppliedPosition[],
-    ): ISelectOptions[] {
+    getPositionOptions(userPositionList: IUserPosition[]): ISelectOptions[] {
         const currentLanguage = appModule.selectedLanguage as SupportLanguage;
         return parseSelectOptions(
             userPositionList.map((pos) => ({

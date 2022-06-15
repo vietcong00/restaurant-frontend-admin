@@ -19,7 +19,6 @@
 </template>
 
 <script lang="ts">
-import { IColumnTable, IRowTable } from '@/modules/timekeeping/types';
 import { Prop, Vue } from 'vue-property-decorator';
 
 export default class TableLayout extends Vue {
@@ -49,10 +48,6 @@ export default class TableLayout extends Vue {
         },
     })
     readonly objectSpanMethod!: unknown;
-
-    handleCellClick(row: IRowTable, column: IColumnTable): void {
-        this.$emit('cell-click', row, column);
-    }
 }
 </script>
 

@@ -14,6 +14,13 @@ import {
 } from './../../common/constants';
 import yup from '@/plugins/yup/index';
 
+export enum SettingKey {
+    USER_POSITION = 'user_position',
+    APPLIED_POSITION = 'applied_position',
+    ASSET_CATEGORY = 'asset_category',
+    PAID_LEAVE_DAYS_RESET_SCHEDULE = 'paid_leave_days_reset_schedule',
+}
+
 export enum UserRole {
     USER = 'member',
     ADMIN = 'admin',

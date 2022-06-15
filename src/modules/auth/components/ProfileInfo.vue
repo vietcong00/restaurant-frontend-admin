@@ -219,10 +219,10 @@ import { authModule } from '@auth/store';
 import { IUserProfile } from '../types';
 import moment from 'moment';
 import { ElLoading } from 'element-plus';
-import { generalSettingApiService } from '@/modules/setting/services/settingService';
-import { SettingKey } from '@/modules/setting/constant';
 import { SupportLanguage } from '@/common/constants';
 import { appModule } from '@/store/app';
+import { SettingKey } from '@/modules/user/constants';
+import { generalSettingApiService } from '@/modules/user/services/api.service';
 export default class ProfileInfo extends Vue {
     get userProfile(): IUserProfile {
         return authModule.userProfile;

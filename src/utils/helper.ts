@@ -1,5 +1,4 @@
 import { ISelectOptions, IPopupAttributes } from '@/common/types';
-import { IUserTimeKeeping } from '@/modules/timekeeping/types';
 import i18n from '@/plugins/vue-i18n';
 import Papa from 'papaparse';
 import { ElMessageBox, ElNotification, MessageBoxData } from 'element-plus';
@@ -37,22 +36,6 @@ export async function fileToLines(file: File, header: boolean): Promise<unknown>
             },
         });
     });
-}
-
-export async function jsonToExcel(data: IUserTimeKeeping[]): Promise<unknown> {
-    const file = data.map((e: any) => {
-        if (e.timeLine) {
-            const keys = Object.keys(e.timeLine);
-            keys.forEach((key: any) => {
-                e[`${key}`] = e.timeLine[`${key}`];
-            });
-        }
-        delete e.avatarName;
-        delete e.avatarId;
-        delete e.timeLine;
-        return e;
-    });
-    return Papa.unparse(file);
 }
 
 export async function showConfirmPopUpFunction(

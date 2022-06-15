@@ -1,5 +1,4 @@
-import { IUser } from '@/modules/user/types';
-import { IUserPosition } from '../setting/type';
+import { IUser, IUserPosition } from '@/modules/user/types';
 export interface ILoginResponse {
     accessToken: {
         token: string;

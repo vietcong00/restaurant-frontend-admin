@@ -17,7 +17,7 @@
                     "
                     alt=""
                 />
-                <div class="table-name">{{ name }}</div>
+                <div class="table-name">{{ table.name }}</div>
             </div>
             <ModalTableDetailBooking v-if="isShowModalTableDetail" />
         </div>

@@ -78,10 +78,10 @@ import { PermissionActions, PermissionResources } from '@/modules/role/constants
 import ImportUserPopup from '../components/ImportUserPopup.vue';
 import ImportUserFingerPopup from '../components/ImportUserFingerPopup.vue';
 import { checkUserHasPermission } from '@/utils/helper';
-import { SettingKey } from '@/modules/setting/constant';
-import { generalSettingApiService } from '@/modules/setting/services/settingService';
-import { IUserPosition } from '@/modules/setting/type';
 import ImportUserResultPopup from '../components/ImportUserResultPopup.vue';
+import { IUserPosition } from '../types';
+import { generalSettingApiService } from '../services/api.service';
+import { SettingKey } from '../constants';
 @Options({
     components: {
         FilterForm,

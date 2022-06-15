@@ -252,15 +252,14 @@ import { Options, setup } from 'vue-class-component';
 import { mixins } from 'vue-property-decorator';
 import { initEditForm } from '../form';
 import { authModule } from '../store';
-import { GenderOptions } from '@/modules/user/constants';
+import { GenderOptions, SettingKey } from '@/modules/user/constants';
 import { parseLanguageSelectOptions } from '@/utils/helper';
 import { ISelectOptions } from '@/common/types';
 import { UtilMixins } from '@/mixins/utilMixins';
 import { FormValidationResult } from 'vee-validate';
-import { IUser } from '@/modules/user/types';
-import { SettingKey } from '@/modules/setting/constant';
-import { generalSettingApiService } from '@/modules/setting/services/settingService';
-import { IUserPosition } from '@/modules/setting/type';
+import { IUser, IUserPosition } from '@/modules/user/types';
+import { generalSettingApiService } from '@/modules/user/services/api.service';
+
 @Options({})
 export default class ProfileFormPopup extends mixins(UtilMixins) {
     form = setup(initEditForm);
