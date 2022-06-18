@@ -14,7 +14,7 @@
                 sortable="custom"
             >
                 <template #default="scope">
-                    {{ scope.row.name }}
+                    {{ scope.row.foodName }}
                 </template>
             </el-table-column>
             <el-table-column
@@ -23,7 +23,7 @@
                 sortable="custom"
             >
                 <template #default="scope">
-                    {{ scope.row.price }}
+                    {{ parseMoney(scope.row.price) }}
                 </template>
             </el-table-column>
             <el-table-column
@@ -31,7 +31,7 @@
                 :label="$t('menu.food.foodTable.header.category')"
             >
                 <template #default="scope">
-                    {{ scope.row.category }}
+                    {{ scope.row.category.name }}
                 </template>
             </el-table-column>
             <el-table-column
@@ -97,7 +97,9 @@ import { Delete as DeleteIcon, Edit as EditIcon } from '@element-plus/icons-vue'
 import { eventModule } from '@/modules/event/store';
 import { PermissionResources, PermissionActions } from '@/modules/role/constants';
 import { checkUserHasPermission } from '@/utils/helper';
-import { IFood } from '../../types';
+import { IFood, IFoodUpdateBody } from '../../types';
+import { setupDelete } from '../../composition/food';
+import { setup } from 'vue-class-component';
 
 @Options({
     name: 'material-table-component',
@@ -108,6 +110,8 @@ import { IFood } from '../../types';
     },
 })
 export default class MaterialTable extends mixins(MenuMixins) {
+    deleteAction = setup(() => setupDelete());
+
     get foodList(): IFood[] {
         return menuModule.foodList;
     }
@@ -126,6 +130,15 @@ export default class MaterialTable extends mixins(MenuMixins) {
         return checkUserHasPermission(eventModule.userPermissions, [
             `${PermissionResources.EVENT}_${PermissionActions.UPDATE}`,
         ]);
+    }
+
+    async onClickButtonEdit(updateFood: IFoodUpdateBody): Promise<void> {
+        menuModule.setFoodSelected(updateFood);
+        menuModule.setIsShowFoodFormPopUp(true);
+    }
+
+    async onClickButtonDelete(id: number): Promise<void> {
+        await this.deleteAction.deleteFood(id);
     }
 }
 </script>

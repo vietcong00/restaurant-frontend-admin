@@ -1,5 +1,5 @@
 <template>
-    <BaseTableLayout :data="materialList">
+    <BaseTableLayout :data="categoryList">
         <template #table-columns>
             <el-table-column
                 align="center"
@@ -88,7 +88,9 @@ import { Delete as DeleteIcon, Edit as EditIcon } from '@element-plus/icons-vue'
 import { eventModule } from '@/modules/event/store';
 import { PermissionResources, PermissionActions } from '@/modules/role/constants';
 import { checkUserHasPermission } from '@/utils/helper';
-import { ICategory } from '../../types';
+import { ICategory, ICategoryUpdateBody } from '../../types';
+import { setupDelete } from '../../composition/category';
+import { setup } from 'vue-class-component';
 
 @Options({
     name: 'category-table-component',
@@ -99,7 +101,9 @@ import { ICategory } from '../../types';
     },
 })
 export default class CategoryTable extends mixins(MenuMixins) {
-    get materialList(): ICategory[] {
+    deleteAction = setup(() => setupDelete());
+
+    get categoryList(): ICategory[] {
         return menuModule.categoryList;
     }
 
@@ -113,6 +117,15 @@ export default class CategoryTable extends mixins(MenuMixins) {
         return checkUserHasPermission(eventModule.userPermissions, [
             `${PermissionResources.EVENT}_${PermissionActions.UPDATE}`,
         ]);
+    }
+
+    async onClickButtonEdit(updateCategory: ICategoryUpdateBody): Promise<void> {
+        menuModule.setCategorySelected(updateCategory);
+        menuModule.setIsShowCategoryFormPopUp(true);
+    }
+
+    async onClickButtonDelete(id: number): Promise<void> {
+        await this.deleteAction.deleteCategory(id);
     }
 }
 </script>

@@ -45,17 +45,17 @@ export default {
     message: {
         title: 'Notification',
         create: {
-            success: 'Create event successfully!',
+            success: 'Create food successfully!',
         },
 
         update: {
-            success: 'Update event successfully!',
+            success: 'Update food successfully!',
         },
 
         delete: {
             title: 'Notification',
-            confirmAsk: 'Are you sure you want to delete this event?',
-            success: 'Delete event successfully!',
+            confirmAsk: 'Are you sure you want to delete this food?',
+            success: 'Delete food successfully!',
         },
     },
 

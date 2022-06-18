@@ -29,7 +29,7 @@ import { Options, Vue } from 'vue-class-component';
 import { tableDiagramModule } from '../store';
 import ModalTableDetailBooking from './ModalTableDetailBooking.vue';
 import { ElMessageBox } from 'element-plus';
-import { LIMIT_ARRIVAL_TIME_BOOKING } from '../constants';
+import { LIMIT_ARRIVAL_TIME_BOOKING, TableStatus } from '../constants';
 import { Prop } from 'vue-property-decorator';
 import { bookingModule } from '@/modules/booking/store';
 import { ITable } from '../types';
@@ -81,24 +81,25 @@ export default class TablesRestaurants extends Vue {
 
     selectTable(isChosenTableModal: boolean, table: ITable): void {
         tableDiagramModule.setTableSelected(table);
-        // tableDiagramModule.getBookingsOfTableDetail();
-        console.log('isChosenTableModal', isChosenTableModal);
+        bookingModule.getBookingTables();
         let success = false;
+        console.log(isChosenTableModal, table);
         if (isChosenTableModal) {
+            console.log(this.selectedBooking?.numberPeople || 0, table.numberSeat);
+
             if (
                 this.checkNumberSeat(
                     this.selectedBooking?.numberPeople || 0,
                     table.numberSeat,
                 )
             ) {
-                console.log('checkNumberSeat success');
-
                 success = true;
-                if (table.status === 'used') {
-                    const now = new Date();
+                if (table.status === TableStatus.USED) {
+                    console.log('table used');
+
                     if (
                         Math.abs(
-                            now.getTime() / 1000 -
+                            new Date().getTime() -
                                 new Date(
                                     this.selectedBooking?.arrivalTime as Date,
                                 ).getTime(),
@@ -119,8 +120,6 @@ export default class TablesRestaurants extends Vue {
     }
 
     checkNumberSeat(numberPeople: number, numberSeat: number): boolean {
-        console.log('checkNumberSeat', numberPeople, numberSeat);
-
         if (numberPeople > numberSeat) {
             const textWarning = `Yêu cầu đặt bàn có ${numberPeople} chỗ. Bàn bạn vừa chọn chỉ có ${numberSeat} chỗ. Vui lòng chọn bàn khác!`;
             ElMessageBox.alert(textWarning, 'Warning', {

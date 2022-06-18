@@ -61,20 +61,13 @@
                                         >
                                             <template #default="scope">
                                                 <div class="booking__table__arrival_time">
-                                                    {{ getTime(scope.row.arrivalTime) }}
-                                                </div>
-                                            </template>
-                                        </el-table-column>
-                                        <el-table-column
-                                            prop="idCategory"
-                                            label="Số bàn"
-                                            width="130"
-                                        >
-                                            <template #default="scope">
-                                                <div class="booking__table__name_table">
                                                     {{
-                                                        scope.row?.table?.name ||
-                                                        'Chưa thiết lập bàn'
+                                                        scope.row.arrivalTime
+                                                            ? parseDateTime(
+                                                                  scope.row.arrivalTime,
+                                                                  YYYY_MM_DD_HYPHEN_HH_MM_COLON,
+                                                              )
+                                                            : ''
                                                     }}
                                                 </div>
                                             </template>
@@ -87,62 +80,6 @@
                                             <template #default="scope">
                                                 <div class="booking__table__status">
                                                     {{ scope.row.status }}
-                                                </div>
-                                            </template>
-                                        </el-table-column>
-                                        <el-table-column
-                                            align="center"
-                                            prop="id"
-                                            label="Thao tác"
-                                            width="150"
-                                        >
-                                            <template #default="scope">
-                                                <div class="booking__table__action">
-                                                    <div class="booking-done">
-                                                        <el-popconfirm
-                                                            confirm-button-text="Yes"
-                                                            cancel-button-text="No"
-                                                            icon-color="green"
-                                                            title="Bạn có chắc chắn hoàn thành yêu cầu đặt bàn này?"
-                                                            @confirm="
-                                                                changeStatus(
-                                                                    scope.row.id,
-                                                                    'Done',
-                                                                )
-                                                            "
-                                                        >
-                                                            <template #reference>
-                                                                <div>
-                                                                    <comp-icon
-                                                                        :iconName="'check-icon'"
-                                                                    />
-                                                                </div>
-                                                            </template>
-                                                        </el-popconfirm>
-                                                    </div>
-
-                                                    <div class="booking-canceled">
-                                                        <el-popconfirm
-                                                            confirm-button-text="Yes"
-                                                            cancel-button-text="No"
-                                                            icon-color="red"
-                                                            title="Bạn có muốn hủy yêu cầu đặt bàn này không?"
-                                                            @confirm="
-                                                                changeStatus(
-                                                                    scope.row.id,
-                                                                    'Canceled',
-                                                                )
-                                                            "
-                                                        >
-                                                            <template #reference>
-                                                                <div>
-                                                                    <comp-icon
-                                                                        :iconName="'x-icon'"
-                                                                    />
-                                                                </div>
-                                                            </template>
-                                                        </el-popconfirm>
-                                                    </div>
                                                 </div>
                                             </template>
                                         </el-table-column>
@@ -201,10 +138,6 @@ export default class ModalTableDetailBooking extends Vue {
 
     closeModal(): void {
         tableDiagramModule.updateCheckShowModalTableDetail(false);
-    }
-
-    created(): void {
-        bookingModule.getBookingTables();
     }
 
     async sendData(status: string): Promise<void> {

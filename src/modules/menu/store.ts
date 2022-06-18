@@ -2,22 +2,24 @@ import { getModule, VuexModule, Mutation, Action, Module } from 'vuex-module-dec
 import store from '@/store';
 import {
     ICategory,
-    IFoodUpdate,
     IFood,
-    ICategoryUpdate,
+    ICategoryUpdateBody,
     IQueryStringCategory,
     IQueryStringFood,
+    IFoodUpdateBody,
 } from './types';
 import {
     DEFAULT_FIRST_PAGE,
     LIMIT_PER_PAGE,
     DEFAULT_ORDER_DIRECTION,
 } from '@/common/constants';
-import { IBodyResponse, IGetListResponse } from '@/common/types';
+import { IBodyResponse, IGetListResponse, ISelectOptions } from '@/common/types';
 import { DEFAULT_ORDER_BY } from '../user/constants';
 import { appService } from '@/utils/app';
 import { PermissionResources } from '../role/constants';
 import { categoryService, foodService } from './services/api.service';
+import { commonService } from '@/common/services/api.services';
+import { IProvince } from '../user/types';
 
 const initCategoryQueryString = {
     page: DEFAULT_FIRST_PAGE,
@@ -44,8 +46,8 @@ class MenuModule extends VuexModule {
     totalCategories = 0;
     totalFoods = 0;
 
-    selectedFood: IFoodUpdate | null = null;
-    selectedCategory: ICategoryUpdate | null = null;
+    selectedFood: IFoodUpdateBody | null = null;
+    selectedCategory: ICategoryUpdateBody | null = null;
 
     isShowModalChosenTable = false;
     isShowModalTableDetail = false;
@@ -61,6 +63,9 @@ class MenuModule extends VuexModule {
     isShowFoodFormPopUp = false;
 
     isDisabledSaveButton = false;
+    foodImgUrl = '';
+
+    categoryOptions: ISelectOptions[] = [];
 
     // GETTERS
     get userPermissions(): string[] {
@@ -78,7 +83,7 @@ class MenuModule extends VuexModule {
     }
 
     @Mutation
-    MUTATE_SELECTED_CATEGORY(data: ICategoryUpdate | null) {
+    MUTATE_SELECTED_CATEGORY(data: ICategoryUpdateBody | null) {
         this.selectedCategory = data;
     }
 
@@ -93,7 +98,7 @@ class MenuModule extends VuexModule {
     }
 
     @Mutation
-    MUTATE_SELECTED_FOOD(data: IFoodUpdate | null) {
+    MUTATE_SELECTED_FOOD(data: IFoodUpdateBody | null) {
         this.selectedFood = data;
     }
 
@@ -128,15 +133,25 @@ class MenuModule extends VuexModule {
         this.isDisabledSaveButton = value;
     }
 
+    @Mutation
+    MUTATE_FOOD_IMG_URL(url: string) {
+        this.foodImgUrl = url;
+    }
+
+    @Mutation
+    MUTATE_CATEGORY_OPTIONS(categoryOptions: ISelectOptions[]) {
+        this.categoryOptions = categoryOptions;
+    }
+
     // ACTION
 
     @Action
-    setCategorySelected(data: ICategoryUpdate | null) {
+    setCategorySelected(data: ICategoryUpdateBody | null) {
         this.MUTATE_SELECTED_CATEGORY(data);
     }
 
     @Action
-    setFoodSelected(data: IFood | null) {
+    setFoodSelected(data: IFoodUpdateBody | null) {
         this.MUTATE_SELECTED_FOOD(data);
     }
 
@@ -175,6 +190,11 @@ class MenuModule extends VuexModule {
         this.MUTATE_IS_DISABLED_SAVE_BUTTON(value);
     }
 
+    @Action
+    setFoodImgUrl(url: string) {
+        this.MUTATE_FOOD_IMG_URL(url);
+    }
+
     // API Table
     @Action
     async getFoods() {
@@ -202,6 +222,23 @@ class MenuModule extends VuexModule {
         } else {
             this.MUTATE_CATEGORY_LIST([]);
             this.MUTATE_TOTAL_CATEGORY(0);
+        }
+        return response;
+    }
+
+    @Action
+    async getDropdownCategories(): Promise<IBodyResponse<IGetListResponse<IProvince>>> {
+        const response = await commonService.getDropdownCategories();
+        if (response?.success) {
+            const categoryOptions: ISelectOptions[] = response?.data?.items.map(
+                (category) => {
+                    return {
+                        value: category.id as number,
+                        label: category.name,
+                    };
+                },
+            );
+            this.MUTATE_CATEGORY_OPTIONS(categoryOptions);
         }
         return response;
     }

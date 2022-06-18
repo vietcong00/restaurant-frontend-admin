@@ -44,17 +44,17 @@ export default {
     message: {
         title: 'Thông báo',
         create: {
-            success: 'Tạo sự kiện thành công!',
+            success: 'Tạo món ăn thành công!',
         },
 
         update: {
-            success: 'Cập nhật sự kiện thành công!',
+            success: 'Cập nhật món ăn thành công!',
         },
 
         delete: {
-            title: 'Xóa sự kiện',
-            confirmAsk: 'Bạn có chắc chắn muốn xóa sự kiện này không?',
-            success: 'Xóa sự kiện thành công!',
+            title: 'Xóa món ăn',
+            confirmAsk: 'Bạn có chắc chắn muốn xóa món ăn này không?',
+            success: 'Xóa món ăn thành công!',
         },
     },
 

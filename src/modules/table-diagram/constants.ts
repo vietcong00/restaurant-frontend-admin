@@ -7,13 +7,13 @@ import {
 } from '@/common/constants';
 import yup from '@/plugins/yup/index';
 
-export enum EventStatus {
-    INCOMING = 'incoming',
-    EXPIRED = 'expired',
-    INPROGRESS = 'inprogress',
-}
-
 export const userQuantityRange = [[0, 50], [50, 100], [100]];
+
+export enum TableStatus {
+    BOOKED = 'booked',
+    USED = 'used',
+    READY = 'ready',
+}
 
 export const SortOptions = [
     {
@@ -31,21 +31,6 @@ export const SortOptions = [
     {
         label: 'event.list.filterForm.sort.quantity',
         value: 'userQuantity',
-    },
-];
-
-export const EventStatusOptions = [
-    {
-        label: 'event.list.status.incoming',
-        value: EventStatus.INCOMING,
-    },
-    {
-        label: 'event.list.status.inprogress',
-        value: EventStatus.INPROGRESS,
-    },
-    {
-        label: 'event.list.status.expired',
-        value: EventStatus.EXPIRED,
     },
 ];
 
@@ -85,4 +70,4 @@ export const SortOption = [
     },
 ];
 
-export const LIMIT_ARRIVAL_TIME_BOOKING = 10800;
+export const LIMIT_ARRIVAL_TIME_BOOKING = 10800000;

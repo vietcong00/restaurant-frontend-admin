@@ -14,7 +14,14 @@
                 sortable="custom"
             >
                 <template #default="scope">
-                    {{ parseDateTimeTime(scope.row.createdAt) }}
+                    {{
+                        scope.row.createdAt
+                            ? parseDateTime(
+                                  scope.row.createdAt,
+                                  YYYY_MM_DD_HYPHEN_HH_MM_COLON,
+                              )
+                            : ''
+                    }}
                 </template>
             </el-table-column>
             <el-table-column

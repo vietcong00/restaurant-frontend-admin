@@ -85,7 +85,7 @@ class BillingModule extends VuexModule {
                 id: 1,
                 food: {
                     id: 1,
-                    name: 'Chu Sở Lâm',
+                    foodName: 'Chu Sở Lâm',
                     price: 123321,
                 },
                 quantity: 12,

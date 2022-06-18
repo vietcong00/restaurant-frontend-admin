@@ -24,8 +24,8 @@
                     path="avatar"
                     :reset="isShowBookingFormPopUp"
                     :currentImageURL="avatarUrl"
-                    @set-avatar-id="setAvatarId"
-                    @set-avatar-url="setUploadingAvatarUrl"
+                    @set-avatar-id="setFoodImgId"
+                    @set-avatar-url="setFoodImgUrl"
                 />
             </div>
             <div class="col-md-12">
@@ -46,12 +46,14 @@
                 />
             </div>
             <div class="col-md-6">
-                <BaseInputText
-                    v-model:value="form.category"
-                    :error="translateYupError(form.errors.category)"
-                    :is-required="true"
+                <BaseSingleSelect
+                    v-model:value="form.categoryId"
+                    is-required="true"
+                    :options="categoryOptions"
                     :label="$t('menu.food.foodPopup.category')"
                     :placeholder="$t('menu.food.placeholder.category')"
+                    name="category"
+                    :error="translateYupError(form.errors.categoryId)"
                 />
             </div>
         </div>
@@ -85,10 +87,11 @@
 
 <script lang="ts">
 import { setup } from 'vue-class-component';
-import { initData } from '../../composition/createForm';
+import { initData } from '../../composition/food';
 import { menuModule } from '../../store';
 import { UtilMixins } from '@/mixins/utilMixins';
 import { mixins, Options } from 'vue-property-decorator';
+import { ISelectOptions } from '@/common/types';
 @Options({
     name: 'food-form-popup',
 })
@@ -105,9 +108,18 @@ export default class MaterialFormPopUp extends mixins(UtilMixins) {
         menuModule.setIsShowFoodFormPopUp(val);
     }
 
+    get foodImgUrl(): string {
+        return menuModule.foodImgUrl;
+    }
+
+    get categoryOptions(): ISelectOptions[] {
+        return menuModule.categoryOptions;
+    }
+
     form = setup(() => initData());
 
     async closePopup(): Promise<void> {
+        menuModule.setFoodImgUrl('');
         menuModule.setIsShowFoodFormPopUp(false);
         menuModule.setFoodSelected(null);
         (this.form.resetForm as () => void)();
@@ -117,6 +129,14 @@ export default class MaterialFormPopUp extends mixins(UtilMixins) {
         menuModule.setIsDisabledSaveButton(true);
         await this.form.onSubmit();
         menuModule.setIsDisabledSaveButton(false);
+    }
+
+    setFoodImgId(fileId: number): void {
+        this.form.foodImgId = fileId;
+    }
+
+    setFoodImgUrl(url: string): void {
+        menuModule.setFoodImgUrl(url);
     }
 }
 </script>

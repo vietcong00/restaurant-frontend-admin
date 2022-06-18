@@ -40,7 +40,14 @@
             >
                 <template #default="scope">
                     <div class="booking__table__arrival_time">
-                        {{ parseDateTimeTime(scope.row.arrivalTime) }}
+                        {{
+                            scope.row.arrivalTime
+                                ? parseDateTime(
+                                      scope.row.arrivalTime,
+                                      YYYY_MM_DD_HYPHEN_HH_MM_COLON,
+                                  )
+                                : ''
+                        }}
                     </div>
                 </template>
             </el-table-column>
@@ -72,7 +79,12 @@
                 width="150"
             >
                 <template #default="scope">
-                    <div class="booking__table__status" :class="scope.row.status">
+                    <div
+                        class="booking__table__status"
+                        :class="`badge status-field badge-md bg-${statusBadge(
+                            scope.row.status,
+                        )}`"
+                    >
                         {{ scope.row.status }}
                     </div>
                 </template>
@@ -86,13 +98,16 @@
             >
                 <template #default="scope">
                     <div class="booking__table__action">
-                        <div class="booking-done">
+                        <div
+                            class="booking-done"
+                            v-if="scope.row.status == BookingStatus.WAITING"
+                        >
                             <el-popconfirm
                                 confirm-button-text="Yes"
                                 cancel-button-text="No"
                                 icon-color="green"
                                 title="Bạn có chắc chắn hoàn thành yêu cầu đặt bàn này?"
-                                @confirm="changeStatus(scope.row.id, 'Done')"
+                                @confirm="changeStatus(scope.row.id, BookingStatus.DONE)"
                             >
                                 <template #reference>
                                     <div>
@@ -101,13 +116,18 @@
                                 </template>
                             </el-popconfirm>
                         </div>
-                        <div class="booking-canceled">
+                        <div
+                            class="booking-canceled"
+                            v-if="scope.row.status == BookingStatus.WAITING"
+                        >
                             <el-popconfirm
                                 confirm-button-text="Yes"
                                 cancel-button-text="No"
                                 icon-color="red"
                                 title="Bạn có muốn hủy yêu cầu đặt bàn này không?"
-                                @confirm="changeStatus(scope.row.id, 'Canceled')"
+                                @confirm="
+                                    changeStatus(scope.row.id, BookingStatus.CANCELED)
+                                "
                             >
                                 <template #reference>
                                     <div>
@@ -116,7 +136,12 @@
                                 </template>
                             </el-popconfirm>
                         </div>
-                        <div class="booking-change-table" @click="openModal(scope.row)">
+                        <div
+                            class="booking-change-table"
+                            :class="!scope.row.tablesRestaurant ? 'need-table' : ''"
+                            @click="openModal(scope.row)"
+                            v-if="scope.row.status == BookingStatus.WAITING"
+                        >
                             <comp-icon :iconName="'dinning-table-small-icon'" />
                         </div>
                     </div>
@@ -135,6 +160,7 @@ import { bookingModule } from '../store';
 import { BookingMixins } from '../mixins';
 import { bookingService } from '@/modules/table-diagram/services/api.service';
 import { tableDiagramModule } from '@/modules/table-diagram/store';
+import { BookingStatus } from '../constants';
 
 @Options({
     name: 'booking-table-component',
@@ -151,7 +177,7 @@ export default class BookingTable extends mixins(BookingMixins) {
         bookingModule.getBookings();
     }
 
-    async changeStatus(id: number, status: string): Promise<void> {
+    async changeStatus(id: number, status: BookingStatus): Promise<void> {
         const response = await bookingService.update(id, {
             status: status,
         });
@@ -164,6 +190,17 @@ export default class BookingTable extends mixins(BookingMixins) {
     openModal(booking: IBooking): void {
         bookingModule.setSelectedBooking(booking);
         bookingModule.updateCheckShowModalChosenTable(true);
+    }
+
+    statusBadge(status: BookingStatus): string {
+        switch (status) {
+            case BookingStatus.WAITING:
+                return 'info';
+            case BookingStatus.DONE:
+                return 'success';
+            case BookingStatus.CANCELED:
+                return 'danger';
+        }
     }
 }
 </script>
@@ -209,6 +246,12 @@ export default class BookingTable extends mixins(BookingMixins) {
             border-radius: 5px;
             box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
             cursor: pointer;
+        }
+
+        .need-table {
+            width: 50px;
+            border: 2px solid rgb(255, 21, 21);
+            border-radius: 8px;
         }
 
         .booking-change-table:hover {

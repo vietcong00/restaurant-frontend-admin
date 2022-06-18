@@ -15,6 +15,7 @@ import { appService } from '@/utils/app';
 import { PermissionResources } from '../role/constants';
 import { showErrorNotificationFunction } from '@/utils/helper';
 import { ElLoading } from 'element-plus';
+import { BookingStatus } from './constants';
 
 const initQueryString = {
     page: DEFAULT_FIRST_PAGE,
@@ -203,14 +204,11 @@ class BookingModule extends VuexModule {
     async getBookingTables() {
         this.MUTATE_BOOKING_TABLE_QUERY_STRING({
             idTable: tableDiagramModule.tableSelected?.id,
-        });
-        const loading = ElLoading.service({
-            target: '.content',
+            status: [BookingStatus.WAITING],
         });
         const response = (await bookingService.getList({
             ...this.bookingTableQueryString,
         })) as IBodyResponse<IGetListResponse<IBooking>>;
-        loading.close();
         if (response.success) {
             this.MUTATE_BOOKING_TABLE_DETAIL_LIST(response?.data?.items || []);
             this.MUTATE_TOTAL_BOOKING_TABLE_DETAIL(response?.data?.totalItems || 0);
@@ -218,12 +216,6 @@ class BookingModule extends VuexModule {
             this.MUTATE_BOOKING_TABLE_DETAIL_LIST([]);
             this.MUTATE_TOTAL_BOOKING_TABLE_DETAIL(0);
             showErrorNotificationFunction(response.message as string);
-            if (response.code === HttpStatus.ITEM_NOT_FOUND) {
-                const loading = ElLoading.service({
-                    target: '.content',
-                });
-                loading.close();
-            }
         }
         return response;
     }

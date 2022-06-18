@@ -51,42 +51,6 @@ export interface IPatchBooking {
     status?: string;
     idTable?: number;
 }
-
-export interface ICategory {
-    id: number | string;
-    name: string;
-}
-
-export interface IGetCategories {
-    categories: Array<ICategory>;
-}
-
-export interface IFood {
-    id: number;
-    name: string;
-    price: string;
-    descriptions: string;
-    imgLink: string;
-    category: ICategory;
-}
-
-export interface IGetFoods {
-    foods: Array<IFood>;
-    totalProduct: number;
-}
-
-export interface IRestaurant {
-    id: number;
-    name: string;
-    address: string;
-    phone: string;
-}
-
-export interface IGetRestaurant {
-    tables: Array<IRestaurant>;
-    totalProduct: number;
-}
-
 export interface IQueryStringBooking extends IQueryString {
     keyword?: string | null;
     status?: BookingStatus[] | null;

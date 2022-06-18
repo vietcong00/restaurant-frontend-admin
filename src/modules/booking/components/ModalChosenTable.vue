@@ -95,6 +95,8 @@ export default class ModalChosenTable extends Vue {
             let fail = false;
             for (let i = 0; i < this.getBookingTableDetailList.length; i++) {
                 const timeStamp = this.getBookingTableDetailList[i].arrivalTime;
+                console.log('check in send Data : ', this.selectedBooking?.arrivalTime);
+
                 fail = this.checkTimeBooking(
                     new Date(this.selectedBooking?.arrivalTime as Date),
                     timeStamp,
@@ -142,9 +144,10 @@ export default class ModalChosenTable extends Vue {
         }
     }
 
-    checkTimeBooking(oldTime: Date, newTIme: Date): boolean {
+    checkTimeBooking(oldTime: Date, newTime: Date): boolean {
         if (
-            Math.abs(oldTime.getTime() - newTIme.getTime()) < LIMIT_ARRIVAL_TIME_BOOKING
+            Math.abs(new Date(oldTime).getTime() - new Date(newTime).getTime()) <
+            LIMIT_ARRIVAL_TIME_BOOKING
         ) {
             const textWarning = `Bàn bạn vừa chọn đã bị đặt chỗ từ trước. Khách hàng sẽ đến vào lúc ${moment(
                 oldTime,

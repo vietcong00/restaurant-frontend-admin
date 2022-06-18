@@ -3,36 +3,36 @@ import { IQueryString } from '@/common/types';
 export interface ICategory {
     id: number;
     name: string;
-    priority: string;
+    priority: number;
     note: string;
 }
 
-export interface ICategoryCreate {
+export interface ICategoryCreateBody {
     name: string | undefined;
-    priority: string | undefined;
+    priority: number | undefined;
     note: string | undefined;
 }
 
-export interface ICategoryUpdate extends ICategoryCreate {
+export interface ICategoryUpdateBody extends ICategoryCreateBody {
     id: number | undefined;
 }
 
 export interface IFood {
     id: number;
-    name: string;
+    foodName: string;
     price: number;
-    imgLink?: string;
-    category?: ICategory;
+    foodImgId?: number;
+    categoryId?: number;
 }
 
-export interface IFoodCreate {
-    name: string | undefined;
+export interface IFoodCreateBody {
+    foodName: string | undefined;
     price: number | undefined;
-    imgLink?: string | undefined;
-    category?: ICategory | undefined;
+    foodImgId?: number | undefined;
+    categoryId?: number | undefined;
 }
 
-export interface IFoodUpdate extends IFoodCreate {
+export interface IFoodUpdateBody extends IFoodCreateBody {
     id: number | undefined;
 }
 

@@ -19,11 +19,11 @@
         <div class="row">
             <div class="col-md-12">
                 <BaseInputText
-                    v-model:value="form.categoryName"
+                    v-model:value="form.name"
                     :is-required="true"
                     :placeholder="$t('menu.category.placeholder.categoryName')"
                     :label="$t('menu.category.categoryPopup.categoryName')"
-                    :error="translateYupError(form.errors.categoryName)"
+                    :error="translateYupError(form.errors.name)"
                 />
             </div>
             <div class="col-md-6">
@@ -74,7 +74,7 @@
 
 <script lang="ts">
 import { setup } from 'vue-class-component';
-import { initData } from '../../composition/createForm';
+import { initData } from '../../composition/category';
 import { menuModule } from '../../store';
 import { UtilMixins } from '@/mixins/utilMixins';
 import { mixins, Options } from 'vue-property-decorator';

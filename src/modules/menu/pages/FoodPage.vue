@@ -63,6 +63,7 @@ export default class FoodPage extends Vue {
     created(): void {
         menuModule.clearFoodQueryString();
         this.getFoodList();
+        menuModule.getDropdownCategories();
     }
 
     async getFoodList(): Promise<void> {
