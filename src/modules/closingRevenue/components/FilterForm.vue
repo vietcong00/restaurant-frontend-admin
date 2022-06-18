@@ -67,8 +67,8 @@ import { Vue } from 'vue-class-component';
 import { DEFAULT_FIRST_PAGE, LIMIT_PER_PAGE } from '@/common/constants';
 import { Prop, Watch } from 'vue-property-decorator';
 import { ElLoading } from 'element-plus';
-import { reportModule } from '../../store';
-import { IQueryStringClosingRevenue } from '../../types';
+import { closingRevenueModule } from '../store';
+import { IQueryStringClosingRevenue } from '../types';
 import moment from 'moment';
 export default class FilterForm extends Vue {
     @Prop({ default: false }) readonly isToggleFilterForm!: boolean;
@@ -86,7 +86,7 @@ export default class FilterForm extends Vue {
             payerIds: [],
         };
         this.paymentDateRange = [];
-        reportModule.clearQueryString();
+        closingRevenueModule.clearQueryString();
         await this.handleFilter();
     }
 
@@ -104,11 +104,11 @@ export default class FilterForm extends Vue {
                   )
                 : null,
         };
-        reportModule.setClosingRevenueQueryString(query);
+        closingRevenueModule.setClosingRevenueQueryString(query);
         const loading = ElLoading.service({
             target: '.content',
         });
-        await reportModule.getClosingRevenueList();
+        await closingRevenueModule.getClosingRevenueList();
         loading.close();
     }
 

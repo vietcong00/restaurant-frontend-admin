@@ -3,7 +3,7 @@
         <template #table-columns>
             <el-table-column
                 prop="date"
-                :label="$t('report.closingRevenue.closingRevenueTable.date')"
+                :label="$t('closingRevenue.closingRevenue.closingRevenueTable.date')"
                 align="center"
                 min-width="150"
             >
@@ -16,8 +16,8 @@
                 </template>
             </el-table-column>
             <el-table-column
-                width="100"
-                :label="$t('report.closingRevenue.closingRevenueTable.shiftWork')"
+                width="150"
+                :label="$t('closingRevenue.closingRevenue.closingRevenueTable.shiftWork')"
             >
                 <template #default="scope">
                     <div
@@ -25,56 +25,52 @@
                             scope.row.shiftWork,
                         )}`"
                     >
-                        {{ $t(`report.closingRevenue.shiftWork.${scope.row.shiftWork}`) }}
+                        {{
+                            $t(
+                                `closingRevenue.closingRevenue.shiftWork.${scope.row.shiftWork}`,
+                            )
+                        }}
                     </div>
                 </template>
             </el-table-column>
             <el-table-column
-                prop="cashier.name"
-                :label="$t('report.closingRevenue.closingRevenueTable.cashier')"
+                prop="shiftLeader.name"
+                :label="
+                    $t('closingRevenue.closingRevenue.closingRevenueTable.shiftLeader')
+                "
                 width="150"
             />
             <el-table-column
                 prop="cashAtBeginningOfShift"
                 :label="
-                    $t('report.closingRevenue.closingRevenueTable.cashAtBeginningOfShift')
+                    $t(
+                        'closingRevenue.closingRevenue.closingRevenueTable.cashAtBeginningOfShift',
+                    )
                 "
-                width="200"
+                width="300"
             >
                 <template #default="scope">
                     {{ parseMoney(scope.row.cashAtBeginningOfShift) }}
                 </template>
             </el-table-column>
             <el-table-column
-                prop="billingRevenue"
-                :label="$t('report.closingRevenue.closingRevenueTable.billingRevenue')"
-                width="200"
+                prop="cashAtEndingOfShift"
+                :label="
+                    $t(
+                        'closingRevenue.closingRevenue.closingRevenueTable.cashAtEndingOfShift',
+                    )
+                "
+                width="300"
             >
                 <template #default="scope">
-                    {{ parseMoney(scope.row.billingRevenue) }}
-                </template>
-            </el-table-column>
-            <el-table-column
-                prop="importMoney"
-                :label="$t('report.closingRevenue.closingRevenueTable.importMoney')"
-                width="250"
-            >
-                <template #default="scope">
-                    {{ parseMoney(scope.row.importMoney) }}
-                </template>
-            </el-table-column>
-            <el-table-column
-                prop="cashAtEndOfShift"
-                :label="$t('report.closingRevenue.closingRevenueTable.cashAtEndOfShift')"
-                width="200"
-            >
-                <template #default="scope">
-                    {{ parseMoney(scope.row.cashAtEndOfShift) }}
+                    {{ parseMoney(scope.row.cashAtEndingOfShift) }}
                 </template>
             </el-table-column>
             <el-table-column
                 prop="bankingRevenue"
-                :label="$t('report.closingRevenue.closingRevenueTable.bankingRevenue')"
+                :label="
+                    $t('closingRevenue.closingRevenue.closingRevenueTable.bankingRevenue')
+                "
                 width="250"
             >
                 <template #default="scope">
@@ -83,7 +79,11 @@
             </el-table-column>
             <el-table-column
                 prop="differenceRevenue"
-                :label="$t('report.closingRevenue.closingRevenueTable.differenceRevenue')"
+                :label="
+                    $t(
+                        'closingRevenue.closingRevenue.closingRevenueTable.differenceRevenue',
+                    )
+                "
                 width="250"
             >
                 <template #default="scope">
@@ -98,14 +98,14 @@
             </el-table-column>
             <el-table-column
                 prop="note"
-                :label="$t('report.closingRevenue.closingRevenueTable.note')"
+                :label="$t('closingRevenue.closingRevenue.closingRevenueTable.note')"
                 width="150"
             />
             <el-table-column
                 fixed="right"
                 width="150"
                 align="center"
-                :label="$t('report.closingRevenue.closingRevenueTable.action')"
+                :label="$t('closingRevenue.closingRevenue.closingRevenueTable.action')"
             >
                 <template #default="scope">
                     <div
@@ -114,7 +114,7 @@
                     >
                         <el-tooltip
                             effect="dark"
-                            :content="$t('report.closingRevenue.tooltip.edit')"
+                            :content="$t('closingRevenue.closingRevenue.tooltip.edit')"
                             placement="top"
                             v-if="isCanUpdate"
                         >
@@ -128,7 +128,7 @@
                         </el-tooltip>
                         <el-tooltip
                             effect="dark"
-                            :content="$t('report.closingRevenue.tooltip.delete')"
+                            :content="$t('closingRevenue.closingRevenue.tooltip.delete')"
                             placement="top"
                             v-if="isCanDelete"
                         >
@@ -150,13 +150,13 @@
 <script lang="ts">
 import { Options, setup } from 'vue-class-component';
 import { mixins } from 'vue-property-decorator';
-import { setupDelete } from '../../composition/closingRevenueList';
+import { setupDelete } from '../composition/closingRevenue';
 import { Delete as DeleteIcon, Edit as EditIcon } from '@element-plus/icons-vue';
 import { PermissionActions, PermissionResources } from '@/modules/role/constants';
 import { checkUserHasPermission } from '@/utils/helper';
 import { UtilMixins } from '@/mixins/utilMixins';
-import { reportModule } from '../../store';
-import { IClosingRevenue, IClosingRevenueUpdate, SHIFT } from '../../types';
+import { closingRevenueModule } from '../store';
+import { IClosingRevenue, IClosingRevenueUpdateBody, SHIFT } from '../types';
 
 @Options({
     components: {
@@ -168,24 +168,26 @@ export default class ClosingRevenueTable extends mixins(UtilMixins) {
     deleteAction = setup(() => setupDelete());
 
     get closingRevenueList(): IClosingRevenue[] {
-        return reportModule.closingRevenueList;
+        return closingRevenueModule.closingRevenueList;
     }
 
     get isCanDelete(): boolean {
-        return checkUserHasPermission(reportModule.userPermissions, [
+        return checkUserHasPermission(closingRevenueModule.userPermissions, [
             `${PermissionResources.BILLING}_${PermissionActions.DELETE}`,
         ]);
     }
 
     get isCanUpdate(): boolean {
-        return checkUserHasPermission(reportModule.userPermissions, [
+        return checkUserHasPermission(closingRevenueModule.userPermissions, [
             `${PermissionResources.BILLING}_${PermissionActions.UPDATE}`,
         ]);
     }
 
-    async onClickButtonEdit(updateClosingRevenue: IClosingRevenueUpdate): Promise<void> {
-        reportModule.setSelectedClosingRevenue(updateClosingRevenue);
-        reportModule.setIsShowClosingRevenueFormPopUp(true);
+    async onClickButtonEdit(
+        updateClosingRevenue: IClosingRevenueUpdateBody,
+    ): Promise<void> {
+        closingRevenueModule.setSelectedClosingRevenue(updateClosingRevenue);
+        closingRevenueModule.setIsShowClosingRevenueFormPopUp(true);
     }
 
     async onClickButtonDelete(id: number): Promise<void> {
@@ -194,10 +196,10 @@ export default class ClosingRevenueTable extends mixins(UtilMixins) {
 
     checkFullPermissionActions(): boolean {
         return (
-            checkUserHasPermission(reportModule.userPermissions, [
+            checkUserHasPermission(closingRevenueModule.userPermissions, [
                 `${PermissionResources.BILLING}_${PermissionActions.DELETE}`,
             ]) &&
-            checkUserHasPermission(reportModule.userPermissions, [
+            checkUserHasPermission(closingRevenueModule.userPermissions, [
                 `${PermissionResources.BILLING}_${PermissionActions.UPDATE}`,
             ])
         );

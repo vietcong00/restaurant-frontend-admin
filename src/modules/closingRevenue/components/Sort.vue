@@ -8,8 +8,8 @@ import { ISelectOptions } from '@/common/types';
 import { parseLanguageSelectOptions } from '@/utils/helper';
 import { ElLoading } from 'element-plus';
 import { Options, Vue } from 'vue-class-component';
-import { ClosingRevenueSortOptions } from '../../constants';
-import { reportModule } from '../../store';
+import { ClosingRevenueSortOptions } from '../constants';
+import { closingRevenueModule } from '../store';
 
 @Options({})
 export default class ClosingRevenueSort extends Vue {
@@ -21,11 +21,11 @@ export default class ClosingRevenueSort extends Vue {
         const loading = ElLoading.service({
             target: '.content',
         });
-        reportModule.setClosingRevenueQueryString({
+        closingRevenueModule.setClosingRevenueQueryString({
             orderBy,
             orderDirection,
         });
-        await reportModule.getClosingRevenueList();
+        await closingRevenueModule.getClosingRevenueList();
         loading.close();
     }
 }

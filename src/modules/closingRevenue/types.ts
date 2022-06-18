@@ -1,3 +1,4 @@
+import { IUser } from '@/modules/user/types';
 import { IQueryString } from '@/common/types';
 
 export enum SHIFT {
@@ -5,39 +6,30 @@ export enum SHIFT {
     AFTERNOON_SHIFT = 'afternoonShift',
 }
 
-export interface ICashier {
-    id: number;
-    name: string;
-}
-
 export interface IClosingRevenue {
     id: number;
-    date: string;
     shiftWork: SHIFT;
-    cashier?: ICashier;
+    shiftLeader: IUser;
     cashAtBeginningOfShift: number;
     billingRevenue: number;
     importMoney: number;
-    cashAtEndOfShift: number;
+    exportMoney: number;
+    cashAtEndingOfShift: number;
     bankingRevenue: number;
     differenceRevenue: number;
     note: string;
 }
 
-export interface IClosingRevenueCreate {
-    date: string | undefined;
+export interface IClosingRevenueCreateBody {
     shiftWork: SHIFT | undefined;
-    cashier?: ICashier | undefined;
     cashAtBeginningOfShift: number | undefined;
-    billingRevenue: number | undefined;
-    importMoney: number | undefined;
-    cashAtEndOfShift: number | undefined;
+    cashAtEndingOfShift: number | undefined;
     bankingRevenue: number | undefined;
     differenceRevenue: number | undefined;
     note: string | undefined;
 }
 
-export interface IClosingRevenueUpdate extends IClosingRevenueCreate {
+export interface IClosingRevenueUpdateBody extends IClosingRevenueCreateBody {
     id: number | undefined;
 }
 

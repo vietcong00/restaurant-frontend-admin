@@ -83,9 +83,8 @@ export default {
         promotion: {
             title: 'Promotion',
         },
-        report: {
-            title: 'Report',
-            closingRevenue: 'Closing revenue',
+        closingRevenue: {
+            title: 'Closing revenue',
         },
     },
     menuAccount: {

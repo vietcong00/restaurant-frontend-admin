@@ -2,9 +2,9 @@
     <div>
         <BaseListPageHeader
             @toggle-filter-form="toggleFilterForm"
-            :pageTitle="$t('report.closingRevenue.pageName')"
+            :pageTitle="$t('closingRevenue.closingRevenue.pageName')"
             :totalItems="totalItems"
-            :createButtonText="$t('report.closingRevenue.button.create')"
+            :createButtonText="$t('closingRevenue.closingRevenue.button.create')"
             :hasSortBox="true"
             v-model:page="selectedPage"
             v-model:keyword="keyword"
@@ -27,15 +27,15 @@
 import { UtilMixins } from '@/mixins/utilMixins';
 import { mixins } from 'vue-property-decorator';
 import { Options } from 'vue-class-component';
-import ClosingRevenueTable from '../components/closingRevenue/ClosingRevenueTable.vue';
-import ClosingRevenueSort from '../components/closingRevenue/Sort.vue';
-import ClosingRevenuePopup from '../components/closingRevenue/ClosingRevenueFormPopup.vue';
-import FilterForm from '../components/closingRevenue/FilterForm.vue';
+import ClosingRevenueTable from '../components/ClosingRevenueTable.vue';
+import ClosingRevenueSort from '../components/Sort.vue';
+import ClosingRevenuePopup from '../components/ClosingRevenueFormPopup.vue';
+import FilterForm from '../components/FilterForm.vue';
 import { DEFAULT_FIRST_PAGE, LIMIT_PER_PAGE } from '@/common/constants';
 import { ElLoading } from 'element-plus';
 import { PermissionActions, PermissionResources } from '@/modules/role/constants';
 import { checkUserHasPermission } from '@/utils/helper';
-import { reportModule } from '../store';
+import { closingRevenueModule } from '../store';
 
 @Options({
     components: {
@@ -50,40 +50,40 @@ export default class ClosingRevenuesPage extends mixins(UtilMixins) {
     isToggleFilterForm = true;
 
     get totalItems(): number {
-        return reportModule.totalClosingRevenueList;
+        return closingRevenueModule.totalClosingRevenueList;
     }
 
     // check permission
     get isCanCreate(): boolean {
-        return checkUserHasPermission(reportModule.userPermissions, [
+        return checkUserHasPermission(closingRevenueModule.userPermissions, [
             `${PermissionResources.BILLING}_${PermissionActions.CREATE}`,
         ]);
     }
 
     get selectedPage(): number {
-        return reportModule.closingRevenueQueryString?.page || DEFAULT_FIRST_PAGE;
+        return closingRevenueModule.closingRevenueQueryString?.page || DEFAULT_FIRST_PAGE;
     }
 
     set selectedPage(value: number) {
-        reportModule.closingRevenueQueryString.page = value;
+        closingRevenueModule.closingRevenueQueryString.page = value;
     }
 
     get keyword(): string {
-        return reportModule.closingRevenueQueryString?.keyword || '';
+        return closingRevenueModule.closingRevenueQueryString?.keyword || '';
     }
 
     set keyword(value: string) {
-        reportModule.closingRevenueQueryString.keyword = value;
+        closingRevenueModule.closingRevenueQueryString.keyword = value;
     }
 
     created(): void {
-        reportModule.clearQueryString();
+        closingRevenueModule.clearQueryString();
         this.fetchData();
     }
 
     async fetchData(): Promise<void> {
         const loading = ElLoading.service({});
-        Promise.all([reportModule.getClosingRevenueList()]);
+        Promise.all([closingRevenueModule.getClosingRevenueList()]);
         loading.close();
     }
 
@@ -95,12 +95,12 @@ export default class ClosingRevenuesPage extends mixins(UtilMixins) {
         const loading = ElLoading.service({
             target: '.content',
         });
-        await reportModule.getClosingRevenueList();
+        await closingRevenueModule.getClosingRevenueList();
         loading.close();
     }
 
     async handleFilter(): Promise<void> {
-        reportModule.setClosingRevenueQueryString({
+        closingRevenueModule.setClosingRevenueQueryString({
             page: DEFAULT_FIRST_PAGE,
             limit: LIMIT_PER_PAGE,
             keyword: this.keyword?.trim(),
@@ -109,14 +109,14 @@ export default class ClosingRevenuesPage extends mixins(UtilMixins) {
     }
 
     async handlePaginate(): Promise<void> {
-        reportModule.setClosingRevenueQueryString({
+        closingRevenueModule.setClosingRevenueQueryString({
             page: this.selectedPage,
         });
         this.getClosingRevenueList();
     }
 
     onClickButtonCreate(): void {
-        reportModule.setIsShowClosingRevenueFormPopUp(true);
+        closingRevenueModule.setIsShowClosingRevenueFormPopUp(true);
     }
 }
 </script>

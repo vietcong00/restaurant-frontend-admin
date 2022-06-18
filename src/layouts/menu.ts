@@ -202,9 +202,9 @@ const payment: ISidebar = {
     ],
 };
 
-const reportMenu: ISidebar = {
+const closingRevenueMenu: ISidebar = {
     iconComponent: QuestionIcon,
-    name: 'common.app.menu.report.closingRevenue',
+    name: 'common.app.menu.closingRevenue.title',
     to: '/closing-revenue',
     active: false,
     pageName: PageName.REPORT_CLOSING_REVENUE_PAGE,
@@ -224,5 +224,5 @@ export const sidebars = [
     menuMenu,
     storeMenu,
     billing,
-    reportMenu,
+    closingRevenueMenu,
 ];

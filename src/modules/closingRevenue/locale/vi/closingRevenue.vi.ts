@@ -5,11 +5,9 @@ export default {
     closingRevenueTable: {
         date: 'Ngày',
         shiftWork: 'Ca',
-        cashier: 'Thu ngân',
+        shiftLeader: 'Trưởng ca',
         cashAtBeginningOfShift: 'Tiền mặt đầu ca',
-        billingRevenue: 'Doanh thu hóa đơn',
-        importMoney: 'Tiền nhập hàng trong ca',
-        cashAtEndOfShift: 'Tiền mặt cuối ca',
+        cashAtEndingOfShift: 'Tiền mặt cuối ca',
         bankingRevenue: 'Doanh thu chuyển khoản',
         differenceRevenue: 'Chênh lệch doanh thu',
         note: 'Ghi chú',
@@ -18,11 +16,11 @@ export default {
     closingRevenueForm: {
         date: 'Ngày',
         shiftWork: 'Ca',
-        cashier: 'Thu ngân',
+        shiftLeader: 'Trưởng ca',
         cashAtBeginningOfShift: 'Tiền mặt đầu ca',
         billingRevenue: 'Doanh thu hóa đơn',
         importMoney: 'Tiền nhập hàng trong ca',
-        cashAtEndOfShift: 'Tiền mặt cuối ca',
+        cashAtEndingOfShift: 'Tiền mặt cuối ca',
         bankingRevenue: 'Doanh thu chuyển khoản',
         differenceRevenue: 'Chênh lệch doanh thu',
         note: 'Ghi chú',
@@ -40,7 +38,7 @@ export default {
     },
     placeholder: {
         cashAtBeginningOfShift: 'Nhập Tiền mặt đầu ca',
-        cashAtEndOfShift: 'Nhập Tiền mặt cuối ca',
+        cashAtEndingOfShift: 'Nhập Tiền mặt cuối ca',
         bankingRevenue: 'Nhập Doanh thu chuyển khoản',
     },
     button: {

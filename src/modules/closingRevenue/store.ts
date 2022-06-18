@@ -1,8 +1,7 @@
 import {
     IClosingRevenue,
-    IClosingRevenueUpdate,
     IQueryStringClosingRevenue,
-    SHIFT,
+    IClosingRevenueUpdateBody,
 } from './types';
 import { Module, VuexModule, Action, Mutation, getModule } from 'vuex-module-decorators';
 import store from '@/store';
@@ -14,6 +13,8 @@ import {
     DEFAULT_ORDER_DIRECTION,
     LIMIT_PER_PAGE,
 } from '@/common/constants';
+import { IBodyResponse, IGetListResponse } from '@/common/types';
+import { closingRevenueService } from './services/closing-revenue.api.services';
 
 const initQueryString = {
     page: DEFAULT_FIRST_PAGE,
@@ -25,14 +26,14 @@ const initQueryString = {
 };
 
 @Module({ dynamic: true, stateFactory: true, namespaced: true, store, name: 'report' })
-class ReportModule extends VuexModule {
+class ClosingRevenueModule extends VuexModule {
     closingRevenueList: IClosingRevenue[] = [];
     totalClosingRevenueList = 0;
     closingRevenueQueryString: IQueryStringClosingRevenue = initQueryString;
 
     isShowClosingRevenueFormPopUp = false;
     isDisabledSaveButton = false;
-    selectedClosingRevenue: IClosingRevenueUpdate | null = null;
+    selectedClosingRevenue: IClosingRevenueUpdateBody | null = null;
 
     get userPermissions(): string[] {
         return appService.getUserPermissionsByResource(PermissionResources.BILLING);
@@ -41,26 +42,18 @@ class ReportModule extends VuexModule {
     // actions
 
     @Action
-    async getClosingRevenueList(): Promise<void> {
-        const closingRevenue: IClosingRevenue[] = [
-            {
-                id: 1,
-                date: '2022-04-04',
-                shiftWork: SHIFT.MORNING_SHIFT,
-                cashier: {
-                    id: 1,
-                    name: 'Chi Sở lâm',
-                },
-                cashAtBeginningOfShift: 4000000,
-                billingRevenue: 1200000,
-                importMoney: 800000,
-                cashAtEndOfShift: 5600000,
-                bankingRevenue: 120000,
-                differenceRevenue: 50000,
-                note: 'Kuuga',
-            },
-        ];
-        this.MUTATE_CLOSING_REVENUE_LIST(closingRevenue);
+    async getClosingRevenueList() {
+        const response = (await closingRevenueService.getList({
+            ...this.closingRevenueQueryString,
+        })) as IBodyResponse<IGetListResponse<IClosingRevenue>>;
+        if (response.success) {
+            this.MUTATE_CLOSING_REVENUE_LIST(response?.data?.items || []);
+            this.MUTATE_TOTAL_CLOSING_REVENUE(response?.data?.totalItems || 0);
+        } else {
+            this.MUTATE_CLOSING_REVENUE_LIST([]);
+            this.MUTATE_TOTAL_CLOSING_REVENUE(response?.data?.totalItems || 0);
+        }
+        return response;
     }
 
     @Action
@@ -79,7 +72,7 @@ class ReportModule extends VuexModule {
     }
 
     @Action
-    setSelectedClosingRevenue(closingRevenue: IClosingRevenueUpdate | null) {
+    setSelectedClosingRevenue(closingRevenue: IClosingRevenueUpdateBody | null) {
         this.MUTATE_SELECTED_CLOSING_REVENUE(closingRevenue);
     }
 
@@ -119,9 +112,9 @@ class ReportModule extends VuexModule {
     }
 
     @Mutation
-    MUTATE_SELECTED_CLOSING_REVENUE(closingRevenue: IClosingRevenueUpdate | null) {
+    MUTATE_SELECTED_CLOSING_REVENUE(closingRevenue: IClosingRevenueUpdateBody | null) {
         this.selectedClosingRevenue = closingRevenue;
     }
 }
 
-export const reportModule = getModule(ReportModule);
+export const closingRevenueModule = getModule(ClosingRevenueModule);
