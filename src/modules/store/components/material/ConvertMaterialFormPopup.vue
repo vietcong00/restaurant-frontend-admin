@@ -30,6 +30,7 @@
                 <BaseInputText
                     v-model:value="form.note"
                     :label="$t('store.convertHistory.convertHistoryPopup.note')"
+                    :error="translateYupError(form.errors.note)"
                 />
             </div>
             <div class="col-md-5">
@@ -39,6 +40,7 @@
                     :placeholder="
                         $t('store.convertHistory.convertHistoryPopup.convertFrom')
                     "
+                    :error="translateYupError(form.errors.idMaterialFrom)"
                     :isRequired="true"
                     :options="materialOptions"
                     @change="onChangeMaterialFrom"
@@ -57,7 +59,9 @@
                     v-model:value="form.quantityFrom"
                     :min="0"
                     :isRequired="true"
+                    :max="90"
                     :label="$t('store.convertHistory.convertHistoryPopup.quantityFrom')"
+                    :error="translateYupError(form.errors.quantityFrom)"
                 />
                 <BaseInputText
                     :isDisabled="true"
@@ -82,6 +86,7 @@
                     :placeholder="
                         $t('store.convertHistory.convertHistoryPopup.convertTo')
                     "
+                    :error="translateYupError(form.errors.idMaterialTo)"
                     :isRequired="true"
                     :options="materialOptions"
                     @change="onChangeMaterialTo"
@@ -101,6 +106,7 @@
                     :min="0"
                     :isRequired="true"
                     :label="$t('store.convertHistory.convertHistoryPopup.quantityFrom')"
+                    :error="translateYupError(form.errors.quantityTo)"
                 />
                 <BaseInputText
                     :isDisabled="true"

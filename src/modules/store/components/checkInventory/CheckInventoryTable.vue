@@ -91,7 +91,6 @@ import { ICheckInventory } from '../../types';
 import CompIcon from '../../../../components/CompIcon.vue';
 import { StoreMixins } from '../../mixins';
 import { Delete as DeleteIcon, Edit as EditIcon } from '@element-plus/icons-vue';
-import { eventModule } from '@/modules/event/store';
 import { PermissionResources, PermissionActions } from '@/modules/role/constants';
 import {
     checkUserHasPermission,
@@ -121,13 +120,13 @@ export default class CheckInventoryTable extends mixins(StoreMixins) {
     }
 
     isCanDelete(): boolean {
-        return checkUserHasPermission(eventModule.userPermissions, [
+        return checkUserHasPermission(storeModule.userPermissions, [
             `${PermissionResources.EVENT}_${PermissionActions.DELETE}`,
         ]);
     }
 
     isCanUpdate(): boolean {
-        return checkUserHasPermission(eventModule.userPermissions, [
+        return checkUserHasPermission(storeModule.userPermissions, [
             `${PermissionResources.EVENT}_${PermissionActions.UPDATE}`,
         ]);
     }

@@ -85,7 +85,6 @@ import CompIcon from '../../../../components/CompIcon.vue';
 import { menuModule } from '../../store';
 import { MenuMixins } from '../../mixins';
 import { Delete as DeleteIcon, Edit as EditIcon } from '@element-plus/icons-vue';
-import { eventModule } from '@/modules/event/store';
 import { PermissionResources, PermissionActions } from '@/modules/role/constants';
 import { checkUserHasPermission } from '@/utils/helper';
 import { ICategory, ICategoryUpdateBody } from '../../types';
@@ -108,13 +107,13 @@ export default class CategoryTable extends mixins(MenuMixins) {
     }
 
     isCanDelete(): boolean {
-        return checkUserHasPermission(eventModule.userPermissions, [
+        return checkUserHasPermission(menuModule.userPermissions, [
             `${PermissionResources.EVENT}_${PermissionActions.DELETE}`,
         ]);
     }
 
     isCanUpdate(): boolean {
-        return checkUserHasPermission(eventModule.userPermissions, [
+        return checkUserHasPermission(menuModule.userPermissions, [
             `${PermissionResources.EVENT}_${PermissionActions.UPDATE}`,
         ]);
     }

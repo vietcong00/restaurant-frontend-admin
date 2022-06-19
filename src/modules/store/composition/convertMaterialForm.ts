@@ -31,7 +31,7 @@ const validateConvertMaterialSchema = yup.object({
         .min(0)
         .optional()
         .transform((val) => (isNaN(val) ? null : val))
-        .max(INPUT_NUMBER_MAX_VALUE),
+        .max(yup.ref('quantityBeforeConvertFrom')),
     quantityBeforeConvertFrom: yup
         .number()
         .integer()
@@ -52,7 +52,7 @@ const validateConvertMaterialSchema = yup.object({
         .min(0)
         .optional()
         .transform((val) => (isNaN(val) ? null : val))
-        .max(INPUT_NUMBER_MAX_VALUE),
+        .max(yup.ref('quantityBeforeConvertTo')),
     quantityBeforeConvertTo: yup
         .number()
         .integer()

@@ -1,6 +1,6 @@
 export default {
     convertHistoryDialog: {
-        title: 'Chi tiết lịch sử chuyển đổi',
+        title: 'Chuyển đổi nguyên liệu',
     },
     button: {
         cancel: 'Hủy',

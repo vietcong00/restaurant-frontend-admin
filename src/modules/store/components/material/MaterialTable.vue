@@ -120,7 +120,6 @@ import {
     Edit as EditIcon,
     Switch as SwitchIcon,
 } from '@element-plus/icons-vue';
-import { eventModule } from '@/modules/event/store';
 import { PermissionResources, PermissionActions } from '@/modules/role/constants';
 import { checkUserHasPermission } from '@/utils/helper';
 import { setupDelete } from '../../composition/materialList';
@@ -143,13 +142,13 @@ export default class MaterialTable extends mixins(StoreMixins) {
     }
 
     isCanDelete(): boolean {
-        return checkUserHasPermission(eventModule.userPermissions, [
+        return checkUserHasPermission(storeModule.userPermissions, [
             `${PermissionResources.EVENT}_${PermissionActions.DELETE}`,
         ]);
     }
 
     isCanUpdate(): boolean {
-        return checkUserHasPermission(eventModule.userPermissions, [
+        return checkUserHasPermission(storeModule.userPermissions, [
             `${PermissionResources.EVENT}_${PermissionActions.UPDATE}`,
         ]);
     }

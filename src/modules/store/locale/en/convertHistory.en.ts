@@ -1,6 +1,6 @@
 export default {
     convertHistoryDialog: {
-        title: 'Convert History Detail',
+        title: 'Convert Material',
     },
     button: {
         cancel: 'Cancel',

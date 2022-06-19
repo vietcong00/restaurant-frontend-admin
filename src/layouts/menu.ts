@@ -188,20 +188,6 @@ const storeMenu: ISidebar = {
     ],
 };
 
-const payment: ISidebar = {
-    iconComponent: QuestionIcon,
-    name: 'common.app.menu.payment.title',
-    active: false,
-    to: '/payment',
-    pageName: PageName.PAYMENT_PAGE,
-    requiredPermissions: [
-        `${PermissionResources.USER}_${PermissionActions.READ}`,
-        `${PermissionResources.USER}_${PermissionActions.CREATE}`,
-        `${PermissionResources.USER}_${PermissionActions.UPDATE}`,
-        `${PermissionResources.USER}_${PermissionActions.DELETE}`,
-    ],
-};
-
 const closingRevenueMenu: ISidebar = {
     iconComponent: QuestionIcon,
     name: 'common.app.menu.closingRevenue.title',
@@ -225,4 +211,5 @@ export const sidebars = [
     storeMenu,
     billing,
     closingRevenueMenu,
+    roleMenu,
 ];
