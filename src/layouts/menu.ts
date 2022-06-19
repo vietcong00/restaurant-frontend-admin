@@ -5,7 +5,11 @@ import {
     House as HouseIcon,
     Printer as PrinterIcon,
     Key as KeyIcon,
-    QuestionFilled as QuestionIcon,
+    Money as MoneyIcon,
+    KnifeFork as KnifeForkIcon,
+    Calendar as CalendarIcon,
+    HomeFilled as HomeFilledIcon,
+    Grid as GridIcon,
 } from '@element-plus/icons-vue';
 import { PermissionActions, PermissionResources } from '@/modules/role/constants';
 // start dashboardGroup
@@ -62,7 +66,7 @@ const roleMenu: ISidebar = {
 };
 
 const tableDiagram: ISidebar = {
-    iconComponent: QuestionIcon,
+    iconComponent: GridIcon,
     name: 'common.app.menu.tableDiagram.title',
     active: false,
     to: '/table-diagram',
@@ -74,7 +78,7 @@ const tableDiagram: ISidebar = {
 };
 
 const booking: ISidebar = {
-    iconComponent: QuestionIcon,
+    iconComponent: CalendarIcon,
     name: 'common.app.menu.booking.title',
     active: false,
     to: '/booking',
@@ -87,7 +91,7 @@ const booking: ISidebar = {
 };
 
 const menuMenu: ISidebar = {
-    iconComponent: QuestionIcon,
+    iconComponent: KnifeForkIcon,
     name: 'common.app.menu.menu.title',
     active: false,
     children: [
@@ -118,7 +122,7 @@ const menuMenu: ISidebar = {
     ],
 };
 const storeMenu: ISidebar = {
-    iconComponent: QuestionIcon,
+    iconComponent: HomeFilledIcon,
     name: 'common.app.menu.store.title',
     active: false,
     children: [
@@ -192,7 +196,7 @@ const storeMenu: ISidebar = {
 };
 
 const closingRevenueMenu: ISidebar = {
-    iconComponent: QuestionIcon,
+    iconComponent: MoneyIcon,
     name: 'common.app.menu.closingRevenue.title',
     to: '/closing-revenue',
     active: false,

@@ -95,8 +95,6 @@ export default class ModalChosenTable extends Vue {
             let fail = false;
             for (let i = 0; i < this.getBookingTableDetailList.length; i++) {
                 const timeStamp = this.getBookingTableDetailList[i].arrivalTime;
-                console.log('check in send Data : ', this.selectedBooking?.arrivalTime);
-
                 fail = this.checkTimeBooking(
                     new Date(this.selectedBooking?.arrivalTime as Date),
                     timeStamp,

@@ -36,6 +36,7 @@ export interface IBookingCreate {
     phone?: string | undefined;
     arrivalTime?: Date | string | undefined;
     numberPeople?: number | undefined;
+    idTable?: number | undefined;
 }
 
 export interface IBookingUpdate extends IBookingCreate {

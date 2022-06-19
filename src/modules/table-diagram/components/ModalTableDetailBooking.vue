@@ -12,80 +12,76 @@
 
                     <div class="modal-body">
                         <slot name="body">
-                            <el-scrollbar height="350px">
-                                <div class="booking-table-data">
-                                    <el-table
-                                        :data="getBookingTableDetailList"
-                                        border
-                                        @sort-change="handleSort"
-                                        empty-text
+                            <BaseTableLayout
+                                :data="getBookingTableDetailList"
+                                class="table-detail-booking-table-data"
+                            >
+                                <template #table-columns>
+                                    <el-table-column
+                                        align="center"
+                                        label="#"
+                                        type="index"
+                                        width="50"
                                     >
-                                        <el-table-column
-                                            align="center"
-                                            label="#"
-                                            type="index"
-                                            width="50"
-                                        >
-                                        </el-table-column>
-                                        <el-table-column
-                                            prop="name"
-                                            label="Tên khách hàng"
-                                            width="160"
-                                            class="test"
-                                            sortable="custom"
-                                        >
-                                            <template #default="scope">
-                                                <div class="booking__table__name">
-                                                    {{ scope.row.nameCustomer }}
-                                                </div>
-                                            </template>
-                                        </el-table-column>
-                                        <el-table-column
-                                            prop="name"
-                                            label="Điện thoại"
-                                            width="120"
-                                            class="test"
-                                            sortable="custom"
-                                        >
-                                            <template #default="scope">
-                                                <div class="booking__table__phone">
-                                                    {{ scope.row.phone }}
-                                                </div>
-                                            </template>
-                                        </el-table-column>
-                                        <el-table-column
-                                            prop="arrivalTime"
-                                            label="Thời gian tới"
-                                            width="250"
-                                            sortable="custom"
-                                        >
-                                            <template #default="scope">
-                                                <div class="booking__table__arrival_time">
-                                                    {{
-                                                        scope.row.arrivalTime
-                                                            ? parseDateTime(
-                                                                  scope.row.arrivalTime,
-                                                                  YYYY_MM_DD_HYPHEN_HH_MM_COLON,
-                                                              )
-                                                            : ''
-                                                    }}
-                                                </div>
-                                            </template>
-                                        </el-table-column>
-                                        <el-table-column
-                                            prop="idCategory"
-                                            label="Trạng thái"
-                                            width="140"
-                                        >
-                                            <template #default="scope">
-                                                <div class="booking__table__status">
-                                                    {{ scope.row.status }}
-                                                </div>
-                                            </template>
-                                        </el-table-column>
-                                    </el-table>
-                                </div>
-                            </el-scrollbar>
+                                    </el-table-column>
+                                    <el-table-column
+                                        prop="name"
+                                        label="Tên khách hàng"
+                                        width="160"
+                                        class="test"
+                                        sortable="custom"
+                                    >
+                                        <template #default="scope">
+                                            <div class="booking__table__name">
+                                                {{ scope.row.nameCustomer }}
+                                            </div>
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column
+                                        prop="name"
+                                        label="Điện thoại"
+                                        width="120"
+                                        class="test"
+                                        sortable="custom"
+                                    >
+                                        <template #default="scope">
+                                            <div class="booking__table__phone">
+                                                {{ scope.row.phone }}
+                                            </div>
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column
+                                        prop="arrivalTime"
+                                        label="Thời gian tới"
+                                        width="250"
+                                        sortable="custom"
+                                    >
+                                        <template #default="scope">
+                                            <div class="booking__table__arrival_time">
+                                                {{
+                                                    scope.row.arrivalTime
+                                                        ? parseDateTime(
+                                                              scope.row.arrivalTime,
+                                                              YYYY_MM_DD_HYPHEN_HH_MM_COLON,
+                                                          )
+                                                        : ''
+                                                }}
+                                            </div>
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column
+                                        prop="idCategory"
+                                        label="Trạng thái"
+                                        width="140"
+                                    >
+                                        <template #default="scope">
+                                            <div class="booking__table__status">
+                                                {{ scope.row.status }}
+                                            </div>
+                                        </template>
+                                    </el-table-column>
+                                </template>
+                            </BaseTableLayout>
                         </slot>
                     </div>
 
@@ -114,7 +110,7 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
+import { mixins, Options } from 'vue-class-component';
 import { tableDiagramModule } from '../store';
 import { CloseBold as CloseBoldIcon } from '@element-plus/icons-vue';
 import { tableService } from '../services/api.service';
@@ -126,12 +122,12 @@ import {
 import { ElLoading } from 'element-plus';
 import { IBooking } from '@/modules/booking/types';
 import { bookingModule } from '@/modules/booking/store';
-import { ITable } from '../types';
+import { UtilMixins } from '@/mixins/utilMixins';
 @Options({
     name: 'modal-table-detail-booking',
     components: { CloseBoldIcon },
 })
-export default class ModalTableDetailBooking extends Vue {
+export default class ModalTableDetailBooking extends mixins(UtilMixins) {
     get getBookingTableDetailList(): IBooking[] {
         return bookingModule.bookingTableDetailList;
     }
@@ -167,33 +163,6 @@ export default class ModalTableDetailBooking extends Vue {
                 loading.close();
             }
         }
-    }
-
-    checkTableNull(table: ITable): string {
-        if (table === null) {
-            return 'Chưa chọn bàn';
-        }
-        return table.name;
-    }
-
-    formatDate(date: Date): string {
-        var year = date.getFullYear().toString();
-        var month = (date.getMonth() + 101).toString().substring(1);
-        var day = (date.getDate() + 100).toString().substring(1);
-        return month + '/' + day + '/' + year;
-    }
-
-    formatTime(date: Date): string {
-        var hours = date.getHours().toString();
-        var minutes = date.getMinutes().toString();
-        var seconds = date.getSeconds().toString();
-        return hours + ':' + minutes + ':' + seconds;
-    }
-
-    getTime(timeStamp: number): string {
-        var date = new Date(timeStamp * 1000);
-        var dt = this.formatTime(date) + ' ' + this.formatDate(date);
-        return dt;
     }
 }
 </script>
@@ -289,31 +258,7 @@ export default class ModalTableDetailBooking extends Vue {
     }
 }
 
-.booking-table-data {
-    width: 1002px;
-    margin: 10px auto;
-    .booking__table__action {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        align-items: center;
-        justify-content: space-between;
-        margin: 0 18%;
-        :hover {
-            border-radius: 5px;
-            box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-            cursor: pointer;
-        }
-
-        .booking-done:hover {
-            color: green;
-            border: 2px solid rgb(3, 180, 3);
-        }
-
-        .booking-canceled:hover {
-            color: red;
-            border: 2px solid rgb(235, 0, 0);
-        }
-    }
+:deep(.el-table__body) {
+    width: 100% !important;
 }
 </style>

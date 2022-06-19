@@ -1,3 +1,4 @@
+import { tableDiagramModule } from './../../table-diagram/store';
 import { bookingService } from './../../table-diagram/services/api.service';
 import { IBooking, IBookingCreate } from './../types';
 import { DEFAULT_FIRST_PAGE, HttpStatus } from '@/common/constants';
@@ -38,6 +39,7 @@ export function initData() {
             phone: values.phone,
             numberPeople: values.numberPeople,
             arrivalTime: moment(values.arrivalTime).utc().fmFullTimeWithoutSecond(),
+            idTable: tableDiagramModule.tableSelected?.id,
         } as IBookingCreate;
         let response;
         const bookingId = bookingModule.selectedBooking?.id;

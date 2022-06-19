@@ -3,7 +3,7 @@
         <div :class="table.status">
             <div
                 class="table-layout"
-                @click="selectTable(isShowModalChosenTable, table)"
+                @click="selectTable"
                 :class="
                     table.numberSeat < selectedBooking?.numberPeople ? 'not-enough' : ''
                 "
@@ -28,7 +28,7 @@
 import { Options, Vue } from 'vue-class-component';
 import { tableDiagramModule } from '../store';
 import ModalTableDetailBooking from './ModalTableDetailBooking.vue';
-import { ElMessageBox } from 'element-plus';
+import { ElLoading, ElMessageBox } from 'element-plus';
 import { LIMIT_ARRIVAL_TIME_BOOKING, TableStatus } from '../constants';
 import { Prop } from 'vue-property-decorator';
 import { bookingModule } from '@/modules/booking/store';
@@ -56,6 +56,10 @@ export default class TablesRestaurants extends Vue {
         return bookingModule.isShowModalChosenTable;
     }
 
+    get isShowBookingFormPopUp(): boolean {
+        return bookingModule.isShowBookingFormPopUp;
+    }
+
     get selectedBooking(): IBookingUpdate | null {
         return bookingModule.selectedBooking;
     }
@@ -79,24 +83,23 @@ export default class TablesRestaurants extends Vue {
         }
     }
 
-    selectTable(isChosenTableModal: boolean, table: ITable): void {
-        tableDiagramModule.setTableSelected(table);
-        bookingModule.getBookingTables();
+    async selectTable(): Promise<void> {
+        tableDiagramModule.setTableSelected(this.table);
+        const loading = ElLoading.service({
+            target: '.table-detail-booking-table-data',
+        });
+        await bookingModule.getBookingTables();
+        loading.close();
         let success = false;
-        console.log(isChosenTableModal, table);
-        if (isChosenTableModal) {
-            console.log(this.selectedBooking?.numberPeople || 0, table.numberSeat);
-
+        if (this.isShowModalChosenTable || this.isShowBookingFormPopUp) {
             if (
                 this.checkNumberSeat(
                     this.selectedBooking?.numberPeople || 0,
-                    table.numberSeat,
+                    this.table.numberSeat,
                 )
             ) {
                 success = true;
-                if (table.status === TableStatus.USED) {
-                    console.log('table used');
-
+                if (this.table.status === TableStatus.USED) {
                     if (
                         Math.abs(
                             new Date().getTime() -

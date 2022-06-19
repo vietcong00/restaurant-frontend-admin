@@ -41,6 +41,7 @@
                     :placeholder="$t('booking.list.placeholder.numberPeople')"
                     :label="$t('booking.form.numberPeople')"
                     :error="translateYupError(form.errors.numberPeople)"
+                    @change="setNumberPeople"
                 />
             </div>
             <div class="col-md-6">
@@ -55,6 +56,7 @@
                     :type="'datetime'"
                     :date-format="YYYY_MM_DD_HYPHEN_HH_MM_COLON"
                     :value-format="YYYY_MM_DD_HYPHEN_HH_MM_COLON"
+                    @changeValue="setArrivalTime"
                 />
             </div>
         </div>
@@ -123,7 +125,24 @@ export default class BookingFormPopUp extends mixins(UtilMixins) {
     async onClickSaveButton(): Promise<void> {
         bookingModule.setIsDisabledSaveButton(true);
         await this.form.onSubmit();
+        bookingModule.setSelectedBooking(null);
         bookingModule.setIsDisabledSaveButton(false);
+    }
+
+    setNumberPeople(): void {
+        bookingModule.setSelectedBooking({
+            ...bookingModule.selectedBooking,
+            id: undefined,
+            numberPeople: this.form.numberPeople as number,
+        });
+    }
+
+    setArrivalTime(): void {
+        bookingModule.setSelectedBooking({
+            ...bookingModule.selectedBooking,
+            id: undefined,
+            arrivalTime: this.form.arrivalTime as Date,
+        });
     }
 }
 </script>
