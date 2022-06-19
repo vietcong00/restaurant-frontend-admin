@@ -67,6 +67,10 @@ const tableDiagram: ISidebar = {
     active: false,
     to: '/table-diagram',
     pageName: PageName.TABLE_DIAGRAM_PAGE,
+    requiredPermissions: [
+        `${PermissionResources.TABLE_DIAGRAM}_${PermissionActions.READ}`,
+        `${PermissionResources.TABLE_DIAGRAM}_${PermissionActions.UPDATE}`,
+    ],
 };
 
 const booking: ISidebar = {
@@ -75,6 +79,11 @@ const booking: ISidebar = {
     active: false,
     to: '/booking',
     pageName: PageName.BOOKING_PAGE,
+    requiredPermissions: [
+        `${PermissionResources.BOOKING}_${PermissionActions.READ}`,
+        `${PermissionResources.BOOKING}_${PermissionActions.CREATE}`,
+        `${PermissionResources.BOOKING}_${PermissionActions.UPDATE}`,
+    ],
 };
 
 const menuMenu: ISidebar = {
@@ -88,10 +97,10 @@ const menuMenu: ISidebar = {
             active: false,
             pageName: PageName.MENU_FOOD_PAGE,
             requiredPermissions: [
-                `${PermissionResources.USER}_${PermissionActions.READ}`,
-                `${PermissionResources.USER}_${PermissionActions.CREATE}`,
-                `${PermissionResources.USER}_${PermissionActions.UPDATE}`,
-                `${PermissionResources.USER}_${PermissionActions.DELETE}`,
+                `${PermissionResources.MENU_FOOD}_${PermissionActions.READ}`,
+                `${PermissionResources.MENU_FOOD}_${PermissionActions.CREATE}`,
+                `${PermissionResources.MENU_FOOD}_${PermissionActions.UPDATE}`,
+                `${PermissionResources.MENU_FOOD}_${PermissionActions.DELETE}`,
             ],
         },
         {
@@ -100,10 +109,10 @@ const menuMenu: ISidebar = {
             active: false,
             pageName: PageName.MENU_CATEGORY_PAGE,
             requiredPermissions: [
-                `${PermissionResources.CONTRACT}_${PermissionActions.READ}`,
-                `${PermissionResources.CONTRACT}_${PermissionActions.CREATE}`,
-                `${PermissionResources.CONTRACT}_${PermissionActions.UPDATE}`,
-                `${PermissionResources.CONTRACT}_${PermissionActions.DELETE}`,
+                `${PermissionResources.MENU_CATEGORY}_${PermissionActions.READ}`,
+                `${PermissionResources.MENU_CATEGORY}_${PermissionActions.CREATE}`,
+                `${PermissionResources.MENU_CATEGORY}_${PermissionActions.UPDATE}`,
+                `${PermissionResources.MENU_CATEGORY}_${PermissionActions.DELETE}`,
             ],
         },
     ],
@@ -119,10 +128,11 @@ const storeMenu: ISidebar = {
             active: false,
             pageName: PageName.STORE_MATERIAL_PAGE,
             requiredPermissions: [
-                `${PermissionResources.USER}_${PermissionActions.READ}`,
-                `${PermissionResources.USER}_${PermissionActions.CREATE}`,
-                `${PermissionResources.USER}_${PermissionActions.UPDATE}`,
-                `${PermissionResources.USER}_${PermissionActions.DELETE}`,
+                `${PermissionResources.STORE_MATERIAL}_${PermissionActions.READ}`,
+                `${PermissionResources.STORE_MATERIAL}_${PermissionActions.CREATE}`,
+                `${PermissionResources.STORE_MATERIAL}_${PermissionActions.UPDATE}`,
+                `${PermissionResources.STORE_MATERIAL}_${PermissionActions.DELETE}`,
+                `${PermissionResources.STORE_MATERIAL}_${PermissionActions.CONVERT_MATERIAL}`,
             ],
         },
         {
@@ -131,10 +141,9 @@ const storeMenu: ISidebar = {
             active: false,
             pageName: PageName.STORE_CONVERT_PAGE,
             requiredPermissions: [
-                `${PermissionResources.CONTRACT}_${PermissionActions.READ}`,
-                `${PermissionResources.CONTRACT}_${PermissionActions.CREATE}`,
-                `${PermissionResources.CONTRACT}_${PermissionActions.UPDATE}`,
-                `${PermissionResources.CONTRACT}_${PermissionActions.DELETE}`,
+                `${PermissionResources.STORE_CONVERT}_${PermissionActions.READ}`,
+                `${PermissionResources.STORE_CONVERT}_${PermissionActions.CREATE}`,
+                `${PermissionResources.STORE_CONVERT}_${PermissionActions.CONVERT_MATERIAL}`,
             ],
         },
         {
@@ -143,10 +152,10 @@ const storeMenu: ISidebar = {
             active: false,
             pageName: PageName.STORE_SUPPLIER_PAGE,
             requiredPermissions: [
-                `${PermissionResources.CONTRACT}_${PermissionActions.READ}`,
-                `${PermissionResources.CONTRACT}_${PermissionActions.CREATE}`,
-                `${PermissionResources.CONTRACT}_${PermissionActions.UPDATE}`,
-                `${PermissionResources.CONTRACT}_${PermissionActions.DELETE}`,
+                `${PermissionResources.STORE_SUPPLIER}_${PermissionActions.READ}`,
+                `${PermissionResources.STORE_SUPPLIER}_${PermissionActions.CREATE}`,
+                `${PermissionResources.STORE_SUPPLIER}_${PermissionActions.UPDATE}`,
+                `${PermissionResources.STORE_SUPPLIER}_${PermissionActions.DELETE}`,
             ],
         },
         {
@@ -155,10 +164,8 @@ const storeMenu: ISidebar = {
             active: false,
             pageName: PageName.STORE_IMPORT_MATERIAL_PAGE,
             requiredPermissions: [
-                `${PermissionResources.CONTRACT}_${PermissionActions.READ}`,
-                `${PermissionResources.CONTRACT}_${PermissionActions.CREATE}`,
-                `${PermissionResources.CONTRACT}_${PermissionActions.UPDATE}`,
-                `${PermissionResources.CONTRACT}_${PermissionActions.DELETE}`,
+                `${PermissionResources.STORE_IMPORT_MATERIAL}_${PermissionActions.READ}`,
+                `${PermissionResources.STORE_IMPORT_MATERIAL}_${PermissionActions.UPDATE}`,
             ],
         },
         {
@@ -167,10 +174,8 @@ const storeMenu: ISidebar = {
             active: false,
             pageName: PageName.STORE_EXPORT_PAGE,
             requiredPermissions: [
-                `${PermissionResources.CONTRACT}_${PermissionActions.READ}`,
-                `${PermissionResources.CONTRACT}_${PermissionActions.CREATE}`,
-                `${PermissionResources.CONTRACT}_${PermissionActions.UPDATE}`,
-                `${PermissionResources.CONTRACT}_${PermissionActions.DELETE}`,
+                `${PermissionResources.STORE_EXPORT_MATERIAL}_${PermissionActions.READ}`,
+                `${PermissionResources.STORE_EXPORT_MATERIAL}_${PermissionActions.UPDATE}`,
             ],
         },
         {
@@ -179,10 +184,8 @@ const storeMenu: ISidebar = {
             active: false,
             pageName: PageName.STORE_CHECK_INVENTORY_PAGE,
             requiredPermissions: [
-                `${PermissionResources.CONTRACT}_${PermissionActions.READ}`,
-                `${PermissionResources.CONTRACT}_${PermissionActions.CREATE}`,
-                `${PermissionResources.CONTRACT}_${PermissionActions.UPDATE}`,
-                `${PermissionResources.CONTRACT}_${PermissionActions.DELETE}`,
+                `${PermissionResources.STORE_CHECK_INVENTORY}_${PermissionActions.READ}`,
+                `${PermissionResources.STORE_CHECK_INVENTORY}_${PermissionActions.UPDATE}`,
             ],
         },
     ],
@@ -195,10 +198,10 @@ const closingRevenueMenu: ISidebar = {
     active: false,
     pageName: PageName.REPORT_CLOSING_REVENUE_PAGE,
     requiredPermissions: [
-        `${PermissionResources.USER}_${PermissionActions.READ}`,
-        `${PermissionResources.USER}_${PermissionActions.CREATE}`,
-        `${PermissionResources.USER}_${PermissionActions.UPDATE}`,
-        `${PermissionResources.USER}_${PermissionActions.DELETE}`,
+        `${PermissionResources.CLOSING_REVENUE}_${PermissionActions.READ}`,
+        `${PermissionResources.CLOSING_REVENUE}_${PermissionActions.CREATE}`,
+        `${PermissionResources.CLOSING_REVENUE}_${PermissionActions.UPDATE}`,
+        `${PermissionResources.CLOSING_REVENUE}_${PermissionActions.DELETE}`,
     ],
 };
 

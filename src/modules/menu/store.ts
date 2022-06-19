@@ -68,8 +68,12 @@ class MenuModule extends VuexModule {
     categoryOptions: ISelectOptions[] = [];
 
     // GETTERS
-    get userPermissions(): string[] {
-        return appService.getUserPermissionsByResource(PermissionResources.EVENT);
+    get userPermissionsFood(): string[] {
+        return appService.getUserPermissionsByResource(PermissionResources.MENU_FOOD);
+    }
+
+    get userPermissionsCategory(): string[] {
+        return appService.getUserPermissionsByResource(PermissionResources.MENU_CATEGORY);
     }
 
     @Mutation

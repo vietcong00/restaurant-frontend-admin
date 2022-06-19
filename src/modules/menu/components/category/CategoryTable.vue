@@ -107,14 +107,14 @@ export default class CategoryTable extends mixins(MenuMixins) {
     }
 
     isCanDelete(): boolean {
-        return checkUserHasPermission(menuModule.userPermissions, [
-            `${PermissionResources.EVENT}_${PermissionActions.DELETE}`,
+        return checkUserHasPermission(menuModule.userPermissionsCategory, [
+            `${PermissionResources.MENU_CATEGORY}_${PermissionActions.DELETE}`,
         ]);
     }
 
     isCanUpdate(): boolean {
-        return checkUserHasPermission(menuModule.userPermissions, [
-            `${PermissionResources.EVENT}_${PermissionActions.UPDATE}`,
+        return checkUserHasPermission(menuModule.userPermissionsCategory, [
+            `${PermissionResources.MENU_CATEGORY}_${PermissionActions.UPDATE}`,
         ]);
     }
 

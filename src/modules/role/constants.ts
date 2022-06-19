@@ -2,19 +2,24 @@ import yup from '@/plugins/yup';
 import { INPUT_TEXT_MAX_LENGTH } from '@/common/constants';
 
 export enum PermissionResources {
+    DASHBOARD = 'dashboard',
     USER = 'user',
-    CONTRACT = 'contract',
-    TEAM = 'team',
-    TIMEKEEPING = 'timekeeping',
-    REQUEST_ABSENCE = 'request_absence',
-    ASSET = 'asset',
-    REQUEST_ASSET = 'request_asset',
-    EVENT = 'event',
-    RECRUITMENT = 'recruitment',
+    TABLE_DIAGRAM = 'table_diagram',
+    BOOKING = 'booking',
+    MENU_FOOD = 'food',
+    MENU_CATEGORY = 'category',
+    STORE_MATERIAL = 'store_material',
+    STORE_CONVERT = 'store_convert',
+    STORE_SUPPLIER = 'store_supplier',
+    STORE_IMPORT_MATERIAL = 'store_import_material',
+    STORE_IMPORT_MATERIAL_DETAIL = 'store_import_material_detail',
+    STORE_EXPORT_MATERIAL = 'store_export',
+    STORE_EXPORT_MATERIAL_DETAIL = 'store_export_material_detail',
+    STORE_CHECK_INVENTORY = 'store_check_inventory',
+    STORE_INVENTORY_DETAIL = 'store_inventory_detail',
     BILLING = 'billing',
+    CLOSING_REVENUE = 'closing_revenue',
     ROLE = 'role',
-    PERMISSION = 'permission',
-    SETTING = 'setting',
 }
 
 export enum PermissionActions {
@@ -23,13 +28,8 @@ export enum PermissionActions {
     UPDATE = 'update',
     DELETE = 'delete',
     LOGIN = 'login',
-    CREATE_PERSONAL = 'create_personal',
-    READ_PERSONAL = 'read_personal',
-    UPDATE_PERSONAL = 'update_personal',
-    DELETE_PERSONAL = 'delete_personal',
-    HR_ROLE = 'hr_role',
-    UPDATE_STATUS = 'update_status',
     UPDATE_ROLE = 'update_role',
+    CONVERT_MATERIAL = 'convert_material',
 }
 
 export const personalPermissionSuffix = '_personal';

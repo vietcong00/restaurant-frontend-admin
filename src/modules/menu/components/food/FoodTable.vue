@@ -120,14 +120,14 @@ export default class MaterialTable extends mixins(MenuMixins) {
     }
 
     isCanDelete(): boolean {
-        return checkUserHasPermission(menuModule.userPermissions, [
-            `${PermissionResources.EVENT}_${PermissionActions.DELETE}`,
+        return checkUserHasPermission(menuModule.userPermissionsFood, [
+            `${PermissionResources.MENU_FOOD}_${PermissionActions.DELETE}`,
         ]);
     }
 
     isCanUpdate(): boolean {
-        return checkUserHasPermission(menuModule.userPermissions, [
-            `${PermissionResources.EVENT}_${PermissionActions.UPDATE}`,
+        return checkUserHasPermission(menuModule.userPermissionsFood, [
+            `${PermissionResources.MENU_FOOD}_${PermissionActions.UPDATE}`,
         ]);
     }
 

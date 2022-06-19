@@ -51,7 +51,7 @@ export default class BookingPage extends Vue {
     // check permission
     get isCanCreate(): boolean {
         return checkUserHasPermission(bookingModule.userPermissions, [
-            `${PermissionResources.EVENT}_${PermissionActions.CREATE}`,
+            `${PermissionResources.BOOKING}_${PermissionActions.CREATE}`,
         ]);
     }
 

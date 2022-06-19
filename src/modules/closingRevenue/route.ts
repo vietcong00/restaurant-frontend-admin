@@ -17,10 +17,10 @@ export default [
                 meta: {
                     requiresAuth: true,
                     requiredPermissions: [
-                        `${PermissionResources.BILLING}_${PermissionActions.READ}`,
-                        `${PermissionResources.BILLING}_${PermissionActions.CREATE}`,
-                        `${PermissionResources.BILLING}_${PermissionActions.UPDATE}`,
-                        `${PermissionResources.BILLING}_${PermissionActions.DELETE}`,
+                        `${PermissionResources.CLOSING_REVENUE}_${PermissionActions.READ}`,
+                        `${PermissionResources.CLOSING_REVENUE}_${PermissionActions.CREATE}`,
+                        `${PermissionResources.CLOSING_REVENUE}_${PermissionActions.UPDATE}`,
+                        `${PermissionResources.CLOSING_REVENUE}_${PermissionActions.DELETE}`,
                     ],
                 },
             },

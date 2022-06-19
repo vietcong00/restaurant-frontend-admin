@@ -15,11 +15,12 @@ export default [
                 name: PageName.MENU_FOOD_PAGE,
                 component: FoodPage,
                 meta: {
+                    requiresAuth: true,
                     requiredPermissions: [
-                        `${PermissionResources.ASSET}_${PermissionActions.READ}`,
-                        `${PermissionResources.ASSET}_${PermissionActions.CREATE}`,
-                        `${PermissionResources.ASSET}_${PermissionActions.UPDATE}`,
-                        `${PermissionResources.ASSET}_${PermissionActions.DELETE}`,
+                        `${PermissionResources.MENU_FOOD}_${PermissionActions.READ}`,
+                        `${PermissionResources.MENU_FOOD}_${PermissionActions.CREATE}`,
+                        `${PermissionResources.MENU_FOOD}_${PermissionActions.UPDATE}`,
+                        `${PermissionResources.MENU_FOOD}_${PermissionActions.DELETE}`,
                     ],
                 },
             },
@@ -36,10 +37,10 @@ export default [
                 meta: {
                     requiresAuth: true,
                     requiredPermissions: [
-                        `${PermissionResources.REQUEST_ASSET}_${PermissionActions.READ}`,
-                        `${PermissionResources.REQUEST_ASSET}_${PermissionActions.CREATE}`,
-                        `${PermissionResources.REQUEST_ASSET}_${PermissionActions.UPDATE}`,
-                        `${PermissionResources.REQUEST_ASSET}_${PermissionActions.DELETE}`,
+                        `${PermissionResources.MENU_CATEGORY}_${PermissionActions.READ}`,
+                        `${PermissionResources.MENU_CATEGORY}_${PermissionActions.CREATE}`,
+                        `${PermissionResources.MENU_CATEGORY}_${PermissionActions.UPDATE}`,
+                        `${PermissionResources.MENU_CATEGORY}_${PermissionActions.DELETE}`,
                     ],
                 },
             },

@@ -47,8 +47,8 @@ export default class CategoryPage extends Vue {
 
     // check permission
     get isCanCreate(): boolean {
-        return checkUserHasPermission(menuModule.userPermissions, [
-            `${PermissionResources.EVENT}_${PermissionActions.CREATE}`,
+        return checkUserHasPermission(menuModule.userPermissionsCategory, [
+            `${PermissionResources.MENU_CATEGORY}_${PermissionActions.CREATE}`,
         ]);
     }
 

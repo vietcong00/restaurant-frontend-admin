@@ -47,8 +47,8 @@ export default class SupplierPage extends Vue {
 
     // check permission
     get isCanCreate(): boolean {
-        return checkUserHasPermission(storeModule.userPermissions, [
-            `${PermissionResources.EVENT}_${PermissionActions.CREATE}`,
+        return checkUserHasPermission(storeModule.userPermissionsSupplier, [
+            `${PermissionResources.STORE_SUPPLIER}_${PermissionActions.CREATE}`,
         ]);
     }
 

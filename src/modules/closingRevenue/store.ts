@@ -36,7 +36,9 @@ class ClosingRevenueModule extends VuexModule {
     selectedClosingRevenue: IClosingRevenueUpdateBody | null = null;
 
     get userPermissions(): string[] {
-        return appService.getUserPermissionsByResource(PermissionResources.BILLING);
+        return appService.getUserPermissionsByResource(
+            PermissionResources.CLOSING_REVENUE,
+        );
     }
 
     // actions

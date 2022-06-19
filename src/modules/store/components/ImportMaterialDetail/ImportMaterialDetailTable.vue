@@ -97,9 +97,7 @@ import { IImportMaterialDetail } from '../../types';
 import CompIcon from '../../../../components/CompIcon.vue';
 import { StoreMixins } from '../../mixins';
 import { Delete as DeleteIcon, Edit as EditIcon } from '@element-plus/icons-vue';
-import { PermissionResources, PermissionActions } from '@/modules/role/constants';
 import {
-    checkUserHasPermission,
     showErrorNotificationFunction,
     showSuccessNotificationFunction,
 } from '@/utils/helper';
@@ -123,18 +121,6 @@ import MenuAcceptStatus from '@/layouts/components/MenuAcceptStatus.vue';
 export default class ImportMaterialDetailTable extends mixins(StoreMixins) {
     get importDetailList(): IImportMaterialDetail[] {
         return storeModule.importMaterialDetailList;
-    }
-
-    isCanDelete(): boolean {
-        return checkUserHasPermission(storeModule.userPermissions, [
-            `${PermissionResources.EVENT}_${PermissionActions.DELETE}`,
-        ]);
-    }
-
-    isCanUpdate(): boolean {
-        return checkUserHasPermission(storeModule.userPermissions, [
-            `${PermissionResources.EVENT}_${PermissionActions.UPDATE}`,
-        ]);
     }
 
     async setStatus(data: IEmitStatus): Promise<void> {

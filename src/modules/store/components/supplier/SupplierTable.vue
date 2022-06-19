@@ -63,7 +63,7 @@
                             effect="dark"
                             :content="$t('event.list.tooltip.edit')"
                             placement="top"
-                            v-if="isCanUpdate(scope.row?.status)"
+                            v-if="isCanUpdate"
                         >
                             <el-button
                                 type="warning"
@@ -77,7 +77,7 @@
                             effect="dark"
                             :content="$t('event.list.tooltip.delete')"
                             placement="top"
-                            v-if="isCanDelete(scope.row?.status)"
+                            v-if="isCanDelete"
                         >
                             <el-button
                                 type="danger"
@@ -123,14 +123,14 @@ export default class SupplierTable extends mixins(StoreMixins) {
     }
 
     isCanDelete(): boolean {
-        return checkUserHasPermission(storeModule.userPermissions, [
-            `${PermissionResources.EVENT}_${PermissionActions.DELETE}`,
+        return checkUserHasPermission(storeModule.userPermissionsSupplier, [
+            `${PermissionResources.STORE_SUPPLIER}_${PermissionActions.DELETE}`,
         ]);
     }
 
     isCanUpdate(): boolean {
-        return checkUserHasPermission(storeModule.userPermissions, [
-            `${PermissionResources.EVENT}_${PermissionActions.UPDATE}`,
+        return checkUserHasPermission(storeModule.userPermissionsSupplier, [
+            `${PermissionResources.STORE_SUPPLIER}_${PermissionActions.UPDATE}`,
         ]);
     }
 

@@ -20,8 +20,6 @@
 
 <script lang="ts">
 import { DEFAULT_FIRST_PAGE } from '@/common/constants';
-import { PermissionResources, PermissionActions } from '@/modules/role/constants';
-import { checkUserHasPermission } from '@/utils/helper';
 import { ElLoading } from 'element-plus';
 import { Options, Vue } from 'vue-class-component';
 import ExportMaterialTable from '../components/exportMaterial/ExportMaterialTable.vue';
@@ -39,13 +37,6 @@ export default class ExportMaterialPage extends Vue {
 
     get totalExportMaterials(): number {
         return storeModule.totalExportMaterials;
-    }
-
-    // check permission
-    get isCanCreate(): boolean {
-        return checkUserHasPermission(storeModule.userPermissions, [
-            `${PermissionResources.EVENT}_${PermissionActions.CREATE}`,
-        ]);
     }
 
     get selectedPage(): number {

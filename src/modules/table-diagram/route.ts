@@ -16,10 +16,8 @@ export default [
                 meta: {
                     requiresAuth: true,
                     requiredPermissions: [
-                        `${PermissionResources.EVENT}_${PermissionActions.READ}`,
-                        `${PermissionResources.EVENT}_${PermissionActions.CREATE}`,
-                        `${PermissionResources.EVENT}_${PermissionActions.UPDATE}`,
-                        `${PermissionResources.EVENT}_${PermissionActions.DELETE}`,
+                        `${PermissionResources.TABLE_DIAGRAM}_${PermissionActions.READ}`,
+                        `${PermissionResources.TABLE_DIAGRAM}_${PermissionActions.UPDATE}`,
                     ],
                 },
             },

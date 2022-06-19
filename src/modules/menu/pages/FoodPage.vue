@@ -47,8 +47,8 @@ export default class FoodPage extends Vue {
 
     // check permission
     get isCanCreate(): boolean {
-        return checkUserHasPermission(menuModule.userPermissions, [
-            `${PermissionResources.EVENT}_${PermissionActions.CREATE}`,
+        return checkUserHasPermission(menuModule.userPermissionsFood, [
+            `${PermissionResources.MENU_FOOD}_${PermissionActions.CREATE}`,
         ]);
     }
 

@@ -112,8 +112,38 @@ class StoreModule extends VuexModule {
     materialOptions: ISelectMaterialOptions[] = [];
 
     // GETTERS
-    get userPermissions(): string[] {
-        return appService.getUserPermissionsByResource(PermissionResources.EVENT);
+    get userPermissionsMaterial(): string[] {
+        return appService.getUserPermissionsByResource(
+            PermissionResources.STORE_MATERIAL,
+        );
+    }
+
+    get userPermissionsConvert(): string[] {
+        return appService.getUserPermissionsByResource(PermissionResources.STORE_CONVERT);
+    }
+
+    get userPermissionsSupplier(): string[] {
+        return appService.getUserPermissionsByResource(
+            PermissionResources.STORE_SUPPLIER,
+        );
+    }
+
+    get userPermissionsImportMaterial(): string[] {
+        return appService.getUserPermissionsByResource(
+            PermissionResources.STORE_IMPORT_MATERIAL,
+        );
+    }
+
+    get userPermissionsExportMaterial(): string[] {
+        return appService.getUserPermissionsByResource(
+            PermissionResources.STORE_EXPORT_MATERIAL,
+        );
+    }
+
+    get userPermissionsCheckInventory(): string[] {
+        return appService.getUserPermissionsByResource(
+            PermissionResources.STORE_CHECK_INVENTORY,
+        );
     }
 
     // MUTATION

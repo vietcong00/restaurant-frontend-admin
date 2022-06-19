@@ -57,7 +57,7 @@ class BookingModule extends VuexModule {
 
     // GETTERS
     get userPermissions(): string[] {
-        return appService.getUserPermissionsByResource(PermissionResources.EVENT);
+        return appService.getUserPermissionsByResource(PermissionResources.BOOKING);
     }
 
     @Mutation

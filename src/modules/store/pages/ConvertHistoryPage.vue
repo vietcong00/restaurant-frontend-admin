@@ -21,8 +21,6 @@
 
 <script lang="ts">
 import { DEFAULT_FIRST_PAGE } from '@/common/constants';
-import { PermissionResources, PermissionActions } from '@/modules/role/constants';
-import { checkUserHasPermission } from '@/utils/helper';
 import { ElLoading } from 'element-plus';
 import { Options, Vue } from 'vue-class-component';
 import { storeModule } from '../store';
@@ -42,13 +40,6 @@ export default class ConvertHistoryPage extends Vue {
 
     get totalConvertHistories(): number {
         return storeModule.totalConvertHistories;
-    }
-
-    // check permission
-    get isCanCreate(): boolean {
-        return checkUserHasPermission(storeModule.userPermissions, [
-            `${PermissionResources.EVENT}_${PermissionActions.CREATE}`,
-        ]);
     }
 
     get selectedPage(): number {

@@ -67,7 +67,7 @@
                             effect="dark"
                             :content="$t('store.checkInventory.tooltip.detail')"
                             placement="top"
-                            v-if="isCanUpdate(scope.row?.status)"
+                            v-if="isCanUpdate"
                         >
                             <el-button
                                 type="warning"
@@ -119,15 +119,9 @@ export default class CheckInventoryTable extends mixins(StoreMixins) {
         return storeModule.checkInventoryList;
     }
 
-    isCanDelete(): boolean {
-        return checkUserHasPermission(storeModule.userPermissions, [
-            `${PermissionResources.EVENT}_${PermissionActions.DELETE}`,
-        ]);
-    }
-
     isCanUpdate(): boolean {
-        return checkUserHasPermission(storeModule.userPermissions, [
-            `${PermissionResources.EVENT}_${PermissionActions.UPDATE}`,
+        return checkUserHasPermission(storeModule.userPermissionsCheckInventory, [
+            `${PermissionResources.STORE_CHECK_INVENTORY}_${PermissionActions.UPDATE}`,
         ]);
     }
 

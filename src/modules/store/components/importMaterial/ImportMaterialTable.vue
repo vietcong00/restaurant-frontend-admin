@@ -146,8 +146,8 @@ export default class ImportMaterialTable extends mixins(StoreMixins) {
     }
 
     isCanUpdate(): boolean {
-        return checkUserHasPermission(storeModule.userPermissions, [
-            `${PermissionResources.EVENT}_${PermissionActions.UPDATE}`,
+        return checkUserHasPermission(storeModule.userPermissionsImportMaterial, [
+            `${PermissionResources.STORE_IMPORT_MATERIAL}_${PermissionActions.UPDATE}`,
         ]);
     }
 

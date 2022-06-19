@@ -161,22 +161,16 @@ export default class Permission extends Vue {
             const selectedResource = this.permissionList.find(
                 (permission) => node.resource === permission.resource,
             );
-            let readPermissionId: number;
             let isPersonalPermission = false;
             if (node.name.includes(personalPermissionSuffix)) {
                 isPersonalPermission = true;
             }
-            if (isPersonalPermission) {
-                readPermissionId =
-                    (selectedResource?.actions || []).find(
-                        (action) => action.action === PermissionActions.READ_PERSONAL,
-                    )?.permissionId || NaN;
-            } else {
-                readPermissionId =
-                    (selectedResource?.actions || []).find(
-                        (action) => action.action === PermissionActions.READ,
-                    )?.permissionId || NaN;
-            }
+
+            const readPermissionId =
+                (selectedResource?.actions || []).find(
+                    (action) => action.action === PermissionActions.READ,
+                )?.permissionId || NaN;
+
             const remainPermissionIds = (selectedResource?.actions || [])
                 .filter((action) => action.action !== PermissionActions.READ)
                 .map((action) => action.permissionId);

@@ -79,7 +79,7 @@
                             effect="dark"
                             :content="$t('store.exportMaterial.tooltip.detail')"
                             placement="top"
-                            v-if="isCanUpdate(scope.row?.status)"
+                            v-if="isCanUpdate"
                         >
                             <el-button
                                 type="warning"
@@ -131,15 +131,9 @@ export default class ExportMaterialTable extends mixins(StoreMixins) {
         return storeModule.exportMaterialList;
     }
 
-    isCanDelete(): boolean {
-        return checkUserHasPermission(storeModule.userPermissions, [
-            `${PermissionResources.EVENT}_${PermissionActions.DELETE}`,
-        ]);
-    }
-
     isCanUpdate(): boolean {
-        return checkUserHasPermission(storeModule.userPermissions, [
-            `${PermissionResources.EVENT}_${PermissionActions.UPDATE}`,
+        return checkUserHasPermission(storeModule.userPermissionsExportMaterial, [
+            `${PermissionResources.STORE_EXPORT_MATERIAL}_${PermissionActions.UPDATE}`,
         ]);
     }
 

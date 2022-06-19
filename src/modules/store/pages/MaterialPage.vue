@@ -50,8 +50,8 @@ export default class MaterialPage extends Vue {
 
     // check permission
     get isCanCreate(): boolean {
-        return checkUserHasPermission(storeModule.userPermissions, [
-            `${PermissionResources.EVENT}_${PermissionActions.CREATE}`,
+        return checkUserHasPermission(storeModule.userPermissionsMaterial, [
+            `${PermissionResources.STORE_MATERIAL}_${PermissionActions.CREATE}`,
         ]);
     }
 

@@ -90,9 +90,7 @@ import { IInventoryDetail } from '../../types';
 import CompIcon from '../../../../components/CompIcon.vue';
 import { StoreMixins } from '../../mixins';
 import { Delete as DeleteIcon, Edit as EditIcon } from '@element-plus/icons-vue';
-import { PermissionResources, PermissionActions } from '@/modules/role/constants';
 import {
-    checkUserHasPermission,
     showErrorNotificationFunction,
     showSuccessNotificationFunction,
 } from '@/utils/helper';
@@ -116,18 +114,6 @@ import i18n from '@/plugins/vue-i18n';
 export default class CheckInventoryDetailTable extends mixins(StoreMixins) {
     get inventoryDetailList(): IInventoryDetail[] {
         return storeModule.inventoryDetailList;
-    }
-
-    isCanDelete(): boolean {
-        return checkUserHasPermission(storeModule.userPermissions, [
-            `${PermissionResources.EVENT}_${PermissionActions.DELETE}`,
-        ]);
-    }
-
-    isCanUpdate(): boolean {
-        return checkUserHasPermission(storeModule.userPermissions, [
-            `${PermissionResources.EVENT}_${PermissionActions.UPDATE}`,
-        ]);
     }
 
     async setStatus(data: IEmitStatus): Promise<void> {

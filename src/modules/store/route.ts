@@ -23,11 +23,13 @@ export default [
                 name: PageName.STORE_MATERIAL_PAGE,
                 component: MaterialPage,
                 meta: {
+                    requiresAuth: true,
                     requiredPermissions: [
-                        `${PermissionResources.ASSET}_${PermissionActions.READ}`,
-                        `${PermissionResources.ASSET}_${PermissionActions.CREATE}`,
-                        `${PermissionResources.ASSET}_${PermissionActions.UPDATE}`,
-                        `${PermissionResources.ASSET}_${PermissionActions.DELETE}`,
+                        `${PermissionResources.STORE_MATERIAL}_${PermissionActions.READ}`,
+                        `${PermissionResources.STORE_MATERIAL}_${PermissionActions.CREATE}`,
+                        `${PermissionResources.STORE_MATERIAL}_${PermissionActions.UPDATE}`,
+                        `${PermissionResources.STORE_MATERIAL}_${PermissionActions.DELETE}`,
+                        `${PermissionResources.STORE_MATERIAL}_${PermissionActions.CONVERT_MATERIAL}`,
                     ],
                 },
             },
@@ -44,10 +46,9 @@ export default [
                 meta: {
                     requiresAuth: true,
                     requiredPermissions: [
-                        `${PermissionResources.REQUEST_ASSET}_${PermissionActions.READ}`,
-                        `${PermissionResources.REQUEST_ASSET}_${PermissionActions.CREATE}`,
-                        `${PermissionResources.REQUEST_ASSET}_${PermissionActions.UPDATE}`,
-                        `${PermissionResources.REQUEST_ASSET}_${PermissionActions.DELETE}`,
+                        `${PermissionResources.STORE_CONVERT}_${PermissionActions.READ}`,
+                        `${PermissionResources.STORE_CONVERT}_${PermissionActions.CREATE}`,
+                        `${PermissionResources.STORE_CONVERT}_${PermissionActions.CONVERT_MATERIAL}`,
                     ],
                 },
             },
@@ -64,10 +65,10 @@ export default [
                 meta: {
                     requiresAuth: true,
                     requiredPermissions: [
-                        `${PermissionResources.REQUEST_ASSET}_${PermissionActions.READ}`,
-                        `${PermissionResources.REQUEST_ASSET}_${PermissionActions.CREATE}`,
-                        `${PermissionResources.REQUEST_ASSET}_${PermissionActions.UPDATE}`,
-                        `${PermissionResources.REQUEST_ASSET}_${PermissionActions.DELETE}`,
+                        `${PermissionResources.STORE_SUPPLIER}_${PermissionActions.READ}`,
+                        `${PermissionResources.STORE_SUPPLIER}_${PermissionActions.CREATE}`,
+                        `${PermissionResources.STORE_SUPPLIER}_${PermissionActions.UPDATE}`,
+                        `${PermissionResources.STORE_SUPPLIER}_${PermissionActions.DELETE}`,
                     ],
                 },
             },
@@ -84,10 +85,8 @@ export default [
                 meta: {
                     requiresAuth: true,
                     requiredPermissions: [
-                        `${PermissionResources.REQUEST_ASSET}_${PermissionActions.READ}`,
-                        `${PermissionResources.REQUEST_ASSET}_${PermissionActions.CREATE}`,
-                        `${PermissionResources.REQUEST_ASSET}_${PermissionActions.UPDATE}`,
-                        `${PermissionResources.REQUEST_ASSET}_${PermissionActions.DELETE}`,
+                        `${PermissionResources.STORE_IMPORT_MATERIAL}_${PermissionActions.READ}`,
+                        `${PermissionResources.STORE_IMPORT_MATERIAL}_${PermissionActions.UPDATE}`,
                     ],
                 },
             },
@@ -99,10 +98,8 @@ export default [
                 meta: {
                     requiresAuth: true,
                     requiredPermissions: [
-                        `${PermissionResources.RECRUITMENT}_${PermissionActions.READ}`,
-                        `${PermissionResources.RECRUITMENT}_${PermissionActions.CREATE}`,
-                        `${PermissionResources.RECRUITMENT}_${PermissionActions.UPDATE}`,
-                        `${PermissionResources.RECRUITMENT}_${PermissionActions.DELETE}`,
+                        `${PermissionResources.STORE_IMPORT_MATERIAL}_${PermissionActions.READ}`,
+                        `${PermissionResources.STORE_IMPORT_MATERIAL}_${PermissionActions.UPDATE}`,
                     ],
                 },
             },
@@ -119,10 +116,8 @@ export default [
                 meta: {
                     requiresAuth: true,
                     requiredPermissions: [
-                        `${PermissionResources.REQUEST_ASSET}_${PermissionActions.READ}`,
-                        `${PermissionResources.REQUEST_ASSET}_${PermissionActions.CREATE}`,
-                        `${PermissionResources.REQUEST_ASSET}_${PermissionActions.UPDATE}`,
-                        `${PermissionResources.REQUEST_ASSET}_${PermissionActions.DELETE}`,
+                        `${PermissionResources.STORE_EXPORT_MATERIAL}_${PermissionActions.READ}`,
+                        `${PermissionResources.STORE_EXPORT_MATERIAL}_${PermissionActions.UPDATE}`,
                     ],
                 },
             },
@@ -134,10 +129,8 @@ export default [
                 meta: {
                     requiresAuth: true,
                     requiredPermissions: [
-                        `${PermissionResources.RECRUITMENT}_${PermissionActions.READ}`,
-                        `${PermissionResources.RECRUITMENT}_${PermissionActions.CREATE}`,
-                        `${PermissionResources.RECRUITMENT}_${PermissionActions.UPDATE}`,
-                        `${PermissionResources.RECRUITMENT}_${PermissionActions.DELETE}`,
+                        `${PermissionResources.STORE_EXPORT_MATERIAL}_${PermissionActions.READ}`,
+                        `${PermissionResources.STORE_EXPORT_MATERIAL}_${PermissionActions.UPDATE}`,
                     ],
                 },
             },
@@ -154,10 +147,8 @@ export default [
                 meta: {
                     requiresAuth: true,
                     requiredPermissions: [
-                        `${PermissionResources.REQUEST_ASSET}_${PermissionActions.READ}`,
-                        `${PermissionResources.REQUEST_ASSET}_${PermissionActions.CREATE}`,
-                        `${PermissionResources.REQUEST_ASSET}_${PermissionActions.UPDATE}`,
-                        `${PermissionResources.REQUEST_ASSET}_${PermissionActions.DELETE}`,
+                        `${PermissionResources.STORE_CHECK_INVENTORY}_${PermissionActions.READ}`,
+                        `${PermissionResources.STORE_CHECK_INVENTORY}_${PermissionActions.UPDATE}`,
                     ],
                 },
             },
@@ -169,10 +160,8 @@ export default [
                 meta: {
                     requiresAuth: true,
                     requiredPermissions: [
-                        `${PermissionResources.RECRUITMENT}_${PermissionActions.READ}`,
-                        `${PermissionResources.RECRUITMENT}_${PermissionActions.CREATE}`,
-                        `${PermissionResources.RECRUITMENT}_${PermissionActions.UPDATE}`,
-                        `${PermissionResources.RECRUITMENT}_${PermissionActions.DELETE}`,
+                        `${PermissionResources.STORE_CHECK_INVENTORY}_${PermissionActions.READ}`,
+                        `${PermissionResources.STORE_CHECK_INVENTORY}_${PermissionActions.UPDATE}`,
                     ],
                 },
             },

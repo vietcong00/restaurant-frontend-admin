@@ -63,7 +63,7 @@
                             effect="dark"
                             :content="$t('event.list.tooltip.edit')"
                             placement="top"
-                            v-if="isCanUpdate(scope.row?.status)"
+                            v-if="isCanConvert"
                         >
                             <el-button
                                 type="primary"
@@ -77,7 +77,7 @@
                             effect="dark"
                             :content="$t('event.list.tooltip.edit')"
                             placement="top"
-                            v-if="isCanUpdate(scope.row?.status)"
+                            v-if="isCanUpdate"
                         >
                             <el-button
                                 type="warning"
@@ -91,7 +91,7 @@
                             effect="dark"
                             :content="$t('event.list.tooltip.delete')"
                             placement="top"
-                            v-if="isCanDelete(scope.row?.status)"
+                            v-if="isCanDelete"
                         >
                             <el-button
                                 type="danger"
@@ -141,15 +141,21 @@ export default class MaterialTable extends mixins(StoreMixins) {
         return storeModule.materialList;
     }
 
+    isCanConvert(): boolean {
+        return checkUserHasPermission(storeModule.userPermissionsMaterial, [
+            `${PermissionResources.STORE_MATERIAL}_${PermissionActions.CONVERT_MATERIAL}`,
+        ]);
+    }
+
     isCanDelete(): boolean {
-        return checkUserHasPermission(storeModule.userPermissions, [
-            `${PermissionResources.EVENT}_${PermissionActions.DELETE}`,
+        return checkUserHasPermission(storeModule.userPermissionsMaterial, [
+            `${PermissionResources.STORE_MATERIAL}_${PermissionActions.DELETE}`,
         ]);
     }
 
     isCanUpdate(): boolean {
-        return checkUserHasPermission(storeModule.userPermissions, [
-            `${PermissionResources.EVENT}_${PermissionActions.UPDATE}`,
+        return checkUserHasPermission(storeModule.userPermissionsMaterial, [
+            `${PermissionResources.MENU_CATEGORY}_${PermissionActions.UPDATE}`,
         ]);
     }
 
