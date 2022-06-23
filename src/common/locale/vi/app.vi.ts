@@ -148,5 +148,6 @@ export default {
         CHECKED_AGAIN: 'Đã kiểm tra lại',
         REQUEST_CHECK_AGAIN: 'Yêu cầu kiểm tra lại',
         WAITING_APPROVE: 'Chờ chấp nhận',
+        REJECT: 'Từ chối',
     },
 };

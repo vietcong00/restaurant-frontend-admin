@@ -108,10 +108,7 @@
                 :label="$t('closingRevenue.closingRevenue.closingRevenueTable.action')"
             >
                 <template #default="scope">
-                    <div
-                        class="button-group"
-                        :class="checkFullPermissionActions() ? 'group-left' : ''"
-                    >
+                    <div class="button-group">
                         <el-tooltip
                             effect="dark"
                             :content="$t('closingRevenue.closingRevenue.tooltip.edit')"
@@ -173,13 +170,13 @@ export default class ClosingRevenueTable extends mixins(UtilMixins) {
 
     get isCanDelete(): boolean {
         return checkUserHasPermission(closingRevenueModule.userPermissions, [
-            `${PermissionResources.BILLING}_${PermissionActions.DELETE}`,
+            `${PermissionResources.CLOSING_REVENUE}_${PermissionActions.DELETE}`,
         ]);
     }
 
     get isCanUpdate(): boolean {
         return checkUserHasPermission(closingRevenueModule.userPermissions, [
-            `${PermissionResources.BILLING}_${PermissionActions.UPDATE}`,
+            `${PermissionResources.CLOSING_REVENUE}_${PermissionActions.UPDATE}`,
         ]);
     }
 
@@ -192,17 +189,6 @@ export default class ClosingRevenueTable extends mixins(UtilMixins) {
 
     async onClickButtonDelete(id: number): Promise<void> {
         await this.deleteAction.deleteClosingRevenue(id);
-    }
-
-    checkFullPermissionActions(): boolean {
-        return (
-            checkUserHasPermission(closingRevenueModule.userPermissions, [
-                `${PermissionResources.BILLING}_${PermissionActions.DELETE}`,
-            ]) &&
-            checkUserHasPermission(closingRevenueModule.userPermissions, [
-                `${PermissionResources.BILLING}_${PermissionActions.UPDATE}`,
-            ])
-        );
     }
 
     differenceRevenueBadge(difference: number): string {

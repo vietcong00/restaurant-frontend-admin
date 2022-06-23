@@ -5,7 +5,7 @@ import {
     LIMIT_PER_PAGE,
     DEFAULT_ORDER_DIRECTION,
 } from '@/common/constants';
-import { IBodyResponse, IGetListResponse } from '@/common/types';
+import { IBodyResponse, IGetListResponse, ISelectOptions } from '@/common/types';
 import { DEFAULT_ORDER_BY } from '../user/constants';
 import { appService } from '@/utils/app';
 import { PermissionResources } from '../role/constants';
@@ -15,8 +15,12 @@ import {
     IConvertHistory,
     IExportMaterial,
     IExportMaterialDetail,
+    IExportMaterialDetailUpdate,
+    IExportMaterialUpdate,
     IImportMaterial,
     IImportMaterialDetail,
+    IImportMaterialDetailUpdate,
+    IImportMaterialUpdate,
     IInventoryDetail,
     IMaterial,
     IMaterialUpdate,
@@ -44,6 +48,7 @@ import {
     materialService,
     supplierService,
 } from './services/api.service';
+import { commonService } from '@/common/services/api.services';
 
 const initQueryString = {
     page: DEFAULT_FIRST_PAGE,
@@ -68,6 +73,7 @@ class StoreModule extends VuexModule {
     selectedSupplier: ISupplierUpdate | null = null;
     isShowSupplierFormPopUp = false;
     queryStringSupplier: IQueryStringSupplier = initQueryString;
+    supplierOptions: ISelectOptions[] = [];
 
     // Check Inventory
     checkInventoryList: Array<ICheckInventory> = [];
@@ -83,21 +89,29 @@ class StoreModule extends VuexModule {
     // Import Material
     importMaterialList: Array<IImportMaterial> = [];
     totalImportMaterials = 0;
+    selectedImportMaterial: IImportMaterialUpdate | null = null;
+    isShowImportMaterialFormPopUp = false;
     queryStringImportMaterial: IQueryStringImportMaterial = initQueryString;
 
     // Import Material Detail
     importMaterialDetailList: Array<IImportMaterialDetail> = [];
     totalImportMaterialDetails = 0;
+    selectedImportMaterialDetail: IImportMaterialDetailUpdate | null = null;
+    isShowImportMaterialDetailFormPopUp = false;
     queryStringImportMaterialDetail: IQueryStringImportMaterialDetail = initQueryString;
 
     // Export Material
     exportMaterialList: Array<IExportMaterial> = [];
     totalExportMaterials = 0;
+    selectedExportMaterial: IExportMaterialUpdate | null = null;
+    isShowExportMaterialFormPopUp = false;
     queryStringExportMaterial: IQueryStringExportMaterial = initQueryString;
 
     // Export Material Detail
     exportMaterialDetailList: Array<IExportMaterialDetail> = [];
     totalExportMaterialDetails = 0;
+    selectedExportMaterialDetail: IExportMaterialDetailUpdate | null = null;
+    isShowExportMaterialDetailFormPopUp = false;
     queryStringExportMaterialDetail: IQueryStringExportMaterialDetail = initQueryString;
 
     // convert history
@@ -319,6 +333,26 @@ class StoreModule extends VuexModule {
     }
 
     @Mutation
+    MUTATE_IS_SHOW_IMPORT_MATERIAL_FORM_POP_UP(value: boolean) {
+        this.isShowImportMaterialFormPopUp = value;
+    }
+
+    @Mutation
+    MUTATE_IS_SHOW_IMPORT_MATERIAL_DETAIL_FORM_POP_UP(value: boolean) {
+        this.isShowImportMaterialDetailFormPopUp = value;
+    }
+
+    @Mutation
+    MUTATE_IS_SHOW_EXPORT_MATERIAL_FORM_POP_UP(value: boolean) {
+        this.isShowExportMaterialFormPopUp = value;
+    }
+
+    @Mutation
+    MUTATE_IS_SHOW_EXPORT_MATERIAL_DETAIL_FORM_POP_UP(value: boolean) {
+        this.isShowExportMaterialDetailFormPopUp = value;
+    }
+
+    @Mutation
     MUTATE_IS_SHOW_SUPPLIER_FORM_POP_UP(value: boolean) {
         this.isShowSupplierFormPopUp = value;
     }
@@ -337,6 +371,26 @@ class StoreModule extends VuexModule {
     @Mutation
     MUTATE_SELECTED_MATERIAL(material: IMaterialUpdate | null) {
         this.selectedMaterial = material;
+    }
+
+    @Mutation
+    MUTATE_SELECTED_IMPORT_MATERIAL(data: IImportMaterialUpdate | null) {
+        this.selectedImportMaterial = data;
+    }
+
+    @Mutation
+    MUTATE_SELECTED_IMPORT_MATERIAL_DETAIL(material: IImportMaterialDetailUpdate | null) {
+        this.selectedImportMaterialDetail = material;
+    }
+
+    @Mutation
+    MUTATE_SELECTED_EXPORT_MATERIAL(data: IExportMaterialUpdate | null) {
+        this.selectedExportMaterial = data;
+    }
+
+    @Mutation
+    MUTATE_SELECTED_EXPORT_MATERIAL_DETAIL(material: IExportMaterialDetailUpdate | null) {
+        this.selectedExportMaterialDetail = material;
     }
 
     @Mutation
@@ -360,6 +414,11 @@ class StoreModule extends VuexModule {
     @Mutation
     MUTATE_MATERIAL_OPTIONS(materialOptions: ISelectMaterialOptions[]) {
         this.materialOptions = materialOptions;
+    }
+
+    @Mutation
+    MUTATE_SUPPLIER_OPTIONS(options: ISelectOptions[]) {
+        this.supplierOptions = options;
     }
 
     // ACTION
@@ -463,8 +522,23 @@ class StoreModule extends VuexModule {
     }
 
     @Action
-    setIsShowSupplierFormPopUp(value: boolean) {
-        this.MUTATE_IS_SHOW_SUPPLIER_FORM_POP_UP(value);
+    setIsShowImportMaterialFormPopUp(value: boolean) {
+        this.MUTATE_IS_SHOW_IMPORT_MATERIAL_FORM_POP_UP(value);
+    }
+
+    @Action
+    setIsShowImportMaterialDetailFormPopUp(value: boolean) {
+        this.MUTATE_IS_SHOW_IMPORT_MATERIAL_DETAIL_FORM_POP_UP(value);
+    }
+
+    @Action
+    setIsShowExportMaterialFormPopUp(value: boolean) {
+        this.MUTATE_IS_SHOW_EXPORT_MATERIAL_FORM_POP_UP(value);
+    }
+
+    @Action
+    setIsShowExportMaterialDetailFormPopUp(value: boolean) {
+        this.MUTATE_IS_SHOW_EXPORT_MATERIAL_DETAIL_FORM_POP_UP(value);
     }
 
     @Action
@@ -477,10 +551,35 @@ class StoreModule extends VuexModule {
         this.MUTATE_IS_SHOW_CONVERT_MATERIAL_FORM_POP_UP(value);
     }
 
+    @Action
+    setIsShowSupplierFormPopUp(value: boolean) {
+        this.MUTATE_IS_SHOW_SUPPLIER_FORM_POP_UP(value);
+    }
+
     // selected
     @Action
     setSelectedMaterial(material: IMaterialUpdate | null) {
         this.MUTATE_SELECTED_MATERIAL(material);
+    }
+
+    @Action
+    setSelectedImportMaterial(data: IImportMaterialUpdate | null) {
+        this.MUTATE_SELECTED_IMPORT_MATERIAL(data);
+    }
+
+    @Action
+    setSelectedImportMaterialDetail(data: IImportMaterialDetailUpdate | null) {
+        this.MUTATE_SELECTED_IMPORT_MATERIAL_DETAIL(data);
+    }
+
+    @Action
+    setSelectedExportMaterial(data: IExportMaterialUpdate | null) {
+        this.MUTATE_SELECTED_EXPORT_MATERIAL(data);
+    }
+
+    @Action
+    setSelectedExportMaterialDetail(data: IExportMaterialDetailUpdate | null) {
+        this.MUTATE_SELECTED_EXPORT_MATERIAL_DETAIL(data);
     }
 
     @Action
@@ -590,6 +689,9 @@ class StoreModule extends VuexModule {
 
     @Action
     async getImportMaterialOrders() {
+        this.MUTATE_QUERY_STRING_IMPORT_MATERIAL_DETAIL({
+            importMaterialId: this.selectedImportMaterial?.id,
+        });
         const response = (await importMaterialDetailService.getList({
             ...this.queryStringImportMaterialDetail,
         })) as IBodyResponse<IGetListResponse<IImportMaterialDetail>>;
@@ -644,6 +746,21 @@ class StoreModule extends VuexModule {
         } else {
             this.MUTATE_CONVERT_HISTORY_LIST([]);
             this.MUTATE_TOTAL_CONVERT_HISTORIES(0);
+        }
+        return response;
+    }
+
+    @Action
+    async getSupplierList(): Promise<IBodyResponse<IGetListResponse<ISupplier>>> {
+        const response = await commonService.getDropdownSuppliers();
+        if (response?.success) {
+            const options: ISelectOptions[] = response?.data?.items.map((item) => {
+                return {
+                    value: item.id as number,
+                    label: item.name,
+                };
+            });
+            this.MUTATE_SUPPLIER_OPTIONS(options);
         }
         return response;
     }

@@ -12,6 +12,7 @@ import {
 import { AxiosPromise } from 'axios';
 import { IProvince } from '@/modules/user/types';
 import { ICategory } from '@/modules/menu/types';
+import { ISupplier } from '@/modules/store/types';
 
 class CommonApiService extends BaseService {
     getProvinces(): Promise<IBodyResponse<IGetListResponse<IProvince>>> {
@@ -45,6 +46,10 @@ class CommonApiService extends BaseService {
 
     getDropdownCategories(): Promise<IBodyResponse<IGetListResponse<ICategory>>> {
         return this.client.get(this.baseUrl + '/category');
+    }
+
+    getDropdownSuppliers(): Promise<IBodyResponse<IGetListResponse<ISupplier>>> {
+        return this.client.get(this.baseUrl + '/supplier');
     }
 }
 

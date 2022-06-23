@@ -3,6 +3,7 @@ export enum AcceptStatus {
     WAITING_APPROVE = 'WAITING_APPROVE',
     REQUEST_CHECK_AGAIN = 'REQUEST_CHECK_AGAIN',
     CHECKED_AGAIN = 'CHECKED_AGAIN',
+    REJECT = 'REJECT',
 }
 
 export const SortOptions = [
@@ -40,5 +41,9 @@ export const AcceptStatusOptions = [
     {
         label: 'app.acceptStatus.waitingApprove',
         value: AcceptStatus.WAITING_APPROVE,
+    },
+    {
+        label: 'app.acceptStatus.reject',
+        value: AcceptStatus.REJECT,
     },
 ];

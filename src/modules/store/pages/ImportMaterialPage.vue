@@ -6,6 +6,8 @@
             :hasSortBox="true"
             v-model:page="selectedPage"
             :totalItems="totalImportMaterials"
+            :isShowCreateButton="isCanCreate"
+            @create="onClickButtonCreate"
             @onPaginate="handlePaginate"
         >
             <template #sort-box-content>
@@ -14,6 +16,7 @@
         </BaseListPageHeader>
         <FilterForm :isToggleFilterForm="isToggleFilterForm" />
         <ImportMaterialTable />
+        <ImportMaterialFormPopup />
     </div>
 </template>
 
@@ -24,11 +27,15 @@ import FilterForm from '../components/importMaterial/FilterForm.vue';
 import { storeModule } from '../store';
 import ImportMaterialTable from '../components/importMaterial/ImportMaterialTable.vue';
 import { ElLoading } from 'element-plus';
+import { PermissionResources, PermissionActions } from '@/modules/role/constants';
+import { checkUserHasPermission } from '@/utils/helper';
+import ImportMaterialFormPopup from '../components/importMaterial/ImportMaterialFormPopup.vue';
 
 @Options({
     components: {
         ImportMaterialTable,
         FilterForm,
+        ImportMaterialFormPopup,
     },
 })
 export default class ImportMaterialPage extends Vue {
@@ -39,6 +46,11 @@ export default class ImportMaterialPage extends Vue {
     }
 
     // check permission
+    get isCanCreate(): boolean {
+        return checkUserHasPermission(storeModule.userPermissionsImportMaterial, [
+            `${PermissionResources.STORE_IMPORT_MATERIAL}_${PermissionActions.CREATE}`,
+        ]);
+    }
 
     get selectedPage(): number {
         return storeModule.queryStringImportMaterial?.page || DEFAULT_FIRST_PAGE;
@@ -50,19 +62,24 @@ export default class ImportMaterialPage extends Vue {
 
     created(): void {
         storeModule.clearQueryStringImportMaterial();
-        this.getImportMaterialList();
+        this.fetchData();
     }
 
-    async getImportMaterialList(): Promise<void> {
+    async fetchData(): Promise<void> {
         const loading = ElLoading.service({
             target: '.content',
         });
         await storeModule.getImportMaterials();
+        await storeModule.getSupplierList();
         loading.close();
     }
 
     toggleFilterForm(): void {
         this.isToggleFilterForm = !this.isToggleFilterForm;
+    }
+
+    onClickButtonCreate(): void {
+        storeModule.setIsShowImportMaterialFormPopUp(true);
     }
 }
 </script>

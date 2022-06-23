@@ -1,4 +1,24 @@
 export default {
+    importMaterialDetailDialog: {
+        titleCreate: 'Create Import material detail',
+        titleUpdate: 'Update Import material detail',
+        material: 'Material',
+        pricePerUnit: 'Price / Unit',
+        currentQuantity: 'Current quantity',
+        quantity: 'Quantity',
+        totalPrice: 'Total Price : ',
+        note: 'Note',
+        placeholder: {
+            material: 'Select material',
+            pricePerUnit: 'Enter Price / Unit',
+            quantity: 'Enter quantity',
+            note: 'Enter note',
+        },
+        button: {
+            cancel: 'Cancel',
+            submit: 'Submit',
+        },
+    },
     importMaterialDetailTable: {
         header: {
             id: 'ID',
@@ -22,8 +42,11 @@ export default {
 
     message: {
         title: 'Notification',
+        create: {
+            success: 'Create detail import material successfully!',
+        },
         update: {
-            success: 'Update status successfully!',
+            success: 'Update detail import material successfully!',
         },
     },
 

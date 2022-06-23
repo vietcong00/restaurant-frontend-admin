@@ -15,7 +15,7 @@
                 width="200"
             >
                 <template #default="scope">
-                    {{ scope.row.supplier.name }}
+                    {{ scope.row.supplier?.name || '' }}
                 </template>
             </el-table-column>
             <el-table-column
@@ -26,7 +26,7 @@
                 "
             >
                 <template #default="scope">
-                    {{ scope.row.warehouseStaff.fullName }}
+                    {{ scope.row.warehouseStaff?.fullName || '' }}
                 </template>
             </el-table-column>
             <el-table-column
@@ -39,7 +39,7 @@
                 "
             >
                 <template #default="scope">
-                    {{ parseMoney(scope.row.totalPaymentImport) }}
+                    {{ parseMoney(scope.row.totalPaymentImport | 0) }}
                 </template>
             </el-table-column>
             <el-table-column
@@ -98,7 +98,7 @@
                             <el-button
                                 type="warning"
                                 size="mini"
-                                @click="onClickUpdateImportMaterial(scope.row.id)"
+                                @click="onClickUpdateImportMaterial(scope.row)"
                             >
                                 <EditIcon class="action-icon" />
                             </el-button>
@@ -151,9 +151,9 @@ export default class ImportMaterialTable extends mixins(StoreMixins) {
         ]);
     }
 
-    onClickUpdateImportMaterial(id: number): void {
-        storeModule.setQueryStringImportMaterialDetail({ importMaterialId: id });
-        this.$router.push(`/import-material/${id}`);
+    onClickUpdateImportMaterial(importMaterial: IImportMaterial): void {
+        storeModule.setSelectedImportMaterial(importMaterial);
+        this.$router.push(`/import-material/${importMaterial.id}`);
     }
 
     async setStatus(data: IEmitStatus): Promise<void> {

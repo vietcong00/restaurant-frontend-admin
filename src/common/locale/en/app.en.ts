@@ -150,5 +150,6 @@ export default {
         CHECKED_AGAIN: 'Checked Again',
         REQUEST_CHECK_AGAIN: 'Request Check Again',
         WAITING_APPROVE: 'Waiting Approve',
+        REJECT: 'Reject',
     },
 };

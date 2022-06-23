@@ -1,4 +1,19 @@
 export default {
+    importMaterialDialog: {
+        titleCreate: 'Create Import material',
+        titleUpdate: 'Update Import material',
+        supplier: 'Supplier',
+        note: 'Note',
+        placeholder: {
+            supplier: 'Select supplier',
+            note: 'Enter note',
+        },
+        button: {
+            cancel: 'Cancel',
+            submit: 'Submit',
+        },
+    },
+
     importMaterialTable: {
         header: {
             id: 'ID',
@@ -26,8 +41,11 @@ export default {
 
     message: {
         title: 'Notification',
+        create: {
+            success: 'Create Import material successfully!',
+        },
         update: {
-            success: 'Update status successfully!',
+            success: 'Update Import Material successfully!',
         },
     },
 

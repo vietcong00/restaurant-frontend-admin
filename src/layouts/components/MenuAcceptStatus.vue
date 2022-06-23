@@ -52,6 +52,7 @@ export default class MenuAcceptStatus extends mixins(UtilMixins) {
             case AcceptStatus.CHECKED_AGAIN:
                 return 'secondary';
             case AcceptStatus.REQUEST_CHECK_AGAIN:
+            case AcceptStatus.REJECT:
                 return 'danger';
             case AcceptStatus.WAITING_APPROVE:
                 return 'success';

@@ -91,11 +91,22 @@ export interface IQueryStringInventoryDetail extends IQueryString {
 // import material
 export interface IImportMaterial {
     id: number;
-    supplier: string;
+    supplierId: number;
+    supplier: ISupplier;
+    warehouseStaffId: number;
     warehouseStaff: IWarehouseStaff;
     totalPaymentImport: number;
     note: string;
     status: AcceptStatus;
+}
+
+export interface IImportMaterialCreate {
+    supplierId: number | undefined;
+    note: string | undefined;
+}
+
+export interface IImportMaterialUpdate extends IImportMaterialCreate {
+    id: number | undefined;
 }
 
 export interface IQueryStringImportMaterial extends IQueryString {
@@ -103,11 +114,22 @@ export interface IQueryStringImportMaterial extends IQueryString {
 }
 export interface IImportMaterialDetail {
     id: number;
-    nameMaterial: string;
-    importPrice: number;
+    materialId: number;
+    material: IMaterial;
+    pricePerUnit: number;
     quantity: number;
-    unit: string;
     note: string;
+}
+
+export interface IImportMaterialDetailCreate {
+    materialId: number | undefined;
+    pricePerUnit: number | undefined;
+    quantity: number | undefined;
+    note: string | undefined;
+}
+
+export interface IImportMaterialDetailUpdate extends IImportMaterialDetailCreate {
+    id: number | undefined;
 }
 
 export interface IQueryStringImportMaterialDetail extends IQueryString {
@@ -117,8 +139,20 @@ export interface IQueryStringImportMaterialDetail extends IQueryString {
 export interface IExportMaterial {
     id: number;
     transporters: string;
+    warehouseStaffId: number;
     warehouseStaff: IWarehouseStaff;
+    totalPaymentExport: number;
     note: string;
+    status: AcceptStatus;
+}
+
+export interface IExportMaterialCreate {
+    transporters: string | undefined;
+    note: string | undefined;
+}
+
+export interface IExportMaterialUpdate extends IExportMaterialCreate {
+    id: number | undefined;
 }
 
 export interface IQueryStringExportMaterial extends IQueryString {
@@ -126,11 +160,22 @@ export interface IQueryStringExportMaterial extends IQueryString {
 }
 export interface IExportMaterialDetail {
     id: number;
-    nameMaterial: string;
+    materialId: number;
+    material: IMaterial;
     exportPrice: number;
     quantity: number;
-    unit: string;
     note: string;
+}
+
+export interface IExportMaterialDetailCreate {
+    materialId: number | undefined;
+    exportPrice: number | undefined;
+    quantity: number | undefined;
+    note: string | undefined;
+}
+
+export interface IExportMaterialDetailUpdate extends IExportMaterialDetailCreate {
+    id: number | undefined;
 }
 
 export interface IQueryStringExportMaterialDetail extends IQueryString {

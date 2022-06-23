@@ -56,7 +56,7 @@ export default class ClosingRevenuesPage extends mixins(UtilMixins) {
     // check permission
     get isCanCreate(): boolean {
         return checkUserHasPermission(closingRevenueModule.userPermissions, [
-            `${PermissionResources.BILLING}_${PermissionActions.CREATE}`,
+            `${PermissionResources.CLOSING_REVENUE}_${PermissionActions.CREATE}`,
         ]);
     }
 

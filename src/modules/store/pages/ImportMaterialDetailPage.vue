@@ -8,6 +8,8 @@
             :totalItems="totalImportMaterialDetails"
             @onPaginate="handlePaginate"
             :isShowBackButton="true"
+            :isShowCreateButton="isCanCreate"
+            @create="onClickButtonCreate"
             @on-click-back-button="onBack"
         >
             <template #sort-box-content>
@@ -16,6 +18,7 @@
         </BaseListPageHeader>
         <FilterForm :isToggleFilterForm="isToggleFilterForm" />
         <ImportMaterialDetailTable />
+        <ImportMaterialDetailFormPopup />
     </div>
 </template>
 
@@ -26,11 +29,15 @@ import { Options, Vue } from 'vue-class-component';
 import ImportMaterialDetailTable from '../components/importMaterialDetail/ImportMaterialDetailTable.vue';
 import { storeModule } from '../store';
 import FilterForm from '../components/importMaterialDetail/FilterForm.vue';
+import ImportMaterialDetailFormPopup from '../components/importMaterialDetail/ImportMaterialDetailFormPopup.vue';
+import { PermissionResources, PermissionActions } from '@/modules/role/constants';
+import { checkUserHasPermission } from '@/utils/helper';
 
 @Options({
     components: {
         ImportMaterialDetailTable,
         FilterForm,
+        ImportMaterialDetailFormPopup,
     },
 })
 export default class ImportMaterialDetailPage extends Vue {
@@ -41,6 +48,12 @@ export default class ImportMaterialDetailPage extends Vue {
     }
 
     // check permission
+    // check permission
+    get isCanCreate(): boolean {
+        return checkUserHasPermission(storeModule.userPermissionsImportMaterial, [
+            `${PermissionResources.STORE_IMPORT_MATERIAL}_${PermissionActions.CREATE}`,
+        ]);
+    }
 
     get selectedPage(): number {
         return storeModule.queryStringImportMaterialDetail?.page || DEFAULT_FIRST_PAGE;
@@ -52,20 +65,22 @@ export default class ImportMaterialDetailPage extends Vue {
 
     created(): void {
         storeModule.clearQueryStringImportMaterialDetail();
-        this.getImportMaterialDetailList();
+        this.fetchData();
     }
 
-    async getImportMaterialDetailList(): Promise<void> {
+    async fetchData(): Promise<void> {
         const loading = ElLoading.service({
             target: '.content',
         });
         await storeModule.getImportMaterialOrders();
+        await storeModule.getMaterials();
+
         loading.close();
     }
 
     async handlePaginate(): Promise<void> {
         storeModule.setQueryStringImportMaterialDetail({ page: this.selectedPage });
-        this.getImportMaterialDetailList();
+        this.fetchData();
     }
 
     toggleFilterForm(): void {
@@ -74,6 +89,10 @@ export default class ImportMaterialDetailPage extends Vue {
 
     onBack(): void {
         this.$router.push({ name: PageName.STORE_IMPORT_MATERIAL_PAGE });
+    }
+
+    onClickButtonCreate(): void {
+        storeModule.setIsShowImportMaterialDetailFormPopUp(true);
     }
 }
 </script>
