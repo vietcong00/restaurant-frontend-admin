@@ -45,7 +45,7 @@ export default {
             success: 'Create Import material successfully!',
         },
         update: {
-            success: 'Update Import Material successfully!',
+            success: 'Update Import material successfully!',
         },
     },
 

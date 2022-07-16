@@ -1,5 +1,5 @@
 <template>
-    <BaseTableLayout :data="importDetailList">
+    <BaseTableLayout :data="importDetailList" @row-click="onClickRow">
         <template #table-columns>
             <el-table-column
                 align="center"
@@ -44,7 +44,17 @@
                 sortable="custom"
             >
                 <template #default="scope">
-                    {{ parseMoney(scope.row.pricePerUnit) }}
+                    <div v-if="isApprove">{{ parseMoney(scope.row.pricePerUnit) }}</div>
+                    <BaseInputNumber
+                        v-model:value="scope.row.pricePerUnit"
+                        :placeholder="
+                            $t(
+                                'store.importMaterialDetail.importMaterialDetailTable.placeholder.pricePerUnit',
+                            )
+                        "
+                        @blur="updatePricePerUnit"
+                        v-else
+                    />
                 </template>
             </el-table-column>
             <el-table-column
@@ -56,7 +66,17 @@
                 "
             >
                 <template #default="scope">
-                    {{ scope.row.quantity }}
+                    <div v-if="isApprove">{{ scope.row.quantity }}</div>
+                    <BaseInputNumber
+                        v-model:value="scope.row.quantity"
+                        :placeholder="
+                            $t(
+                                'store.importMaterialDetail.importMaterialDetailTable.placeholder.quantity',
+                            )
+                        "
+                        v-else
+                        @blur="updateQuantity"
+                    />
                 </template>
             </el-table-column>
             <el-table-column
@@ -66,24 +86,16 @@
                 "
             >
                 <template #default="scope">
-                    {{ scope.row.note }}
-                </template>
-            </el-table-column>
-            <el-table-column
-                prop="status"
-                width="200"
-                fixed="right"
-                :label="
-                    $t(
-                        'store.importMaterialDetail.importMaterialDetailTable.header.status',
-                    )
-                "
-            >
-                <template #default="scope">
-                    <MenuAcceptStatus
-                        :status="scope.row.status"
-                        :id="scope.row.id"
-                        @set-status="setStatus"
+                    <div v-if="isApprove">{{ scope.row.note }}</div>
+                    <BaseInputText
+                        v-model:value="scope.row.note"
+                        :placeholder="
+                            $t(
+                                'store.importMaterialDetail.importMaterialDetailTable.placeholder.note',
+                            )
+                        "
+                        v-else
+                        @blur="updateNote"
                     />
                 </template>
             </el-table-column>
@@ -94,7 +106,7 @@
 <script lang="ts">
 import { mixins, Options } from 'vue-property-decorator';
 
-import { IImportMaterialDetail } from '../../types';
+import { IImportMaterialDetail, IImportMaterialDetailCreate } from '../../types';
 import CompIcon from '../../../../components/CompIcon.vue';
 import { StoreMixins } from '../../mixins';
 import { Delete as DeleteIcon, Edit as EditIcon } from '@element-plus/icons-vue';
@@ -109,6 +121,7 @@ import { IEmitStatus } from '@/common/types';
 import i18n from '@/plugins/vue-i18n';
 import { ElLoading } from 'element-plus';
 import MenuAcceptStatus from '@/layouts/components/MenuAcceptStatus.vue';
+import { AcceptStatus } from '../../constants';
 
 @Options({
     name: 'import-material-detail-table-component',
@@ -122,6 +135,62 @@ import MenuAcceptStatus from '@/layouts/components/MenuAcceptStatus.vue';
 export default class ImportMaterialDetailTable extends mixins(StoreMixins) {
     get importDetailList(): IImportMaterialDetail[] {
         return storeModule.importMaterialDetailList;
+    }
+
+    get isApprove(): boolean {
+        return storeModule.selectedImportMaterial?.status === AcceptStatus.APPROVE;
+    }
+
+    rowId = 0;
+    onClickRow(importMaterialDetail: IImportMaterialDetail): void {
+        this.rowId = importMaterialDetail.id;
+    }
+
+    async updatePricePerUnit(data: string): Promise<void> {
+        await this.updateImportDetail({
+            pricePerUnit: data ? (data as unknown as number) : 0,
+        });
+    }
+
+    async updateQuantity(data: string): Promise<void> {
+        await this.updateImportDetail({
+            quantity: data ? (data as unknown as number) : 0,
+        });
+    }
+
+    async updateNote(data: string): Promise<void> {
+        await this.updateImportDetail({
+            note: data,
+        });
+    }
+
+    async updateImportDetail(data: IImportMaterialDetailCreate): Promise<void> {
+        const loading = ElLoading.service({
+            target: '.content',
+        });
+
+        const response = await importMaterialDetailService.update(this.rowId, data);
+
+        loading.close();
+        if (response.success) {
+            showSuccessNotificationFunction(
+                i18n.global.t('store.importMaterialDetail.message.update.success'),
+            );
+            const loading = ElLoading.service({
+                target: '.content',
+            });
+            await storeModule.getImportMaterialOrders();
+            loading.close();
+        } else {
+            showErrorNotificationFunction(response.message as string);
+            if (response.code === HttpStatus.ITEM_NOT_FOUND) {
+                const loading = ElLoading.service({
+                    target: '.content',
+                });
+                await storeModule.getImportMaterialOrders();
+                loading.close();
+            }
+        }
     }
 
     async setStatus(data: IEmitStatus): Promise<void> {
@@ -158,6 +227,10 @@ export default class ImportMaterialDetailTable extends mixins(StoreMixins) {
 </script>
 
 <style lang="scss" scoped>
+:deep(.form-group) {
+    margin-bottom: 1px;
+}
+
 .button-group {
     display: flex;
     justify-content: space-around;

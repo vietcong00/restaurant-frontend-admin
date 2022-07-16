@@ -62,7 +62,7 @@ export default class InputText extends Vue {
 
     onBlur(): void {
         this.isFocus = false;
-        this.$emit('blur');
+        this.$emit('blur', this.inputData);
     }
 
     onChange(): void {

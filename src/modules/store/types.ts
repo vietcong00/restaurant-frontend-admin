@@ -103,6 +103,7 @@ export interface IImportMaterial {
 export interface IImportMaterialCreate {
     supplierId: number | undefined;
     note: string | undefined;
+    status?: AcceptStatus;
 }
 
 export interface IImportMaterialUpdate extends IImportMaterialCreate {
@@ -122,14 +123,14 @@ export interface IImportMaterialDetail {
 }
 
 export interface IImportMaterialDetailCreate {
-    materialId: number | undefined;
-    pricePerUnit: number | undefined;
-    quantity: number | undefined;
-    note: string | undefined;
+    materialId?: number | undefined;
+    pricePerUnit?: number | undefined;
+    quantity?: number | undefined;
+    note?: string | undefined;
 }
 
 export interface IImportMaterialDetailUpdate extends IImportMaterialDetailCreate {
-    id: number | undefined;
+    id?: number | undefined;
 }
 
 export interface IQueryStringImportMaterialDetail extends IQueryString {
@@ -162,16 +163,16 @@ export interface IExportMaterialDetail {
     id: number;
     materialId: number;
     material: IMaterial;
-    exportPrice: number;
+    pricePerUnit: number;
     quantity: number;
     note: string;
 }
 
 export interface IExportMaterialDetailCreate {
-    materialId: number | undefined;
-    exportPrice: number | undefined;
-    quantity: number | undefined;
-    note: string | undefined;
+    materialId?: number | undefined;
+    pricePerUnit?: number | undefined;
+    quantity?: number | undefined;
+    note?: string | undefined;
 }
 
 export interface IExportMaterialDetailUpdate extends IExportMaterialDetailCreate {

@@ -40,6 +40,9 @@ export default {
 
     message: {
         title: 'Notification',
+        create: {
+            success: 'Create export material successfully!',
+        },
         update: {
             success: 'Update status successfully!',
         },

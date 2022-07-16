@@ -10,6 +10,7 @@
             :stripe="stripe"
             :cell-style="cellStyle"
             @cell-click="handleCellClick"
+            @row-click="handleRowClick"
             :max-height="400"
             fit
         >
@@ -48,6 +49,10 @@ export default class TableLayout extends Vue {
         },
     })
     readonly objectSpanMethod!: unknown;
+
+    handleRowClick(row: any): void {
+        this.$emit('row-click', row);
+    }
 }
 </script>
 

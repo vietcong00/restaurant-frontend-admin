@@ -161,6 +161,11 @@ import { BookingMixins } from '../mixins';
 import { tableDiagramModule } from '@/modules/table-diagram/store';
 import { BookingStatus } from '../constants';
 import { bookingService } from '../services/api.service';
+import {
+    showSuccessNotificationFunction,
+    showErrorNotificationFunction,
+} from '@/utils/helper';
+import i18n from '@/plugins/vue-i18n';
 
 @Options({
     name: 'booking-table-component',
@@ -184,6 +189,11 @@ export default class BookingTable extends mixins(BookingMixins) {
         if (response.success) {
             bookingModule.getBookings();
             tableDiagramModule.setCanChosenTable(false);
+            showSuccessNotificationFunction(
+                i18n.global.t('booking.list.message.update.success'),
+            );
+        } else {
+            showErrorNotificationFunction(response.message);
         }
     }
 

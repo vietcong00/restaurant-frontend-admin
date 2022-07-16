@@ -30,6 +30,12 @@ export default {
             note: 'Note',
             actions: 'Actions',
         },
+        placeholder: {
+            material: 'Select material',
+            pricePerUnit: 'Enter Price / Unit',
+            quantity: 'Enter quantity',
+            note: 'Enter note',
+        },
     },
 
     filterForm: {

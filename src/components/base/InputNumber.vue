@@ -1,39 +1,57 @@
 <template>
-    <div class="form-group position-relative">
-        <label class="mb-2" v-if="label"
-            >{{ label }} <span v-if="isRequired" class="mark-required">*</span></label
+    <div class="form-group d-flex" :class="{ 'flex-column': !isHorizontal }">
+        <label
+            v-if="label"
+            class="fw-bold text-start mb-2"
+            :class="{ 'w-100': !isHorizontal, 'w-30 mt-1': isHorizontal }"
         >
-        <el-input
-            v-model="inputData"
-            type="number"
-            :placeholder="placeholder"
-            :readonly="isReadonly"
-            :disabled="isDisabled"
-            :error="true"
-            :min="min"
-            :max="max"
-            @keydown="preventInput"
-            @change="onChange"
-            @blur="onBlur"
-        />
-        <div class="invalid-feedback text-start" :class="{ 'd-block': error }">
-            {{ error }}
+            {{ label }}
+            <span v-if="isRequired" class="mark-required">*</span></label
+        >
+        <div
+            class="position-relative"
+            :class="{ 'w-100': !isHorizontal, 'w-70': isHorizontal }"
+        >
+            <el-input
+                v-model="inputData"
+                :placeholder="placeholder"
+                type="number"
+                :readonly="isReadonly"
+                :disabled="isDisabled"
+                :error="true"
+                :class="{ 'is-focus': isFocus }"
+                @focus="onFocus"
+                @blur="onBlur"
+                @input="onChange"
+                :size="size"
+                :maxlength="maxLength"
+            />
+            <div class="invalid-feedback text-start" :class="{ 'd-block': error }">
+                {{ error }}
+            </div>
         </div>
     </div>
 </template>
-
 <script lang="ts">
-import { DECIMAL_ALLOW_CODES, INTEGER_ALLOW_CODES } from '@/common/constants';
+import {
+    DECIMAL_ALLOW_CODES,
+    INPUT_TEXT_MAX_LENGTH,
+    INTEGER_ALLOW_CODES,
+} from '@/common/constants';
 import { Model, Prop, Vue } from 'vue-property-decorator';
 export default class InputText extends Vue {
     @Prop({ default: '' }) readonly label!: string;
     @Prop({ default: '' }) readonly name!: string;
+    @Prop({ default: 'medium' }) readonly size!: string;
     @Prop({ default: '' }) readonly placeholder!: string;
     @Prop({ default: '' }) readonly error!: string;
     @Prop({ default: false }) readonly isRequired!: string;
     @Prop({ default: '' }) readonly rules!: string | Record<string, unknown>;
     @Prop({ default: false }) readonly isReadonly!: boolean;
     @Prop({ default: false }) readonly isDisabled!: boolean;
+    @Prop({ default: false }) readonly isHorizontal!: boolean;
+    @Prop({ default: INPUT_TEXT_MAX_LENGTH }) readonly maxLength!: number;
+    @Prop({ default: null }) readonly cleaveOptions!: Record<string, unknown>;
     @Prop({ default: '' }) readonly min!: number;
     @Prop({ default: NaN }) readonly max!: number;
     @Prop({ default: false }) readonly allowDecimal!: boolean;
@@ -49,7 +67,8 @@ export default class InputText extends Vue {
     }
 
     onBlur(): void {
-        this.$emit('blur');
+        this.isFocus = false;
+        this.$emit('blur', this.inputData);
     }
 
     preventInput(event: KeyboardEvent): void {
