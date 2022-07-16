@@ -17,7 +17,7 @@
         <FilterForm :isToggleFilterForm="isToggleFilterForm" />
         <BookingTable />
         <BookingFormPopup />
-        <ModalChosenTable v-show="isShowModalChosenTable" />
+        <SelectTableForBookingPopup v-show="isShowSelectTableForBookingPopup" />
     </div>
 </template>
 
@@ -31,14 +31,14 @@ import BookingTable from '../components/BookingTable.vue';
 import { bookingModule } from '../store';
 import FilterForm from '../components/FilterForm.vue';
 import BookingFormPopup from '../components/BookingFormPopup.vue';
-import ModalChosenTable from '../components/ModalChosenTable.vue';
+import SelectTableForBookingPopup from '../components/SelectTableForBookingPopup.vue';
 
 @Options({
     components: {
         BookingTable,
         FilterForm,
         BookingFormPopup,
-        ModalChosenTable,
+        SelectTableForBookingPopup,
     },
 })
 export default class BookingPage extends Vue {
@@ -63,8 +63,8 @@ export default class BookingPage extends Vue {
         bookingModule.bookingQueryString.page = value;
     }
 
-    get isShowModalChosenTable(): boolean {
-        return bookingModule.isShowModalChosenTable;
+    get isShowSelectTableForBookingPopup(): boolean {
+        return bookingModule.isShowSelectTableForBookingPopup;
     }
 
     created(): void {

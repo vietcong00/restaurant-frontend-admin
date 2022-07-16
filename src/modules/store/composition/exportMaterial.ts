@@ -68,7 +68,7 @@ export function initData() {
             });
             await storeModule.getExportMaterials();
             loading.close();
-            await storeModule.setIsShowExportMaterialFormPopUp(false);
+            storeModule.setIsShowExportMaterialFormPopUp(false);
         } else {
             showErrorNotificationFunction(response.message as string);
             if (response.code === HttpStatus.ITEM_NOT_FOUND) {

@@ -100,8 +100,8 @@ export default class ImportMaterialFormPopup extends mixins(UtilMixins) {
     form = setup(() => initData());
 
     async closePopup(): Promise<void> {
-        storeModule.setIsShowMaterialFormPopUp(false);
-        storeModule.setSelectedMaterial(null);
+        storeModule.setIsShowImportMaterialFormPopUp(false);
+        storeModule.setSelectedImportMaterial(null);
         (this.form.resetForm as () => void)();
     }
 

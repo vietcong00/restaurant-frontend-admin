@@ -27,7 +27,7 @@
                 "
             >
                 <template #default="scope">
-                    {{ scope.row.warehouseStaff.fullName }}
+                    {{ scope.row.warehouseStaff?.fullName }}
                 </template>
             </el-table-column>
             <el-table-column

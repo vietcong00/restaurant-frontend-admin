@@ -7,6 +7,11 @@ export interface ITable {
     idRestaurant: number;
 }
 
+export interface ITableCreateTable {
+    name: string;
+    numberSeat: number;
+}
+
 export interface IGetTables {
     tables: Array<ITable>;
     totalProduct: number;

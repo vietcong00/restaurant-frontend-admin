@@ -11,7 +11,6 @@ import {
 } from '@/common/types';
 import { AxiosPromise } from 'axios';
 import { IProvince } from '@/modules/user/types';
-import { ICategory } from '@/modules/menu/types';
 import { ISupplier } from '@/modules/store/types';
 
 class CommonApiService extends BaseService {
@@ -42,10 +41,6 @@ class CommonApiService extends BaseService {
 
     getDropdownBanks(): Promise<IBodyResponse<IGetListResponse<IBank>>> {
         return this.client.get(this.baseUrl + '/bank');
-    }
-
-    getDropdownCategories(): Promise<IBodyResponse<IGetListResponse<ICategory>>> {
-        return this.client.get(this.baseUrl + '/category');
     }
 
     getDropdownSuppliers(): Promise<IBodyResponse<IGetListResponse<ISupplier>>> {

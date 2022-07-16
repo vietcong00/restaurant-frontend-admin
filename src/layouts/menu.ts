@@ -3,10 +3,7 @@ import { ISidebar } from '@/common/types';
 import {
     User as UserIcon,
     House as HouseIcon,
-    Printer as PrinterIcon,
     Key as KeyIcon,
-    Money as MoneyIcon,
-    KnifeFork as KnifeForkIcon,
     Calendar as CalendarIcon,
     HomeFilled as HomeFilledIcon,
     Grid as GridIcon,
@@ -34,20 +31,6 @@ const userMenu: ISidebar = {
         `${PermissionResources.USER}_${PermissionActions.CREATE}`,
         `${PermissionResources.USER}_${PermissionActions.UPDATE}`,
         `${PermissionResources.USER}_${PermissionActions.DELETE}`,
-    ],
-};
-
-const billing: ISidebar = {
-    iconComponent: PrinterIcon,
-    name: 'common.app.menu.billing.title',
-    active: false,
-    to: '/billing',
-    pageName: PageName.BILLING_PAGE,
-    requiredPermissions: [
-        `${PermissionResources.BILLING}_${PermissionActions.READ}`,
-        `${PermissionResources.BILLING}_${PermissionActions.CREATE}`,
-        `${PermissionResources.BILLING}_${PermissionActions.UPDATE}`,
-        `${PermissionResources.BILLING}_${PermissionActions.DELETE}`,
     ],
 };
 
@@ -90,37 +73,6 @@ const booking: ISidebar = {
     ],
 };
 
-const menuMenu: ISidebar = {
-    iconComponent: KnifeForkIcon,
-    name: 'common.app.menu.menu.title',
-    active: false,
-    children: [
-        {
-            name: 'common.app.menu.menu.food',
-            to: '/food',
-            active: false,
-            pageName: PageName.MENU_FOOD_PAGE,
-            requiredPermissions: [
-                `${PermissionResources.MENU_FOOD}_${PermissionActions.READ}`,
-                `${PermissionResources.MENU_FOOD}_${PermissionActions.CREATE}`,
-                `${PermissionResources.MENU_FOOD}_${PermissionActions.UPDATE}`,
-                `${PermissionResources.MENU_FOOD}_${PermissionActions.DELETE}`,
-            ],
-        },
-        {
-            name: 'common.app.menu.menu.category',
-            to: '/category',
-            active: false,
-            pageName: PageName.MENU_CATEGORY_PAGE,
-            requiredPermissions: [
-                `${PermissionResources.MENU_CATEGORY}_${PermissionActions.READ}`,
-                `${PermissionResources.MENU_CATEGORY}_${PermissionActions.CREATE}`,
-                `${PermissionResources.MENU_CATEGORY}_${PermissionActions.UPDATE}`,
-                `${PermissionResources.MENU_CATEGORY}_${PermissionActions.DELETE}`,
-            ],
-        },
-    ],
-};
 const storeMenu: ISidebar = {
     iconComponent: HomeFilledIcon,
     name: 'common.app.menu.store.title',
@@ -195,28 +147,4 @@ const storeMenu: ISidebar = {
     ],
 };
 
-const closingRevenueMenu: ISidebar = {
-    iconComponent: MoneyIcon,
-    name: 'common.app.menu.closingRevenue.title',
-    to: '/closing-revenue',
-    active: false,
-    pageName: PageName.REPORT_CLOSING_REVENUE_PAGE,
-    requiredPermissions: [
-        `${PermissionResources.CLOSING_REVENUE}_${PermissionActions.READ}`,
-        `${PermissionResources.CLOSING_REVENUE}_${PermissionActions.CREATE}`,
-        `${PermissionResources.CLOSING_REVENUE}_${PermissionActions.UPDATE}`,
-        `${PermissionResources.CLOSING_REVENUE}_${PermissionActions.DELETE}`,
-    ],
-};
-
-export const sidebars = [
-    dashboard,
-    userMenu,
-    tableDiagram,
-    booking,
-    menuMenu,
-    storeMenu,
-    billing,
-    closingRevenueMenu,
-    roleMenu,
-];
+export const sidebars = [dashboard, userMenu, tableDiagram, booking, storeMenu, roleMenu];

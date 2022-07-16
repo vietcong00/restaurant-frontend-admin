@@ -1,11 +1,27 @@
 <template>
-    <table-diagram />
+    <BaseListPageHeader
+        @toggle-filter-form="toggleFilterForm"
+        :pageTitle="$t('tableDiagram.table.pageName')"
+        :hasSortBox="true"
+        :isShowCreateButton="isCanCreate"
+        @create="onClickButtonCreate"
+        @onPaginate="handlePaginate"
+    >
+        <template #sort-box-content>
+            <Sort />
+        </template>
+    </BaseListPageHeader>
+    <TableDiagram />
+    <TableFormPopup />
 </template>
 
 <script lang="ts">
+import { PermissionResources, PermissionActions } from '@/modules/role/constants';
+import { checkUserHasPermission } from '@/utils/helper';
 import { ElLoading } from 'element-plus';
 import { Options, Vue } from 'vue-class-component';
 import TableDiagram from '../components/TableDiagram.vue';
+import TableFormPopup from '../components/TableFormPopup.vue';
 import { tableDiagramModule } from '../store';
 import { ITable } from '../types';
 
@@ -13,11 +29,18 @@ import { ITable } from '../types';
     name: 'table-diagram-component',
     components: {
         TableDiagram,
+        TableFormPopup,
     },
 })
 export default class TableDiagramPage extends Vue {
     get tableList(): ITable[] {
         return tableDiagramModule.tableList || [];
+    }
+
+    isCanCreate(): boolean {
+        return checkUserHasPermission(tableDiagramModule.userPermissionsTable, [
+            `${PermissionResources.TABLE_DIAGRAM}_${PermissionActions.CREATE}`,
+        ]);
     }
 
     created(): void {
@@ -31,6 +54,10 @@ export default class TableDiagramPage extends Vue {
         });
         await tableDiagramModule.getTables();
         loading.close();
+    }
+
+    onClickButtonCreate(): void {
+        tableDiagramModule.setIsShowTableFormPopUp(true);
     }
 }
 </script>

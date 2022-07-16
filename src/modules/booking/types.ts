@@ -36,7 +36,7 @@ export interface IBookingCreate {
     phone?: string | undefined;
     arrivalTime?: Date | string | undefined;
     numberPeople?: number | undefined;
-    idTable?: number | undefined;
+    tableId?: number | undefined;
 }
 
 export interface IBookingUpdate extends IBookingCreate {
@@ -50,13 +50,13 @@ export interface IGetBookings {
 
 export interface IPatchBooking {
     status?: string;
-    idTable?: number;
+    tableId?: number;
 }
 export interface IQueryStringBooking extends IQueryString {
     keyword?: string | null;
     status?: BookingStatus[] | null;
     arrivalTimeRange?: string[] | null;
-    idTable?: number | null;
+    tableId?: number | null;
 }
 
 export type TModalType = 'Create' | 'Edit' | 'Close';

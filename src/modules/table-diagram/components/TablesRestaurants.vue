@@ -17,43 +17,98 @@
                     "
                     alt=""
                 />
+                <div class="table-action">
+                    <el-popover
+                        v-if="isCanUpdate"
+                        trigger="hover"
+                        placement="top"
+                        :width="200"
+                        popper-class="box-popper-menu"
+                    >
+                        <template #reference>
+                            <div class="menu-action">
+                                <el-button @click.stop="" circle size="mini">
+                                    <MoreIcon
+                                        style="
+                                            width: 1em;
+                                            height: 1em;
+                                            display: flex;
+                                            justify-content: center;
+                                            align-item: center;
+                                        "
+                                    />
+                                </el-button>
+                            </div>
+                        </template>
+                        <div class="box-menu">
+                            <div @click="editTable">
+                                {{ $t('tableDiagram.table.tableCard.editTable') }}
+                            </div>
+                            <div
+                                @click="getBookingsOfTable"
+                                v-if="table.status !== TableStatus.READY"
+                            >
+                                {{
+                                    $t('tableDiagram.table.tableCard.getBookingsOfTable')
+                                }}
+                            </div>
+                            <div
+                                @click="updateTableStatus(table, TableStatus.USED)"
+                                v-if="table.status !== TableStatus.USED"
+                            >
+                                {{ $t('tableDiagram.table.tableCard.startServe') }}
+                            </div>
+                            <div
+                                @click="updateTableStatus(table, TableStatus.READY)"
+                                v-else
+                            >
+                                {{ $t('tableDiagram.table.tableCard.endServe') }}
+                            </div>
+                        </div>
+                    </el-popover>
+                </div>
                 <div class="table-name">{{ table.name }}</div>
             </div>
-            <ModalTableDetailBooking v-if="isShowModalTableDetail" />
+            <BookingsOfTablePopup v-if="isShowBookingsOfTablePopup" />
         </div>
     </div>
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
+import { mixins, Options } from 'vue-class-component';
 import { tableDiagramModule } from '../store';
-import ModalTableDetailBooking from './ModalTableDetailBooking.vue';
-import { ElLoading, ElMessageBox } from 'element-plus';
-import { LIMIT_ARRIVAL_TIME_BOOKING, TableStatus } from '../constants';
+import BookingsOfTablePopup from './BookingsOfTablePopup.vue';
+import { ElLoading } from 'element-plus';
 import { Prop } from 'vue-property-decorator';
 import { bookingModule } from '@/modules/booking/store';
 import { ITable } from '../types';
 import { IBookingUpdate } from '@/modules/booking/types';
+import { PermissionResources, PermissionActions } from '@/modules/role/constants';
+import { checkUserHasPermission } from '@/utils/helper';
+import { Edit as EditIcon, More as MoreIcon } from '@element-plus/icons-vue';
+import { TableMixins } from '../mixins';
 
 @Options({
     name: 'table',
     components: {
-        ModalTableDetailBooking,
+        BookingsOfTablePopup,
+        EditIcon,
+        MoreIcon,
     },
 })
-export default class TablesRestaurants extends Vue {
+export default class TablesRestaurants extends mixins(TableMixins) {
     @Prop({}) table!: ITable;
 
     get tableSelected(): ITable | null {
         return tableDiagramModule.tableSelected;
     }
 
-    get isShowModalTableDetail(): boolean {
-        return tableDiagramModule.isShowModalTableDetail;
+    get isShowBookingsOfTablePopup(): boolean {
+        return tableDiagramModule.isShowBookingsOfTablePopup;
     }
 
-    get isShowModalChosenTable(): boolean {
-        return bookingModule.isShowModalChosenTable;
+    get isShowSelectTableForBookingPopup(): boolean {
+        return bookingModule.isShowSelectTableForBookingPopup;
     }
 
     get isShowBookingFormPopUp(): boolean {
@@ -62,6 +117,12 @@ export default class TablesRestaurants extends Vue {
 
     get selectedBooking(): IBookingUpdate | null {
         return bookingModule.selectedBooking;
+    }
+
+    isCanUpdate(): boolean {
+        return checkUserHasPermission(tableDiagramModule.userPermissionsTable, [
+            `${PermissionResources.TABLE_DIAGRAM}_${PermissionActions.UPDATE}`,
+        ]);
     }
 
     getImgLink(numberSeat: number): string {
@@ -83,54 +144,22 @@ export default class TablesRestaurants extends Vue {
         }
     }
 
-    async selectTable(): Promise<void> {
+    selectTable(): void {
         tableDiagramModule.setTableSelected(this.table);
+    }
+
+    editTable(): void {
+        tableDiagramModule.setIsShowTableFormPopUp(true);
+        tableDiagramModule.setTableSelected(this.table);
+    }
+
+    async getBookingsOfTable(): Promise<void> {
         const loading = ElLoading.service({
             target: '.table-detail-booking-table-data',
         });
-        await bookingModule.getBookingTables();
+        await bookingModule.getBookingsOfTable(this.table.id);
+        tableDiagramModule.MUTATE_IS_SHOW_BOOKINGS_OF_TABLE_POPUP(true);
         loading.close();
-        let success = false;
-        if (this.isShowModalChosenTable || this.isShowBookingFormPopUp) {
-            if (
-                this.checkNumberSeat(
-                    this.selectedBooking?.numberPeople || 0,
-                    this.table.numberSeat,
-                )
-            ) {
-                success = true;
-                if (this.table.status === TableStatus.USED) {
-                    if (
-                        Math.abs(
-                            new Date().getTime() -
-                                new Date(
-                                    this.selectedBooking?.arrivalTime as Date,
-                                ).getTime(),
-                        ) < LIMIT_ARRIVAL_TIME_BOOKING
-                    ) {
-                        const textWarning = `Bàn bạn vừa chọn đang được sử dụng. Vui lòng chọn bàn khác!`;
-                        ElMessageBox.alert(textWarning, 'Warning', {
-                            confirmButtonText: 'OK',
-                        });
-                        success = false;
-                    }
-                }
-            }
-        } else {
-            tableDiagramModule.updateCheckShowModalTableDetail(true);
-        }
-        tableDiagramModule.setCanChosenTable(success);
-    }
-
-    checkNumberSeat(numberPeople: number, numberSeat: number): boolean {
-        if (numberPeople > numberSeat) {
-            const textWarning = `Yêu cầu đặt bàn có ${numberPeople} chỗ. Bàn bạn vừa chọn chỉ có ${numberSeat} chỗ. Vui lòng chọn bàn khác!`;
-            ElMessageBox.alert(textWarning, 'Warning', {
-                confirmButtonText: 'OK',
-            });
-            return false;
-        }
-        return true;
     }
 }
 </script>
@@ -142,6 +171,8 @@ export default class TablesRestaurants extends Vue {
     padding: 10px;
     cursor: pointer;
     border-radius: 10px;
+    position: relative;
+
     .table-img {
         width: 50px;
         height: 50px;
@@ -158,6 +189,33 @@ export default class TablesRestaurants extends Vue {
     }
     .table-layout {
         padding: 10px;
+    }
+    .table-action {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        button {
+            &:not(:last-child) {
+                margin-bottom: 5px;
+            }
+        }
+        .menu-action {
+            -webkit-transform: rotate(90deg);
+            transform: rotate(90deg);
+            cursor: pointer;
+
+            button {
+                width: 24px;
+                height: 24px;
+                min-height: 24px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        }
     }
 }
 

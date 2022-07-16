@@ -13,55 +13,15 @@ export default {
             contractManagement: 'Contract',
             teamManagement: 'Team',
         },
-        asset: {
-            title: 'Asset',
-            assetManagement: 'Asset',
-            requestAssetManagement: 'Request asset',
-        },
-        timekeeping: {
-            title: 'Timekeeping',
-            timekeeping: 'Timekeeping',
-            requestAbsence: 'Request absence',
-            generalSettings: 'General settings',
-        },
-        event: {
-            title: 'Event',
-        },
-        recruitment: {
-            title: 'Recruitment',
-        },
-        billing: {
-            title: 'Billing',
-        },
         role: {
             subtitle: 'Role',
             title: 'Role',
-        },
-        permission: {
-            title: 'Permission',
-        },
-        settings: {
-            title: 'Settings',
-            position: 'Position',
-            appliedPosition: 'Applied Position',
-            category: 'Category',
-            holiday: 'Holiday',
-            contractType: 'Contract type',
-            resetPaidLeaveDays: 'Reset paid leave days',
-        },
-        about: {
-            title: 'About',
         },
         tableDiagram: {
             title: 'Table Diagram',
         },
         booking: {
             title: 'Booking',
-        },
-        menu: {
-            title: 'Menu',
-            food: 'Food',
-            category: 'Category',
         },
         store: {
             title: 'Store',
@@ -71,20 +31,6 @@ export default {
             import: 'Import',
             export: 'Export',
             checkInventory: 'Check inventory',
-        },
-        payment: {
-            title: 'Payment',
-            atRestaurant: 'Orders at the Restaurant',
-            takeout: 'Takeout orders',
-        },
-        receipt: {
-            title: 'Receipt',
-        },
-        promotion: {
-            title: 'Promotion',
-        },
-        closingRevenue: {
-            title: 'Closing revenue',
         },
     },
     menuAccount: {

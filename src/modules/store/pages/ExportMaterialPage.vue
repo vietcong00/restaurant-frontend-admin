@@ -6,7 +6,8 @@
             :hasSortBox="true"
             v-model:page="selectedPage"
             :totalItems="totalExportMaterials"
-            :isShowCreateButton="false"
+            :isShowCreateButton="isCanCreate"
+            @create="onClickButtonCreate"
             @onPaginate="handlePaginate"
         >
             <template #sort-box-content>
@@ -15,6 +16,7 @@
         </BaseListPageHeader>
         <FilterForm :isToggleFilterForm="isToggleFilterForm" />
         <ExportMaterialTable />
+        <ExportMaterialFormPopup />
     </div>
 </template>
 
@@ -25,11 +27,15 @@ import { Options, Vue } from 'vue-class-component';
 import ExportMaterialTable from '../components/exportMaterial/ExportMaterialTable.vue';
 import { storeModule } from '../store';
 import FilterForm from '../components/exportMaterial/FilterForm.vue';
+import ExportMaterialFormPopup from '../components/exportMaterial/ExportMaterialFormPopup.vue';
+import { PermissionResources, PermissionActions } from '@/modules/role/constants';
+import { checkUserHasPermission } from '@/utils/helper';
 
 @Options({
     components: {
         ExportMaterialTable,
         FilterForm,
+        ExportMaterialFormPopup,
     },
 })
 export default class ExportMaterialPage extends Vue {
@@ -45,6 +51,13 @@ export default class ExportMaterialPage extends Vue {
 
     set selectedPage(value: number) {
         storeModule.queryStringExportMaterial.page = value;
+    }
+
+    // check permission
+    get isCanCreate(): boolean {
+        return checkUserHasPermission(storeModule.userPermissionsExportMaterial, [
+            `${PermissionResources.STORE_EXPORT_MATERIAL}_${PermissionActions.CREATE}`,
+        ]);
     }
 
     created(): void {
@@ -67,6 +80,10 @@ export default class ExportMaterialPage extends Vue {
 
     toggleFilterForm(): void {
         this.isToggleFilterForm = !this.isToggleFilterForm;
+    }
+
+    onClickButtonCreate(): void {
+        storeModule.setIsShowExportMaterialFormPopUp(true);
     }
 }
 </script>

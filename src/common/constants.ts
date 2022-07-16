@@ -234,6 +234,7 @@ export const REGEX = {
 };
 
 export const LIMIT_PER_PAGE = 10;
+export const LIMIT_PER_DROPDOWN = 1000;
 
 export const IMAGE_ACCEPTED_FILE_TYPES = [
     'image/png',

@@ -27,9 +27,7 @@
                                     <el-table-column
                                         prop="name"
                                         label="Tên khách hàng"
-                                        width="160"
                                         class="test"
-                                        sortable="custom"
                                     >
                                         <template #default="scope">
                                             <div class="booking__table__name">
@@ -40,9 +38,7 @@
                                     <el-table-column
                                         prop="name"
                                         label="Điện thoại"
-                                        width="120"
                                         class="test"
-                                        sortable="custom"
                                     >
                                         <template #default="scope">
                                             <div class="booking__table__phone">
@@ -53,8 +49,6 @@
                                     <el-table-column
                                         prop="arrivalTime"
                                         label="Thời gian tới"
-                                        width="250"
-                                        sortable="custom"
                                     >
                                         <template #default="scope">
                                             <div class="booking__table__arrival_time">
@@ -69,38 +63,8 @@
                                             </div>
                                         </template>
                                     </el-table-column>
-                                    <el-table-column
-                                        prop="idCategory"
-                                        label="Trạng thái"
-                                        width="140"
-                                    >
-                                        <template #default="scope">
-                                            <div class="booking__table__status">
-                                                {{ scope.row.status }}
-                                            </div>
-                                        </template>
-                                    </el-table-column>
                                 </template>
                             </BaseTableLayout>
-                        </slot>
-                    </div>
-
-                    <div class="modal-footer">
-                        <slot name="footer">
-                            <el-button
-                                type="info"
-                                plain
-                                class="modal-button"
-                                @click="sendData('ready')"
-                                ><div class="text-btn">Đã sử dụng xong</div></el-button
-                            >
-                            <el-button
-                                type="danger"
-                                plain
-                                class="modal-button"
-                                @click="sendData('used')"
-                                ><div class="text-btn">Bắt đầu sử dụng</div></el-button
-                            >
                         </slot>
                     </div>
                 </div>
@@ -127,13 +91,14 @@ import { UtilMixins } from '@/mixins/utilMixins';
     name: 'modal-table-detail-booking',
     components: { CloseBoldIcon },
 })
-export default class ModalTableDetailBooking extends mixins(UtilMixins) {
+export default class BookingsOfTablePopup extends mixins(UtilMixins) {
     get getBookingTableDetailList(): IBooking[] {
         return bookingModule.bookingTableDetailList;
     }
 
     closeModal(): void {
-        tableDiagramModule.updateCheckShowModalTableDetail(false);
+        tableDiagramModule.setIsShowBookingsOfTablePopup(false);
+        tableDiagramModule.setTableSelected(null);
     }
 
     async sendData(status: string): Promise<void> {

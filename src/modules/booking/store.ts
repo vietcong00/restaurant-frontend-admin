@@ -1,5 +1,3 @@
-import { tableDiagramModule } from './../table-diagram/store';
-import { bookingService } from './../table-diagram/services/api.service';
 import { getModule, VuexModule, Mutation, Action, Module } from 'vuex-module-decorators';
 import store from '@/store';
 import { IBooking, IQueryStringBooking, IBookingUpdate } from './types';
@@ -16,6 +14,7 @@ import { PermissionResources } from '../role/constants';
 import { showErrorNotificationFunction } from '@/utils/helper';
 import { ElLoading } from 'element-plus';
 import { BookingStatus } from './constants';
+import { bookingService } from './services/api.service';
 
 const initQueryString = {
     page: DEFAULT_FIRST_PAGE,
@@ -24,7 +23,7 @@ const initQueryString = {
     orderDirection: DEFAULT_ORDER_DIRECTION,
     keyword: null,
     status: null,
-    idTable: null,
+    tableId: null,
     arrivalTimeRange: null,
 };
 
@@ -38,22 +37,14 @@ class BookingModule extends VuexModule {
 
     selectedBooking: IBookingUpdate | null = null;
 
-    isShowModalChosenTable = false;
-    isShowModalTableDetail = false;
+    isShowSelectTableForBookingPopup = false;
+    isShowBookingsOfTablePopup = false;
 
     bookingQueryString: IQueryStringBooking = initQueryString;
     bookingTableQueryString: IQueryStringBooking = initQueryString;
 
     isShowBookingFormPopUp = false;
     isDisabledSaveButton = false;
-
-    get checkShowModalChosenTable() {
-        return this.isShowModalChosenTable;
-    }
-
-    get checkShowModalTableDetail() {
-        return this.isShowModalTableDetail;
-    }
 
     // GETTERS
     get userPermissions(): string[] {
@@ -71,13 +62,13 @@ class BookingModule extends VuexModule {
     }
 
     @Mutation
-    UPDATE_CHECK_SHOW_MODAL_CHOSEN_TABLE(data: boolean) {
-        this.isShowModalChosenTable = data;
+    MUTATE_IS_SHOW_SELECT_TABLE_FOR_BOOKING_POPUP(data: boolean) {
+        this.isShowSelectTableForBookingPopup = data;
     }
 
     @Mutation
     UPDATE_CHECK_SHOW_MODAL_TABLE_DETAIL(data: boolean) {
-        this.isShowModalTableDetail = data;
+        this.isShowBookingsOfTablePopup = data;
     }
 
     @Mutation
@@ -124,12 +115,12 @@ class BookingModule extends VuexModule {
     // ACTION
 
     @Action
-    updateCheckShowModalChosenTable(data: boolean) {
-        this.UPDATE_CHECK_SHOW_MODAL_CHOSEN_TABLE(data);
+    setIsShowSelectTableForBookingPopup(data: boolean) {
+        this.MUTATE_IS_SHOW_SELECT_TABLE_FOR_BOOKING_POPUP(data);
     }
 
     @Action
-    updateCheckShowModalTableDetail(data: boolean) {
+    setIsShowBookingsOfTablePopup(data: boolean) {
         this.UPDATE_CHECK_SHOW_MODAL_TABLE_DETAIL(data);
     }
 
@@ -201,9 +192,9 @@ class BookingModule extends VuexModule {
     }
 
     @Action
-    async getBookingTables() {
+    async getBookingsOfTable(tableId: number) {
         this.MUTATE_BOOKING_TABLE_QUERY_STRING({
-            idTable: tableDiagramModule.tableSelected?.id,
+            tableId,
             status: [BookingStatus.WAITING],
         });
         const response = (await bookingService.getList({

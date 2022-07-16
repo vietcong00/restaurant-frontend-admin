@@ -1,5 +1,4 @@
 import { tableDiagramModule } from './../../table-diagram/store';
-import { bookingService } from './../../table-diagram/services/api.service';
 import { IBooking, IBookingCreate } from './../types';
 import { DEFAULT_FIRST_PAGE, HttpStatus } from '@/common/constants';
 import { IBodyResponse } from '@/common/types';
@@ -15,6 +14,7 @@ import { useI18n } from 'vue-i18n';
 
 import { BookingSchema } from '../constants';
 import { bookingModule } from '../store';
+import { bookingService } from '../services/api.service';
 
 export const validateBookingSchema = BookingSchema;
 
@@ -39,7 +39,7 @@ export function initData() {
             phone: values.phone,
             numberPeople: values.numberPeople,
             arrivalTime: moment(values.arrivalTime).utc().fmFullTimeWithoutSecond(),
-            idTable: tableDiagramModule.tableSelected?.id,
+            tableId: tableDiagramModule.tableSelected?.id,
         } as IBookingCreate;
         let response;
         const bookingId = bookingModule.selectedBooking?.id;

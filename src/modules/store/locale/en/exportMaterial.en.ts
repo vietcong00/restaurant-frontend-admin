@@ -1,4 +1,19 @@
 export default {
+    exportMaterialDialog: {
+        titleCreate: 'Create Export material',
+        titleUpdate: 'Update Export material',
+        transporters: 'Transporters',
+        note: 'Note',
+        placeholder: {
+            transporters: 'Enter Transporters',
+            note: 'Enter note',
+        },
+        button: {
+            cancel: 'Cancel',
+            submit: 'Submit',
+        },
+    },
+
     exportMaterialTable: {
         header: {
             id: 'ID',

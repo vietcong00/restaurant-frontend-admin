@@ -46,17 +46,17 @@ export default {
     message: {
         title: 'Thông báo',
         create: {
-            success: 'Tạo sự kiện thành công!',
+            success: 'Tạo chuyển đổi thành công!',
         },
 
         update: {
-            success: 'Cập nhật sự kiện thành công!',
+            success: 'Cập nhật chuyển đổi thành công!',
         },
 
         delete: {
-            title: 'Xóa sự kiện',
-            confirmAsk: 'Bạn có chắc chắn muốn xóa sự kiện này không?',
-            success: 'Xóa sự kiện thành công!',
+            title: 'Xóa chuyển đổi',
+            confirmAsk: 'Bạn có chắc chắn muốn xóa chuyển đổi này không?',
+            success: 'Xóa chuyển đổi thành công!',
         },
     },
 

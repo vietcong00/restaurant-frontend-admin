@@ -23,7 +23,7 @@ export default {
     message: {
         title: 'Thông báo',
         update: {
-            success: 'Cập nhật sự kiện thành công!',
+            success: 'Cập nhật xuất kho thành công!',
         },
     },
 

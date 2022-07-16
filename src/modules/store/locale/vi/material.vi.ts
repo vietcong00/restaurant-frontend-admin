@@ -36,6 +36,7 @@ export default {
     tooltip: {
         editStatus: 'Thay đổi trạng thái',
         edit: 'Chỉnh sửa',
+        update: 'Cập nhật',
         delete: 'Xóa',
         convert: 'Chuyển đổi',
     },
@@ -43,17 +44,17 @@ export default {
     message: {
         title: 'Thông báo',
         create: {
-            success: 'Tạo sự kiện thành công!',
+            success: 'Tạo hàng hóa thành công!',
         },
 
         update: {
-            success: 'Cập nhật sự kiện thành công!',
+            success: 'Cập nhật hàng hóa thành công!',
         },
 
         delete: {
-            title: 'Xóa sự kiện',
-            confirmAsk: 'Bạn có chắc chắn muốn xóa sự kiện này không?',
-            success: 'Xóa sự kiện thành công!',
+            title: 'Xóa hàng hóa',
+            confirmAsk: 'Bạn có chắc chắn muốn xóa hàng hóa này không?',
+            success: 'Xóa hàng hóa thành công!',
         },
     },
 

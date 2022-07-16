@@ -9,25 +9,6 @@ export enum BookingStatus {
 
 export const userQuantityRange = [[0, 50], [50, 100], [100]];
 
-export const SortOptions = [
-    {
-        label: 'event.list.filterForm.sort.createdAt',
-        value: 'createdAt',
-    },
-    {
-        label: 'event.list.filterForm.sort.title',
-        value: 'title',
-    },
-    {
-        label: 'event.list.filterForm.sort.status',
-        value: 'status',
-    },
-    {
-        label: 'event.list.filterForm.sort.quantity',
-        value: 'userQuantity',
-    },
-];
-
 export const bookingStatusOptions = [
     {
         label: 'booking.list.status.done',
@@ -62,15 +43,5 @@ export const BookingSchema = yup.object({
         .max(INPUT_NUMBER_MAX_VALUE),
     arrivalTime: yup.string().matches(REGEX.YYYY_MM_DD_HYPHEN_HH_MM_COLON).required(),
 });
-
-export const SortOption = [
-    {
-        label: 'Title',
-        value: 'title',
-    },
-    {
-        label: 'event.list.header',
-    },
-];
 
 export const LIMIT_ARRIVAL_TIME_BOOKING = 10800;

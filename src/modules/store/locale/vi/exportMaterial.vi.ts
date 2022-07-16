@@ -26,7 +26,7 @@ export default {
     message: {
         title: 'Thông báo',
         update: {
-            success: 'Cập nhật sự kiện thành công!',
+            success: 'Cập nhật hàng hóa thành công!',
         },
     },
 

@@ -1,45 +1,43 @@
 <template>
     <el-dialog
         width="50%"
-        v-model="isShowExportMaterialFormPopUp"
+        v-model="isShowTableFormPopUp"
         destroy-on-close
         @closed="closePopup"
         @open="form.openPopup"
-        custom-class="export-material-form-popup"
+        custom-class="food-form-popup"
     >
         <template #title>
             <h3 class="text-left">
                 {{
                     form.isCreate
-                        ? $t('store.exportMaterial.exportMaterialDialog.titleCreate')
-                        : $t('store.exportMaterial.exportMaterialDialog.titleUpdate')
+                        ? $t('tableDiagram.table.tableDialog.titleCreate')
+                        : $t('tableDiagram.table.tableDialog.titleUpdate')
                 }}
             </h3>
         </template>
         <div class="row">
             <div class="col-md-6">
                 <BaseInputText
-                    v-model:value="form.transporters"
-                    :error="translateYupError(form.errors.transporters)"
-                    :label="$t('store.exportMaterial.exportMaterialDialog.transporters')"
-                    :placeholder="
-                        $t(
-                            'store.exportMaterial.exportMaterialDialog.placeholder.transporters',
-                        )
-                    "
+                    v-model:value="form.name"
+                    :is-required="true"
+                    :placeholder="$t('tableDiagram.table.tableDialog.placeholder.name')"
+                    :label="$t('tableDiagram.table.tableDialog.name')"
+                    :error="translateYupError(form.errors.name)"
                 />
             </div>
             <div class="col-md-6">
-                <BaseInputText
-                    v-model:value="form.note"
-                    :error="translateYupError(form.errors.note)"
-                    :label="$t('store.exportMaterial.exportMaterialDialog.note')"
+                <BaseInputNumber
+                    v-model:value="form.numberSeat"
                     :placeholder="
-                        $t('store.exportMaterial.exportMaterialDialog.placeholder.note')
+                        $t('tableDiagram.table.tableDialog.placeholder.numberSeat')
                     "
+                    :label="$t('tableDiagram.table.tableDialog.numberSeat')"
+                    :error="translateYupError(form.errors.numberSeat)"
                 />
             </div>
         </div>
+        <table-diagram />
         <template #footer>
             <span class="dialog-footer">
                 <div class="row justify-content-center footer">
@@ -47,22 +45,14 @@
                         class="col-md-4 col-sm-6 d-flex justify-content-md-end justify-content-center"
                     >
                         <el-button @click="closePopup">
-                            {{
-                                $t(
-                                    'store.exportMaterial.exportMaterialDialog.button.cancel',
-                                )
-                            }}
+                            {{ $t('tableDiagram.table.button.cancel') }}
                         </el-button>
                     </div>
                     <div
                         class="col-md-4 col-sm-6 d-flex justify-content-md-start justify-content-center"
                     >
                         <el-button type="primary" @click="onClickSaveButton">
-                            {{
-                                $t(
-                                    'store.exportMaterial.exportMaterialDialog.button.submit',
-                                )
-                            }}
+                            {{ $t('tableDiagram.table.button.submit') }}
                         </el-button>
                     </div>
                 </div>
@@ -73,27 +63,27 @@
 
 <script lang="ts">
 import { setup } from 'vue-class-component';
-import { initData } from '../../composition/exportMaterial';
-import { storeModule } from '../../store';
 import { UtilMixins } from '@/mixins/utilMixins';
 import { mixins, Options } from 'vue-property-decorator';
+import { tableDiagramModule } from '../store';
+import { initData } from '../composition/table';
 @Options({
-    name: 'export-material-form-popup',
+    name: 'food-form-popup',
 })
-export default class ExportMaterialFormPopup extends mixins(UtilMixins) {
-    get isShowExportMaterialFormPopUp(): boolean {
-        return storeModule.isShowExportMaterialFormPopUp || false;
+export default class TableFormPopUp extends mixins(UtilMixins) {
+    get isShowTableFormPopUp(): boolean {
+        return tableDiagramModule.isShowTableFormPopUp || false;
     }
 
-    set isShowExportMaterialFormPopUp(val: boolean) {
-        storeModule.setIsShowExportMaterialFormPopUp(val);
+    set isShowTableFormPopUp(val: boolean) {
+        tableDiagramModule.setIsShowTableFormPopUp(val);
     }
 
     form = setup(() => initData());
 
     async closePopup(): Promise<void> {
-        storeModule.setIsShowExportMaterialFormPopUp(false);
-        storeModule.setSelectedExportMaterial(null);
+        tableDiagramModule.setIsShowTableFormPopUp(false);
+        tableDiagramModule.setTableSelected(null);
         (this.form.resetForm as () => void)();
     }
 

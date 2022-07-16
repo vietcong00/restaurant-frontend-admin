@@ -13,7 +13,7 @@
                     <div class="modal-body">
                         <slot name="body">
                             <el-scrollbar height="350px">
-                                <table-diagram :listTable="getTableList" />
+                                <TableDiagram />
                             </el-scrollbar>
                         </slot>
                     </div>
@@ -29,10 +29,11 @@
                                 ><div class="text-btn">Hủy</div></el-button
                             >
                             <el-button
-                                type="danger"
+                                type="primary"
                                 plain
                                 class="modal-button"
                                 @click="sendData()"
+                                v-if="tableSelected"
                                 ><div class="text-btn">Lưu</div></el-button
                             >
                         </slot>
@@ -46,7 +47,7 @@
 <script lang="ts">
 import { HttpStatus } from '@/common/constants';
 import { LIMIT_ARRIVAL_TIME_BOOKING } from '@/modules/table-diagram/constants';
-import { bookingService } from '@/modules/table-diagram/services/api.service';
+import { TableMixins } from '@/modules/table-diagram/mixins';
 import { tableDiagramModule } from '@/modules/table-diagram/store';
 import { ITable } from '@/modules/table-diagram/types';
 import {
@@ -55,21 +56,22 @@ import {
 } from '@/utils/helper';
 import { ElLoading, ElMessageBox } from 'element-plus';
 import moment from 'moment';
-import { Options, Vue } from 'vue-class-component';
+import { mixins, Options } from 'vue-class-component';
 import CompIcon from '../../../components/CompIcon.vue';
 import TableDiagram from '../../table-diagram/components/TableDiagram.vue';
+import { bookingService } from '../services/api.service';
 import { bookingModule } from '../store';
 import { IBooking, IBookingUpdate } from '../types';
 
 @Options({
-    name: 'modal-chosen-table',
+    name: 'select-table-for-booking-popup',
 
     components: {
         CompIcon,
         TableDiagram,
     },
 })
-export default class ModalChosenTable extends Vue {
+export default class SelectTableForBookingPopup extends mixins(TableMixins) {
     get getTableList(): Array<ITable> {
         return tableDiagramModule.tableList;
     }
@@ -82,64 +84,57 @@ export default class ModalChosenTable extends Vue {
         return bookingModule.selectedBooking;
     }
 
+    get tableSelected(): ITable | null {
+        return tableDiagramModule.tableSelected;
+    }
+
     get canChosenTable(): boolean {
         return tableDiagramModule.canChosenTable;
     }
 
-    closeModal(): void {
-        bookingModule.updateCheckShowModalChosenTable(false);
+    async closeModal(): Promise<void> {
+        bookingModule.setIsShowSelectTableForBookingPopup(false);
+        await tableDiagramModule.getTables();
     }
 
     async sendData(): Promise<void> {
-        if (this.canChosenTable) {
-            let fail = false;
-            for (let i = 0; i < this.getBookingTableDetailList.length; i++) {
-                const timeStamp = this.getBookingTableDetailList[i].arrivalTime;
-                fail = this.checkTimeBooking(
-                    new Date(this.selectedBooking?.arrivalTime as Date),
-                    timeStamp,
-                );
-                if (fail) {
-                    break;
-                }
-            }
-            if (!fail) {
+        if (!this.tableSelected) return;
+        const canContinue = await this.checkCanSelectTable(
+            this.tableSelected,
+            this.selectedBooking?.numberPeople,
+            new Date(this.selectedBooking?.arrivalTime ?? new Date()),
+        );
+        if (!canContinue) return;
+
+        const loading = ElLoading.service({
+            target: '.content',
+        });
+        const response = await bookingService.update(
+            bookingModule.selectedBooking?.id as number,
+            {
+                tableId: tableDiagramModule.tableSelected?.id,
+            },
+        );
+        loading.close();
+
+        if (response.success) {
+            const loading = ElLoading.service({
+                target: '.content',
+            });
+            showSuccessNotificationFunction('Cập nhật bàn thành công');
+            await bookingModule.getBookings();
+            loading.close();
+        } else {
+            showErrorNotificationFunction(response.message);
+            if (response.code === HttpStatus.ITEM_NOT_FOUND) {
                 const loading = ElLoading.service({
                     target: '.content',
                 });
-                const response = await bookingService.update(
-                    bookingModule.selectedBooking?.id as number,
-                    {
-                        idTable: tableDiagramModule.tableSelected?.id,
-                    },
-                );
+                await bookingModule.getBookings();
                 loading.close();
-
-                if (response.success) {
-                    const loading = ElLoading.service({
-                        target: '.content',
-                    });
-                    showSuccessNotificationFunction('Cập nhật bàn thành công');
-                    await bookingModule.getBookings();
-                    loading.close();
-                } else {
-                    showErrorNotificationFunction(response.message);
-                    if (response.code === HttpStatus.ITEM_NOT_FOUND) {
-                        const loading = ElLoading.service({
-                            target: '.content',
-                        });
-                        await bookingModule.getBookings();
-                        loading.close();
-                    }
-                }
-                this.closeModal();
             }
-        } else {
-            const textWarning = `Vui lòng chọn bàn khác!`;
-            ElMessageBox.alert(textWarning, 'Warning', {
-                confirmButtonText: 'OK',
-            });
         }
+        this.closeModal();
     }
 
     checkTimeBooking(oldTime: Date, newTime: Date): boolean {

@@ -53,17 +53,17 @@ export default {
     message: {
         title: 'Notification',
         create: {
-            success: 'Create event successfully!',
+            success: 'Create booking successfully!',
         },
 
         update: {
-            success: 'Update event successfully!',
+            success: 'Update booking successfully!',
         },
 
         delete: {
             title: 'Notification',
-            confirmAsk: 'Are you sure you want to delete this event?',
-            success: 'Delete event successfully!',
+            confirmAsk: 'Are you sure you want to delete this booking?',
+            success: 'Delete booking successfully!',
         },
     },
 

@@ -158,9 +158,9 @@ import { IBooking } from '../types';
 import CompIcon from '../../../components/CompIcon.vue';
 import { bookingModule } from '../store';
 import { BookingMixins } from '../mixins';
-import { bookingService } from '@/modules/table-diagram/services/api.service';
 import { tableDiagramModule } from '@/modules/table-diagram/store';
 import { BookingStatus } from '../constants';
+import { bookingService } from '../services/api.service';
 
 @Options({
     name: 'booking-table-component',
@@ -189,7 +189,7 @@ export default class BookingTable extends mixins(BookingMixins) {
 
     openModal(booking: IBooking): void {
         bookingModule.setSelectedBooking(booking);
-        bookingModule.updateCheckShowModalChosenTable(true);
+        bookingModule.setIsShowSelectTableForBookingPopup(true);
     }
 
     statusBadge(status: BookingStatus): string {

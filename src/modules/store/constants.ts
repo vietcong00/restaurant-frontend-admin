@@ -6,25 +6,6 @@ export enum AcceptStatus {
     REJECT = 'REJECT',
 }
 
-export const SortOptions = [
-    {
-        label: 'event.list.filterForm.sort.createdAt',
-        value: 'createdAt',
-    },
-    {
-        label: 'event.list.filterForm.sort.title',
-        value: 'title',
-    },
-    {
-        label: 'event.list.filterForm.sort.status',
-        value: 'status',
-    },
-    {
-        label: 'event.list.filterForm.sort.quantity',
-        value: 'userQuantity',
-    },
-];
-
 export const AcceptStatusOptions = [
     {
         label: 'app.acceptStatus.approve',

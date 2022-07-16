@@ -65,7 +65,6 @@ export default {
         images: 'ảnh',
         code: 'mã tài sản',
         start: 'ngày bắt đầu',
-        eventName: 'tên sự kiện',
         end: 'ngày kết thúc',
         userQuantity: 'lượng người tham gia',
         budget: 'ngân sách',

@@ -36,6 +36,7 @@ export default {
     tooltip: {
         editStatus: 'Edit status',
         edit: 'Edit',
+        update: 'Update',
         delete: 'Delete',
         convert: 'Convert',
     },
@@ -43,17 +44,17 @@ export default {
     message: {
         title: 'Notification',
         create: {
-            success: 'Create event successfully!',
+            success: 'Create material successfully!',
         },
 
         update: {
-            success: 'Update event successfully!',
+            success: 'Update material successfully!',
         },
 
         delete: {
             title: 'Notification',
-            confirmAsk: 'Are you sure you want to delete this event?',
-            success: 'Delete event successfully!',
+            confirmAsk: 'Are you sure you want to delete this material?',
+            success: 'Delete material successfully!',
         },
     },
 

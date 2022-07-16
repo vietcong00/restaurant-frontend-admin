@@ -49,11 +49,11 @@ export default class TableDiagramPage extends Vue {
         return tableDiagramModule.tableList || [];
     }
 
-    created(): void {
+    async created(): Promise<void> {
         tableDiagramModule.clearQueryString();
         tableDiagramModule.setTableSelected(null);
         bookingModule.setSelectedBooking(null);
-        this.getTableList();
+        await this.getTableList();
     }
 
     async getTableList(): Promise<void> {

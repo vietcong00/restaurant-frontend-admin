@@ -59,7 +59,6 @@ export default {
         assignee: 'assignee',
         approveQuantity: 'approve quantity',
         price: 'price',
-        eventName: 'event name',
         requestQuantity: 'request quantity',
         title: 'title',
         status: 'status',
