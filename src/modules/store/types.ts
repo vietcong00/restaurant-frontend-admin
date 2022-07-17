@@ -137,6 +137,20 @@ export interface IQueryStringImportMaterialDetail extends IQueryString {
     keyword?: string;
     importMaterialId?: number;
 }
+
+export interface IImportMaterialDetailExcel {
+    material: string;
+    importMaterialId: string;
+    unit: string;
+    quantity: string;
+    pricePerUnit: string;
+    note: string;
+    index?: number;
+}
+
+export interface IImportMaterialDetailExcels {
+    importMaterialDetailExcels: IImportMaterialDetailExcel[];
+}
 export interface IExportMaterial {
     id: number;
     transporters: string;

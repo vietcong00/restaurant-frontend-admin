@@ -1,3 +1,5 @@
+import { INPUT_TEXT_MAX_LENGTH } from '@/common/constants';
+
 export default {
     importMaterialDetailDialog: {
         titleCreate: 'Create Import material detail',
@@ -44,6 +46,34 @@ export default {
 
     placeholder: {
         keyword: 'Enter keyword',
+    },
+
+    importMaterialDetailExcel: {
+        title: 'Import File Excel',
+        material: {
+            label: 'Material',
+            required: 'The material field is required',
+            maxLength: `Material length must be less than or equal to ${INPUT_TEXT_MAX_LENGTH} characters`,
+        },
+        unit: {
+            label: 'Unit',
+            required: 'The unit field is required',
+            maxLength: `Unit length must be less than or equal to ${INPUT_TEXT_MAX_LENGTH} characters`,
+        },
+        quantity: {
+            label: 'Quantity',
+            required: 'The quantity field is required',
+            invalid: 'Quantity is invalid',
+        },
+        pricePerUnit: {
+            label: 'Price/Unit',
+            required: 'The Price/Unit field is required',
+            invalid: 'Price/Unit is invalid',
+        },
+        note: {
+            label: 'Note',
+            maxLength: `Note length must be less than or equal to ${INPUT_TEXT_MAX_LENGTH} characters`,
+        },
     },
 
     message: {

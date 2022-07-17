@@ -1,5 +1,7 @@
+import { IBodyResponse, IBulkImportResponse } from '@/common/types';
 import service from '@/plugins/axios';
 import { BaseService } from '@/utils/api';
+import { IImportMaterialDetailExcels } from '../types';
 
 class MaterialService extends BaseService {}
 export const materialService = new MaterialService({ baseUrl: 'material' }, service);
@@ -31,7 +33,13 @@ export const importMaterialService = new ImportMaterialService(
     service,
 );
 
-class ImportMaterialDetailService extends BaseService {}
+class ImportMaterialDetailService extends BaseService {
+    importMaterialDetailExcels(
+        data: IImportMaterialDetailExcels,
+    ): Promise<IBodyResponse<IBulkImportResponse>> {
+        return this.client.post(`${this.detailUrl}/bulk-create`, data);
+    }
+}
 export const importMaterialDetailService = new ImportMaterialDetailService(
     { baseUrl: 'import-material-order' },
     service,

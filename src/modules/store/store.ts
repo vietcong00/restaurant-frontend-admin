@@ -24,6 +24,7 @@ import {
     IInventoryDetail,
     IMaterial,
     IMaterialUpdate,
+    IImportMaterialDetailExcel,
     IQueryStringCheckInventory,
     IQueryStringConvertHistory,
     IQueryStringExportMaterial,
@@ -49,6 +50,7 @@ import {
     supplierService,
 } from './services/api.service';
 import { commonService } from '@/common/services/api.services';
+import { trimObject } from '@/utils/helper';
 
 const initQueryString = {
     page: DEFAULT_FIRST_PAGE,
@@ -99,6 +101,11 @@ class StoreModule extends VuexModule {
     selectedImportMaterialDetail: IImportMaterialDetailUpdate | null = null;
     isShowImportMaterialDetailFormPopUp = false;
     queryStringImportMaterialDetail: IQueryStringImportMaterialDetail = initQueryString;
+
+    // Import Import Material Detail File
+    importMaterialDetailExcels: IImportMaterialDetailExcel[] = [];
+    isOpenImportMaterialDetailExcelFilePopup = false;
+    isOpenImportMaterialDetailExcelResultPopUp = false;
 
     // Export Material
     exportMaterialList: Array<IExportMaterial> = [];
@@ -343,6 +350,16 @@ class StoreModule extends VuexModule {
     }
 
     @Mutation
+    MUTATE_IS_OPEN_IMPORT_MATERIAL_DETAIL_EXCEL_FILE_POPUP(value: boolean) {
+        this.isOpenImportMaterialDetailExcelFilePopup = value;
+    }
+
+    @Mutation
+    MUTATE_IS_OPEN_IMPORT_MATERIAL_DETAIL_EXCEL_RESULT_POP_UP(value: boolean) {
+        this.isOpenImportMaterialDetailExcelResultPopUp = value;
+    }
+
+    @Mutation
     MUTATE_IS_SHOW_EXPORT_MATERIAL_FORM_POP_UP(value: boolean) {
         this.isShowExportMaterialFormPopUp = value;
     }
@@ -419,6 +436,16 @@ class StoreModule extends VuexModule {
     @Mutation
     MUTATE_SUPPLIER_OPTIONS(options: ISelectOptions[]) {
         this.supplierOptions = options;
+    }
+
+    @Mutation
+    MUTATE_IMPORT_IMPORT_MATERIAL_DETAILS(dataImports: IImportMaterialDetailExcel[]) {
+        this.importMaterialDetailExcels = dataImports.map((dataImports, index) => {
+            return {
+                ...dataImports,
+                index,
+            };
+        });
     }
 
     // ACTION
@@ -532,6 +559,16 @@ class StoreModule extends VuexModule {
     }
 
     @Action
+    setIsOpenImportMaterialDetailExcelFilePopup(value: boolean) {
+        this.MUTATE_IS_OPEN_IMPORT_MATERIAL_DETAIL_EXCEL_FILE_POPUP(value);
+    }
+
+    @Action
+    setIsOpenImportMaterialDetailExcelResultPopUp(value: boolean) {
+        this.MUTATE_IS_OPEN_IMPORT_MATERIAL_DETAIL_EXCEL_RESULT_POP_UP(value);
+    }
+
+    @Action
     setIsShowExportMaterialFormPopUp(value: boolean) {
         this.MUTATE_IS_SHOW_EXPORT_MATERIAL_FORM_POP_UP(value);
     }
@@ -601,6 +638,12 @@ class StoreModule extends VuexModule {
     @Action
     setMaterialOptions(materialOptions: ISelectMaterialOptions[]) {
         this.MUTATE_MATERIAL_OPTIONS(materialOptions);
+    }
+
+    @Action
+    setImportMaterialDetailExcels(dataImports: IImportMaterialDetailExcel[]) {
+        trimObject(dataImports);
+        this.MUTATE_IMPORT_IMPORT_MATERIAL_DETAILS(dataImports);
     }
 
     // API Table

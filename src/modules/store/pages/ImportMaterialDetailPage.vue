@@ -15,10 +15,27 @@
             <template #sort-box-content>
                 <Sort />
             </template>
+            <template #custom-button>
+                <el-tooltip
+                    v-if="isCanCreate"
+                    :content="$t('user.list.upload.uploadUser')"
+                    placement="top"
+                >
+                    <el-button
+                        :style="{ backgroundImage: `url(${uploadUserImage})` }"
+                        size="medium"
+                        type="default"
+                        @click="onClickButtonUploadUserFile"
+                        class="icon-button"
+                    />
+                </el-tooltip>
+            </template>
         </BaseListPageHeader>
         <FilterForm :isToggleFilterForm="isToggleFilterForm" />
         <ImportMaterialDetailTable />
         <ImportMaterialDetailFormPopup />
+        <ImportMaterialDetailExcelPopup />
+        <ImportMaterialDetailExcelResultPopup />
     </div>
 </template>
 
@@ -30,6 +47,8 @@ import ImportMaterialDetailTable from '../components/importMaterialDetail/Import
 import { storeModule } from '../store';
 import FilterForm from '../components/importMaterialDetail/FilterForm.vue';
 import ImportMaterialDetailFormPopup from '../components/importMaterialDetail/ImportMaterialDetailFormPopup.vue';
+import ImportMaterialDetailExcelPopup from '../components/importMaterialDetail/ImportMaterialDetailExcelPopup.vue';
+import ImportMaterialDetailExcelResultPopup from '../components/importMaterialDetail/ImportMaterialDetailExcelResultPopup.vue';
 import { PermissionResources, PermissionActions } from '@/modules/role/constants';
 import { checkUserHasPermission } from '@/utils/helper';
 
@@ -38,6 +57,8 @@ import { checkUserHasPermission } from '@/utils/helper';
         ImportMaterialDetailTable,
         FilterForm,
         ImportMaterialDetailFormPopup,
+        ImportMaterialDetailExcelPopup,
+        ImportMaterialDetailExcelResultPopup,
     },
 })
 export default class ImportMaterialDetailPage extends Vue {
@@ -47,7 +68,6 @@ export default class ImportMaterialDetailPage extends Vue {
         return storeModule.totalImportMaterialDetails;
     }
 
-    // check permission
     // check permission
     get isCanCreate(): boolean {
         return checkUserHasPermission(storeModule.userPermissionsImportMaterial, [
@@ -61,6 +81,10 @@ export default class ImportMaterialDetailPage extends Vue {
 
     set selectedPage(value: number) {
         storeModule.queryStringImportMaterialDetail.page = value;
+    }
+
+    get uploadUserImage(): void {
+        return require('@/assets/icons/btn.export.svg');
     }
 
     created(): void {
@@ -93,6 +117,12 @@ export default class ImportMaterialDetailPage extends Vue {
 
     onClickButtonCreate(): void {
         storeModule.setIsShowImportMaterialDetailFormPopUp(true);
+    }
+
+    onClickButtonUploadUserFile(): void {
+        storeModule.setIsOpenImportMaterialDetailExcelFilePopup(
+            !storeModule.isOpenImportMaterialDetailExcelFilePopup,
+        );
     }
 }
 </script>

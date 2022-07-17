@@ -97,4 +97,19 @@ export class UtilMixins extends Vue {
             })),
         );
     }
+
+    scrollToError(className: string): void {
+        setTimeout(() => {
+            const collectionElement = Array.from(
+                document.getElementsByClassName(className),
+            );
+
+            if (collectionElement[0]) {
+                collectionElement[0].scrollIntoView({
+                    block: 'start',
+                    inline: 'start',
+                });
+            }
+        }, 0);
+    }
 }

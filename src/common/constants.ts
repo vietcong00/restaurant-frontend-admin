@@ -107,6 +107,7 @@ export const MIN_TAX_CODE_LENGTH = 10;
 
 export const MAX_PHONE_NUMBER_LENGTH = 11;
 export const MIN_PHONE_NUMBER_LENGTH = 10;
+
 // pagination
 export const DEFAULT_FIRST_PAGE = 1;
 export const DEFAULT_MAX_SIZE_PER_PAGE = 1000;
